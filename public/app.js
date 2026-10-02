@@ -7,7 +7,6 @@ function initApp() {
   initStickyStoryGallery();
   initCountdown();
   initCalendarDownloads();
-  initFaqAccordion();
   initMobileMenu();
 }
 
@@ -361,42 +360,7 @@ function initCalendarDownloads() {
 }
 
 // =============================================================
-// 4. FAQ ACCORDION
-// =============================================================
-function initFaqAccordion() {
-  const faqButtons = document.querySelectorAll('.faq-toggle');
-
-  faqButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const content = btn.nextElementSibling;
-      const icon = btn.querySelector('.faq-icon');
-      const isExpanded = btn.getAttribute('aria-expanded') === 'true';
-
-      faqButtons.forEach(otherBtn => {
-        if (otherBtn !== btn) {
-          otherBtn.setAttribute('aria-expanded', 'false');
-          const otherContent = otherBtn.nextElementSibling;
-          const otherIcon = otherBtn.querySelector('.faq-icon');
-          if (otherContent) otherContent.classList.add('hidden');
-          if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
-        }
-      });
-
-      if (isExpanded) {
-        btn.setAttribute('aria-expanded', 'false');
-        content.classList.add('hidden');
-        if (icon) icon.style.transform = 'rotate(0deg)';
-      } else {
-        btn.setAttribute('aria-expanded', 'true');
-        content.classList.remove('hidden');
-        if (icon) icon.style.transform = 'rotate(45deg)';
-      }
-    });
-  });
-}
-
-// =============================================================
-// 5. MOBILE MENU
+// 4. MOBILE MENU
 // =============================================================
 function initMobileMenu() {
   const menuToggle = document.getElementById('mobile-menu-btn');
