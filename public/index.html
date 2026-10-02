@@ -49,7 +49,7 @@
 
       <!-- Desktop Navigation Links -->
       <div class="hidden md:flex items-center space-x-8 text-xs tracking-[0.2em] uppercase font-medium text-gray-700">
-        <a href="#story-scroll-container" class="hover:text-maroon transition-colors">Our Story</a>
+        <a href="#story-slideshow-wrapper" class="hover:text-maroon transition-colors">Our Story</a>
         <a href="#celebration" class="hover:text-maroon transition-colors">Celebration</a>
         <a href="#schedule" class="hover:text-maroon transition-colors">Schedule</a>
         <a href="#venue" class="hover:text-maroon transition-colors">Venue &amp; Travel</a>
@@ -74,7 +74,7 @@
 
     <!-- Mobile Dropdown Menu -->
     <div id="mobile-menu" class="hidden md:hidden bg-ivory border-b border-gray-200 px-6 py-6 space-y-4 text-center">
-      <a href="#story-scroll-container" class="mobile-nav-link block text-sm tracking-widest uppercase py-2 hover:text-maroon">Our Story (Slideshow)</a>
+      <a href="#story-slideshow-wrapper" class="mobile-nav-link block text-sm tracking-widest uppercase py-2 hover:text-maroon">Our Story (Slideshow)</a>
       <a href="#celebration" class="mobile-nav-link block text-sm tracking-widest uppercase py-2 hover:text-maroon">Celebration</a>
       <a href="#schedule" class="mobile-nav-link block text-sm tracking-widest uppercase py-2 hover:text-maroon">Schedule</a>
       <a href="#venue" class="mobile-nav-link block text-sm tracking-widest uppercase py-2 hover:text-maroon">Venue &amp; Travel</a>
@@ -90,160 +90,158 @@
 
 
   <!-- ======================================================== -->
-  <!-- 2. SCROLL-PINNED STORY SLIDESHOW (APERTURE REVEAL)       -->
+  <!-- 2. FULLSCREEN STORY SLIDESHOW (OUR 4-YEAR JOURNEY)       -->
   <!-- ======================================================== -->
-  <div id="story-scroll-container">
-    <div id="story-sticky-stage">
+  <div id="story-slideshow-wrapper" class="relative w-full h-screen min-h-[600px] overflow-hidden bg-black select-none">
+    
+    <!-- Top Story Progress Bars (Instagram / Google Photos UI) -->
+    <div class="absolute top-20 sm:top-24 left-0 right-0 z-40 px-6 max-w-4xl mx-auto">
       
-      <!-- Top Story Progress Bars (Instagram / Apple Scrollytelling UI) -->
-      <div class="absolute top-20 sm:top-24 left-0 right-0 z-40 px-6 max-w-4xl mx-auto">
-        
-        <!-- Segmented 4-Year Progress Track (Click any bar to jump to that year!) -->
-        <div class="grid grid-cols-4 gap-2 mb-3">
-          <div class="story-progress-bar-bg" title="Jump to 2023: Chapter I">
-            <div id="story-bar-0" class="story-progress-fill"></div>
-          </div>
-          <div class="story-progress-bar-bg" title="Jump to 2024: Chapter II">
-            <div id="story-bar-1" class="story-progress-fill"></div>
-          </div>
-          <div class="story-progress-bar-bg" title="Jump to 2025: Chapter III">
-            <div id="story-bar-2" class="story-progress-fill"></div>
-          </div>
-          <div class="story-progress-bar-bg" title="Jump to 2026: Chapter IV">
-            <div id="story-bar-3" class="story-progress-fill"></div>
-          </div>
+      <!-- Segmented 4-Year Progress Track (Click any bar to jump to that year!) -->
+      <div class="grid grid-cols-4 gap-2 mb-3">
+        <div class="story-progress-bar-bg" title="Jump to 2023: Chapter I">
+          <div id="story-bar-0" class="story-progress-fill"></div>
         </div>
-
-        <!-- Story Top Bar Controls & Metadata -->
-        <div class="flex items-center justify-between text-white drop-shadow-md">
-          <div class="flex items-center space-x-3">
-            <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
-            <span class="text-xs uppercase tracking-[0.25em] font-semibold text-white/90">Our 4-Year Journey</span>
-          </div>
-
-          <div class="flex items-center space-x-2">
-            <!-- Autoplay Slideshow Button -->
-            <button id="story-autoplay-toggle" class="story-control-btn px-3.5 py-1 rounded-full text-[11px] font-semibold tracking-wider uppercase inline-flex items-center space-x-1.5" title="Toggle Autoplay Slideshow">
-              <span id="story-play-icon">▶ Play Slideshow</span>
-              <span id="story-pause-icon" class="hidden">❚❚ Pause</span>
-            </button>
-          </div>
+        <div class="story-progress-bar-bg" title="Jump to 2024: Chapter II">
+          <div id="story-bar-1" class="story-progress-fill"></div>
+        </div>
+        <div class="story-progress-bar-bg" title="Jump to 2025: Chapter III">
+          <div id="story-bar-2" class="story-progress-fill"></div>
+        </div>
+        <div class="story-progress-bar-bg" title="Jump to 2026: Chapter IV">
+          <div id="story-bar-3" class="story-progress-fill"></div>
         </div>
       </div>
 
-      <!-- Tap Navigation Areas (Click left/right like Instagram Stories) -->
-      <div id="story-tap-left" class="absolute inset-y-0 left-0 w-1/4 z-30 cursor-pointer" title="Previous Chapter"></div>
-      <div id="story-tap-right" class="absolute inset-y-0 right-0 w-1/4 z-30 cursor-pointer" title="Next Chapter"></div>
+      <!-- Story Top Bar Controls & Metadata -->
+      <div class="flex items-center justify-between text-white drop-shadow-md">
+        <div class="flex items-center space-x-3">
+          <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
+          <span class="text-xs uppercase tracking-[0.25em] font-semibold text-white/90">Our 4-Year Journey</span>
+        </div>
 
-      <!-- -------------------------------------------------------- -->
-      <!-- SLIDE 0: 2023 - THE BEGINNING                           -->
-      <!-- -------------------------------------------------------- -->
-      <div class="story-slide active">
-        <img 
-          src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=1920&q=85" 
-          alt="2023: The Beginning" 
-          class="story-bg-media"
-        />
-        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/30 pointer-events-none"></div>
-
-        <div class="story-content absolute bottom-12 sm:bottom-16 left-6 right-6 z-20 max-w-4xl mx-auto pointer-events-none">
-          <div class="inline-block px-3 py-1 bg-maroon text-white text-xs font-bold tracking-widest uppercase rounded-full mb-3 shadow">
-            2023 &bull; Chapter I
-          </div>
-          <h2 class="font-serif text-4xl sm:text-6xl text-white font-normal mb-3 drop-shadow-md">
-            The Spark &amp; First Coffee
-          </h2>
-          <p class="font-serif italic text-lg sm:text-2xl text-gray-200 font-light leading-relaxed max-w-2xl drop-shadow">
-            "A nervous first coffee in the city that turned into a four-hour conversation. The moment we both quietly realized this was the start of something rare."
-          </p>
-          <div class="mt-6 flex items-center space-x-2 text-gold text-xs tracking-widest uppercase scroll-wheel-indicator font-medium">
-            <span>↓ Scroll down for 2024</span>
-          </div>
+        <div class="flex items-center space-x-2">
+          <!-- Autoplay Slideshow Button -->
+          <button id="story-autoplay-toggle" class="story-control-btn px-3.5 py-1 rounded-full text-[11px] font-semibold tracking-wider uppercase inline-flex items-center space-x-1.5" title="Toggle Autoplay Slideshow">
+            <span id="story-play-icon">▶ Play Slideshow</span>
+            <span id="story-pause-icon" class="hidden">❚❚ Pause</span>
+          </button>
         </div>
       </div>
-
-      <!-- -------------------------------------------------------- -->
-      <!-- SLIDE 1: 2024 - SHARED ADVENTURES                       -->
-      <!-- -------------------------------------------------------- -->
-      <div class="story-slide">
-        <img 
-          src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1920&q=85" 
-          alt="2024: Adventures" 
-          class="story-bg-media"
-        />
-        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/30 pointer-events-none"></div>
-
-        <div class="story-content absolute bottom-12 sm:bottom-16 left-6 right-6 z-20 max-w-4xl mx-auto pointer-events-none">
-          <div class="inline-block px-3 py-1 bg-maroon text-white text-xs font-bold tracking-widest uppercase rounded-full mb-3 shadow">
-            2024 &bull; Chapter II
-          </div>
-          <h2 class="font-serif text-4xl sm:text-6xl text-white font-normal mb-3 drop-shadow-md">
-            Exploring Horizons Together
-          </h2>
-          <p class="font-serif italic text-lg sm:text-2xl text-gray-200 font-light leading-relaxed max-w-2xl drop-shadow">
-            "Coastal road trips, mountain trails, learning each other's favorite songs, and discovering that home isn't a place—it's wherever we are together."
-          </p>
-          <div class="mt-6 flex items-center space-x-2 text-gold text-xs tracking-widest uppercase scroll-wheel-indicator font-medium">
-            <span>↓ Scroll down for 2025</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- -------------------------------------------------------- -->
-      <!-- SLIDE 2: 2025 - THE PROPOSAL                            -->
-      <!-- -------------------------------------------------------- -->
-      <div class="story-slide">
-        <img 
-          src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=1920&q=85" 
-          alt="2025: The Proposal" 
-          class="story-bg-media"
-        />
-        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/30 pointer-events-none"></div>
-
-        <div class="story-content absolute bottom-12 sm:bottom-16 left-6 right-6 z-20 max-w-4xl mx-auto pointer-events-none">
-          <div class="inline-block px-3 py-1 bg-maroon text-white text-xs font-bold tracking-widest uppercase rounded-full mb-3 shadow">
-            2025 &bull; Chapter III
-          </div>
-          <h2 class="font-serif text-4xl sm:text-6xl text-white font-normal mb-3 drop-shadow-md">
-            The Unforgettable "Yes!"
-          </h2>
-          <p class="font-serif italic text-lg sm:text-2xl text-gray-200 font-light leading-relaxed max-w-2xl drop-shadow">
-            "Under a golden sunset, with joyful tears and trembling hands. The easiest question he ever asked, and the happiest answer she ever gave."
-          </p>
-          <div class="mt-6 flex items-center space-x-2 text-gold text-xs tracking-widest uppercase scroll-wheel-indicator font-medium">
-            <span>↓ Scroll down for 2026</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- -------------------------------------------------------- -->
-      <!-- SLIDE 3: 2026 - OUR WEDDING DAY                         -->
-      <!-- -------------------------------------------------------- -->
-      <div class="story-slide">
-        <img 
-          src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1920&q=85" 
-          alt="2026: Our Wedding Day" 
-          class="story-bg-media"
-        />
-        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/30 pointer-events-none"></div>
-
-        <div class="story-content absolute bottom-12 sm:bottom-16 left-6 right-6 z-20 max-w-4xl mx-auto pointer-events-none">
-          <div class="inline-block px-3 py-1 bg-gold text-charcoal text-xs font-bold tracking-widest uppercase rounded-full mb-3 shadow">
-            2026 &bull; Chapter IV
-          </div>
-          <h2 class="font-serif text-4xl sm:text-6xl text-white font-normal mb-3 drop-shadow-md">
-            The Vows of a Lifetime
-          </h2>
-          <p class="font-serif italic text-lg sm:text-2xl text-gray-200 font-light leading-relaxed max-w-2xl drop-shadow">
-            "Now, surrounded by the people who mean the world to us, we celebrate our union. Scroll down to enter our wedding celebration."
-          </p>
-          <div class="mt-6 flex items-center space-x-2 text-gold text-xs tracking-widest uppercase font-semibold scroll-wheel-indicator">
-            <span>↓ Scroll down to view celebration details</span>
-          </div>
-        </div>
-      </div>
-
     </div>
+
+    <!-- Tap Navigation Areas (Click left/right like Instagram Stories) -->
+    <div id="story-tap-left" class="absolute inset-y-0 left-0 w-1/4 z-30 cursor-pointer" title="Previous Chapter"></div>
+    <div id="story-tap-right" class="absolute inset-y-0 right-0 w-1/4 z-30 cursor-pointer" title="Next Chapter"></div>
+
+    <!-- -------------------------------------------------------- -->
+    <!-- SLIDE 0: 2023 - THE BEGINNING                           -->
+    <!-- -------------------------------------------------------- -->
+    <div class="story-slide active" data-slide-index="0">
+      <img 
+        src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=1920&q=85" 
+        alt="2023: The Beginning" 
+        class="story-bg-media"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/30 pointer-events-none"></div>
+
+      <div class="story-content absolute bottom-12 sm:bottom-16 left-6 right-6 z-20 max-w-4xl mx-auto pointer-events-none">
+        <div class="inline-block px-3 py-1 bg-maroon text-white text-xs font-bold tracking-widest uppercase rounded-full mb-3 shadow">
+          2023 &bull; Chapter I
+        </div>
+        <h2 class="font-serif text-3xl sm:text-5xl md:text-6xl text-white font-normal mb-3 drop-shadow-md">
+          The Spark &amp; First Coffee
+        </h2>
+        <p class="font-serif italic text-base sm:text-xl md:text-2xl text-gray-200 font-light leading-relaxed max-w-2xl drop-shadow">
+          "A nervous first coffee in the city that turned into a four-hour conversation. The moment we both quietly realized this was the start of something rare."
+        </p>
+        <div class="mt-5 flex items-center space-x-2 text-gold text-xs tracking-widest uppercase scroll-wheel-indicator font-medium">
+          <span>↓ Scroll down or tap right for 2024</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- -------------------------------------------------------- -->
+    <!-- SLIDE 1: 2024 - SHARED ADVENTURES                       -->
+    <!-- -------------------------------------------------------- -->
+    <div class="story-slide" data-slide-index="1">
+      <img 
+        src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1920&q=85" 
+        alt="2024: Adventures" 
+        class="story-bg-media"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/30 pointer-events-none"></div>
+
+      <div class="story-content absolute bottom-12 sm:bottom-16 left-6 right-6 z-20 max-w-4xl mx-auto pointer-events-none">
+        <div class="inline-block px-3 py-1 bg-maroon text-white text-xs font-bold tracking-widest uppercase rounded-full mb-3 shadow">
+          2024 &bull; Chapter II
+        </div>
+        <h2 class="font-serif text-3xl sm:text-5xl md:text-6xl text-white font-normal mb-3 drop-shadow-md">
+          Exploring Horizons Together
+        </h2>
+        <p class="font-serif italic text-base sm:text-xl md:text-2xl text-gray-200 font-light leading-relaxed max-w-2xl drop-shadow">
+          "Coastal road trips, mountain trails, learning each other's favorite songs, and discovering that home isn't a place—it's wherever we are together."
+        </p>
+        <div class="mt-5 flex items-center space-x-2 text-gold text-xs tracking-widest uppercase scroll-wheel-indicator font-medium">
+          <span>↓ Scroll down or tap right for 2025</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- -------------------------------------------------------- -->
+    <!-- SLIDE 2: 2025 - THE PROPOSAL                            -->
+    <!-- -------------------------------------------------------- -->
+    <div class="story-slide" data-slide-index="2">
+      <img 
+        src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=1920&q=85" 
+        alt="2025: The Proposal" 
+        class="story-bg-media"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/30 pointer-events-none"></div>
+
+      <div class="story-content absolute bottom-12 sm:bottom-16 left-6 right-6 z-20 max-w-4xl mx-auto pointer-events-none">
+        <div class="inline-block px-3 py-1 bg-maroon text-white text-xs font-bold tracking-widest uppercase rounded-full mb-3 shadow">
+          2025 &bull; Chapter III
+        </div>
+        <h2 class="font-serif text-3xl sm:text-5xl md:text-6xl text-white font-normal mb-3 drop-shadow-md">
+          The Unforgettable "Yes!"
+        </h2>
+        <p class="font-serif italic text-base sm:text-xl md:text-2xl text-gray-200 font-light leading-relaxed max-w-2xl drop-shadow">
+          "Under a golden sunset, with joyful tears and trembling hands. The easiest question he ever asked, and the happiest answer she ever gave."
+        </p>
+        <div class="mt-5 flex items-center space-x-2 text-gold text-xs tracking-widest uppercase scroll-wheel-indicator font-medium">
+          <span>↓ Scroll down or tap right for 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- -------------------------------------------------------- -->
+    <!-- SLIDE 3: 2026 - OUR WEDDING DAY                         -->
+    <!-- -------------------------------------------------------- -->
+    <div class="story-slide" data-slide-index="3">
+      <img 
+        src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1920&q=85" 
+        alt="2026: Our Wedding Day" 
+        class="story-bg-media"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/30 pointer-events-none"></div>
+
+      <div class="story-content absolute bottom-12 sm:bottom-16 left-6 right-6 z-20 max-w-4xl mx-auto pointer-events-none">
+        <div class="inline-block px-3 py-1 bg-gold text-charcoal text-xs font-bold tracking-widest uppercase rounded-full mb-3 shadow">
+          2026 &bull; Chapter IV
+        </div>
+        <h2 class="font-serif text-3xl sm:text-5xl md:text-6xl text-white font-normal mb-3 drop-shadow-md">
+          The Vows of a Lifetime
+        </h2>
+        <p class="font-serif italic text-base sm:text-xl md:text-2xl text-gray-200 font-light leading-relaxed max-w-2xl drop-shadow">
+          "Now, surrounded by the people who mean the world to us, we celebrate our union. Scroll down to enter our wedding celebration."
+        </p>
+        <div class="mt-5 flex items-center space-x-2 text-gold text-xs tracking-widest uppercase font-semibold scroll-wheel-indicator">
+          <span>↓ Scroll down to view celebration details</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 
 

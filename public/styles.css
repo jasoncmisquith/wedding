@@ -78,17 +78,10 @@ html {
 }
 
 /* -------------------------------------------------------------
- * FULLSCREEN SCROLL-PINNED STORY SLIDESHOW STAGE
+ * FULLSCREEN STORY SLIDESHOW STAGE
  * ------------------------------------------------------------- */
-#story-scroll-container {
+#story-slideshow-wrapper {
   position: relative;
-  width: 100%;
-  height: 320vh; /* Smooth, responsive scroll runway */
-}
-
-#story-sticky-stage {
-  position: sticky;
-  top: 0;
   width: 100%;
   height: 100vh;
   min-height: 600px;
@@ -101,20 +94,15 @@ html {
   inset: 0;
   opacity: 0;
   visibility: hidden;
-  clip-path: circle(0% at 50% 50%);
-  transform: scale(1.08);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
-              clip-path 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), 
-              visibility 0.8s ease;
-  will-change: opacity, transform, clip-path;
+  pointer-events: none;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s ease;
+  z-index: 1;
 }
 
 .story-slide.active {
   opacity: 1;
   visibility: visible;
-  clip-path: circle(140% at 50% 50%);
-  transform: scale(1);
+  pointer-events: auto;
   z-index: 10;
 }
 
@@ -124,10 +112,12 @@ html {
   height: 100%;
   object-fit: cover;
   transform-origin: center center;
+  transform: scale(1.04);
   transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .story-slide.active .story-bg-media {
+  transform: scale(1.0);
   animation: kenBurnsDrift 16s ease-out infinite alternate;
 }
 
@@ -136,22 +126,23 @@ html {
     transform: scale(1.0) translate(0, 0);
   }
   100% {
-    transform: scale(1.05) translate(-1.2%, -0.8%);
+    transform: scale(1.05) translate(-1%, -0.8%);
   }
 }
 
-/* Story Typography & Content Smooth Slide-Up Transition */
-.story-content {
+/* Story Typography & Content: STRICTLY PREVENTS ANY TEXT OVERLAP */
+.story-slide .story-content {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(16px);
+  display: none; /* Inactive slide text is completely excluded from rendering */
+  transition: opacity 0.35s ease, transform 0.35s ease;
 }
 
 .story-slide.active .story-content {
+  display: block;
   opacity: 1;
   transform: translateY(0);
-  transition-delay: 0.15s;
+  transition: opacity 0.5s ease 0.15s, transform 0.5s ease 0.15s;
 }
 
 /* Story Progress Bars (Instagram / Google Photos Style) */
