@@ -3,9 +3,7 @@
 // -------------------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', () => {
-  initHeroParallax();
-  initJourneySwitcher();
-  initHorizontalScroller();
+  initStorySlideshow();
   initCountdown();
   initCalendarDownloads();
   initFaqAccordion();
@@ -13,112 +11,148 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // =============================================================
-// 1. HERO PARALLAX & CINEMATIC APERTURE MOTION
+// 1. FULLSCREEN SCROLL-DRIVEN STORY / SLIDESHOW CONTROLLER
 // =============================================================
-function initHeroParallax() {
-  const heroCard = document.querySelector('.hero-aperture-card');
-  const heroImg = document.querySelector('.hero-portrait-img');
-  const monogramBadge = document.getElementById('hero-monogram-badge');
+function initStorySlideshow() {
+  const wrapper = document.getElementById('story-slideshow-wrapper');
+  const slides = document.querySelectorAll('.story-slide');
+  const progressFills = document.querySelectorAll('.story-progress-fill');
+  const playBtn = document.getElementById('story-autoplay-toggle');
+  const playIcon = document.getElementById('story-play-icon');
+  const pauseIcon = document.getElementById('story-pause-icon');
+  const totalSlides = slides.length;
 
-  if (!heroCard || !heroImg) return;
+  if (!wrapper || totalSlides === 0) return;
 
+  let currentSlideIndex = 0;
+  let autoplayTimer = null;
+  let isAutoplaying = false;
+
+  function setSlide(index, progressInsideSlide = 0) {
+    index = Math.max(0, Math.min(totalSlides - 1, index));
+    currentSlideIndex = index;
+
+    slides.forEach((slide, i) => {
+      if (i === index) {
+        slide.classList.add('active');
+      } else {
+        slide.classList.remove('active');
+      }
+    });
+
+    progressFills.forEach((fill, i) => {
+      if (i < index) {
+        fill.style.width = '100%';
+        fill.classList.remove('current-active');
+        fill.classList.add('completed');
+      } else if (i === index) {
+        fill.style.width = `${Math.min(100, Math.max(5, progressInsideSlide * 100))}%`;
+        fill.classList.add('current-active');
+        fill.classList.remove('completed');
+      } else {
+        fill.style.width = '0%';
+        fill.classList.remove('current-active', 'completed');
+      }
+    });
+  }
+
+  // Scroll Scrubber (Syncs thumb / mouse scroll with slides and progress bars)
   function onScroll() {
-    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-    if (scrollY > 700) return; // Stop calculating after hero is off screen
+    if (isAutoplaying) return; // Allow autoplay without scroll interference
 
-    const progress = Math.min(1, scrollY / 500);
+    const rect = wrapper.getBoundingClientRect();
+    const scrollDistance = -rect.top;
+    const maxScroll = rect.height - window.innerHeight;
 
-    // Subtle scale expansion on portrait as you scroll down
-    heroImg.style.transform = `scale(${1 + (progress * 0.08)})`;
+    if (maxScroll <= 0) return;
 
-    // Subtle fade and elevate for monogram badge
-    if (monogramBadge) {
-      monogramBadge.style.opacity = `${1 - (progress * 1.5)}`;
-      monogramBadge.style.transform = `translateY(${progress * -20}px)`;
-    }
+    const progress = Math.max(0, Math.min(1, scrollDistance / maxScroll));
+
+    // Calculate which slide should be active and progress within it
+    const floatIndex = progress * (totalSlides - 1);
+    const targetIndex = Math.floor(floatIndex);
+    const progressInSlide = floatIndex - targetIndex;
+
+    setSlide(targetIndex, progressInSlide);
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
-}
+  onScroll(); // Initialize on load
 
-// =============================================================
-// 2. 4-YEAR JOURNEY VIEW SWITCHER (HORIZONTAL vs EDITORIAL)
-// =============================================================
-function initJourneySwitcher() {
-  const btnHorizontal = document.getElementById('toggle-horizontal-btn');
-  const btnEditorial = document.getElementById('toggle-editorial-btn');
-  const viewHorizontal = document.getElementById('journey-horizontal-view');
-  const viewEditorial = document.getElementById('journey-editorial-view');
-
-  if (!btnHorizontal || !btnEditorial || !viewHorizontal || !viewEditorial) return;
-
-  btnHorizontal.addEventListener('click', () => {
-    btnHorizontal.classList.add('active');
-    btnEditorial.classList.remove('active');
-    viewHorizontal.classList.remove('hidden');
-    viewEditorial.classList.add('hidden');
+  // Click on Progress Bars to jump to a specific year
+  document.querySelectorAll('.story-progress-bar-bg').forEach((bar, index) => {
+    bar.addEventListener('click', (e) => {
+      e.stopPropagation();
+      jumpToSlide(index);
+    });
   });
 
-  btnEditorial.addEventListener('click', () => {
-    btnEditorial.classList.add('active');
-    btnHorizontal.classList.remove('active');
-    viewEditorial.classList.remove('hidden');
-    viewHorizontal.classList.add('hidden');
-  });
-}
+  // Tap Left/Right Screen to navigate like Instagram Stories
+  const tapLeftArea = document.getElementById('story-tap-left');
+  const tapRightArea = document.getElementById('story-tap-right');
 
-// =============================================================
-// 3. HORIZONTAL SCROLLER (MOUSE WHEEL, SWIPE & PROGRESS)
-// =============================================================
-function initHorizontalScroller() {
-  const container = document.getElementById('journey-cards-scroll');
-  const prevBtn = document.getElementById('journey-prev-btn');
-  const nextBtn = document.getElementById('journey-next-btn');
-  const progressBar = document.getElementById('journey-progress-thumb');
-
-  if (!container) return;
-
-  function updateProgress() {
-    const maxScroll = container.scrollWidth - container.clientWidth;
-    if (maxScroll <= 0) return;
-    const progress = container.scrollLeft / maxScroll;
-    if (progressBar) {
-      progressBar.style.transform = `translateX(${progress * 300}%)`;
-    }
-  }
-
-  container.addEventListener('scroll', updateProgress, { passive: true });
-
-  // Mouse wheel horizontal translation: lets desktop mouse users scroll horizontally!
-  container.addEventListener('wheel', (e) => {
-    // Only capture if deltaY exists and scrolling horizontally inside container bounds
-    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-      const atStart = container.scrollLeft <= 0;
-      const atEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 1;
-
-      // Allow vertical page scroll to continue if user reached the ends
-      if ((e.deltaY > 0 && !atEnd) || (e.deltaY < 0 && !atStart)) {
-        e.preventDefault();
-        container.scrollLeft += e.deltaY * 1.5;
+  if (tapLeftArea) {
+    tapLeftArea.addEventListener('click', () => {
+      if (currentSlideIndex > 0) {
+        jumpToSlide(currentSlideIndex - 1);
       }
-    }
-  }, { passive: false });
-
-  if (prevBtn) {
-    prevBtn.addEventListener('click', () => {
-      container.scrollBy({ left: -360, behavior: 'smooth' });
     });
   }
 
-  if (nextBtn) {
-    nextBtn.addEventListener('click', () => {
-      container.scrollBy({ left: 360, behavior: 'smooth' });
+  if (tapRightArea) {
+    tapRightArea.addEventListener('click', () => {
+      if (currentSlideIndex < totalSlides - 1) {
+        jumpToSlide(currentSlideIndex + 1);
+      } else {
+        // Jump down to celebration details
+        const detailsSection = document.getElementById('celebration');
+        if (detailsSection) detailsSection.scrollIntoView({ behavior: 'smooth' });
+      }
     });
+  }
+
+  function jumpToSlide(index) {
+    const rect = wrapper.getBoundingClientRect();
+    const maxScroll = wrapper.clientHeight - window.innerHeight;
+    const targetScrollY = window.pageYOffset + rect.top + (maxScroll * (index / (totalSlides - 1)));
+    window.scrollTo({ top: targetScrollY, behavior: 'smooth' });
+    setSlide(index, 0);
+  }
+
+  // Autoplay Slideshow Toggle
+  if (playBtn) {
+    playBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isAutoplaying) {
+        stopAutoplay();
+      } else {
+        startAutoplay();
+      }
+    });
+  }
+
+  function startAutoplay() {
+    isAutoplaying = true;
+    if (playIcon) playIcon.classList.add('hidden');
+    if (pauseIcon) pauseIcon.classList.remove('hidden');
+
+    autoplayTimer = setInterval(() => {
+      let nextIndex = currentSlideIndex + 1;
+      if (nextIndex >= totalSlides) nextIndex = 0;
+      jumpToSlide(nextIndex);
+    }, 4500);
+  }
+
+  function stopAutoplay() {
+    isAutoplaying = false;
+    clearInterval(autoplayTimer);
+    if (playIcon) playIcon.classList.remove('hidden');
+    if (pauseIcon) pauseIcon.classList.add('hidden');
   }
 }
 
 // =============================================================
-// 4. LIVE COUNTDOWN TIMER
+// 2. LIVE COUNTDOWN TIMER
 // =============================================================
 function initCountdown() {
   const targetDate = new Date('2026-12-12T15:00:00').getTime();
@@ -158,7 +192,7 @@ function initCountdown() {
 }
 
 // =============================================================
-// 5. CALENDAR EXPORT (GOOGLE & APPLE .ICS)
+// 3. CALENDAR EXPORT (GOOGLE & APPLE .ICS)
 // =============================================================
 function initCalendarDownloads() {
   const downloadIcsBtn = document.getElementById('download-ics-btn');
@@ -213,7 +247,7 @@ function initCalendarDownloads() {
 }
 
 // =============================================================
-// 6. FAQ ACCORDION
+// 4. FAQ ACCORDION
 // =============================================================
 function initFaqAccordion() {
   const faqButtons = document.querySelectorAll('.faq-toggle');
@@ -248,7 +282,7 @@ function initFaqAccordion() {
 }
 
 // =============================================================
-// 7. MOBILE MENU
+// 5. MOBILE MENU
 // =============================================================
 function initMobileMenu() {
   const menuToggle = document.getElementById('mobile-menu-btn');
