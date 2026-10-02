@@ -17,20 +17,14 @@ kanban-plugin: basic
 
 ## 🎯 Next Up (MVP Tasks)
 
-- [ ] **Visual Style Selection**: Pick aesthetic (Classic Editorial, Earthy Botanical, or Royal Celebration)
-- [ ] **Couple & Event Details**: Finalize names, wedding date, and main timeline events
-- [ ] **Local Docker Setup**: Configure \`Dockerfile\` & \`docker-compose.yml\` for local testing on \`localhost:3000\`
-- [ ] **Hero Section**: Responsive couple photo banner, typography, and live countdown clock
-- [ ] **Event Timeline**: Schedule cards (Date, Time, Dress Code, Venue details)
-- [ ] **Venue & Map Links**: Google Maps & Apple Maps navigation action buttons
-- [ ] **Save the Date / Calendar Sync**: One-click Google Calendar & Apple \`.ics\` file downloads
-- [ ] **Important Details & FAQs**: Attire guidance, FAQs, and coordinator contacts
-- [ ] **Cloud Hosting Setup**: Connect GitHub repo to Cloudflare Pages or Vercel for free HTTPS hosting
+- [ ] **Connect GitHub Remote**: Link local repo to your GitHub account
+- [ ] **Deploy to Cloudflare Pages or Vercel**: Free automated deployment on git push
+- [ ] **Custom Domain Binding**: Connect custom domain when ready (post-MVP)
 
 
 ## ⏳ In Progress
 
-- [ ] Project scoping and workspace organization
+- [ ] **Review & Personalize Layout**: Preview locally on \`http://localhost:3000\`, update names, dates, and couple portraits
 
 
 ## ✅ Done
@@ -38,6 +32,9 @@ kanban-plugin: basic
 - [x] Analyze project pitfalls (Google Photos limits, RSVP privacy, domain costs)
 - [x] Scope down MVP to core layout + hosting infrastructure
 - [x] Install Obsidian app for task & backlog tracking
+- [x] Align on aesthetic style: Modern Monochrome & Velvet Maroon
+- [x] Initialize Git repository & local Docker Compose environment
+- [x] Build mobile-first responsive layout (Hero, Story, Timeline, Venue, Calendar Sync, FAQs)
 
 
 %% kanban:settings
