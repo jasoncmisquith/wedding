@@ -15,7 +15,7 @@
   --color-gold-light: #F4EFE6;
   --color-border: #E8E5DF;
   --font-serif: 'Cormorant Garamond', Georgia, serif;
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
 html {
@@ -23,6 +23,17 @@ html {
   background-color: var(--color-bg);
   color: var(--color-text-main);
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .font-serif {
@@ -33,15 +44,24 @@ html {
   font-family: var(--font-sans);
 }
 
+/* Touch & Tap Optimization across Mobile Safari and Android Chrome */
+button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .story-progress-bar-bg {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* Velvet Maroon Buttons & Badges */
 .btn-maroon {
   background-color: var(--color-maroon);
   color: #FFFFFF;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .btn-maroon:hover {
   background-color: var(--color-maroon-hover);
+  -webkit-transform: translateY(-1px);
   transform: translateY(-1px);
   box-shadow: 0 8px 24px -4px rgba(107, 23, 36, 0.35);
 }
@@ -50,6 +70,8 @@ html {
   border: 1px solid var(--color-text-main);
   color: var(--color-text-main);
   transition: all 0.25s ease;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .btn-outline-dark:hover {
@@ -69,24 +91,30 @@ html {
   color: var(--color-maroon);
 }
 
-/* Glassmorphism Header */
+/* Glassmorphism Header with iOS Safe Area support */
 .glass-header {
   background: rgba(250, 249, 246, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(232, 229, 223, 0.8);
+  padding-top: env(safe-area-inset-top, 0px);
 }
 
 /* -------------------------------------------------------------
  * FULLSCREEN STORY SLIDESHOW STAGE
+ * Dynamic Viewport Height (100dvh) with fallback for older browsers
  * ------------------------------------------------------------- */
 #story-slideshow-wrapper {
   position: relative;
   width: 100%;
   height: 100vh;
+  height: 100dvh;
   min-height: 600px;
+  min-height: 100dvh;
   overflow: hidden;
   background-color: #0A0A0A;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .story-slide {
@@ -97,6 +125,8 @@ html {
   pointer-events: none;
   transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s ease;
   z-index: 1;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .story-slide.active {
@@ -111,14 +141,29 @@ html {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  -webkit-transform-origin: center center;
   transform-origin: center center;
+  -webkit-transform: scale(1.04);
   transform: scale(1.04);
-  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), -webkit-transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .story-slide.active .story-bg-media {
+  -webkit-transform: scale(1.0);
   transform: scale(1.0);
   animation: kenBurnsDrift 16s ease-out infinite alternate;
+  -webkit-animation: kenBurnsDrift 16s ease-out infinite alternate;
+}
+
+@-webkit-keyframes kenBurnsDrift {
+  0% {
+    -webkit-transform: scale(1.0) translate(0, 0);
+  }
+  100% {
+    -webkit-transform: scale(1.05) translate(-1%, -0.8%);
+  }
 }
 
 @keyframes kenBurnsDrift {
@@ -133,16 +178,18 @@ html {
 /* Story Typography & Content: STRICTLY PREVENTS ANY TEXT OVERLAP */
 .story-slide .story-content {
   opacity: 0;
+  -webkit-transform: translateY(16px);
   transform: translateY(16px);
-  display: none; /* Inactive slide text is completely excluded from rendering */
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  display: none;
+  transition: opacity 0.35s ease, transform 0.35s ease, -webkit-transform 0.35s ease;
 }
 
 .story-slide.active .story-content {
   display: block;
   opacity: 1;
+  -webkit-transform: translateY(0);
   transform: translateY(0);
-  transition: opacity 0.5s ease 0.15s, transform 0.5s ease 0.15s;
+  transition: opacity 0.5s ease 0.15s, transform 0.5s ease 0.15s, -webkit-transform 0.5s ease 0.15s;
 }
 
 /* Story Progress Bars (Instagram / Google Photos Style) */
@@ -193,6 +240,16 @@ html {
 /* Subtle Floating Scroll Cue */
 .scroll-wheel-indicator {
   animation: floatBounce 2.2s infinite ease-in-out;
+  -webkit-animation: floatBounce 2.2s infinite ease-in-out;
+}
+
+@-webkit-keyframes floatBounce {
+  0%, 100% {
+    -webkit-transform: translateY(0);
+  }
+  50% {
+    -webkit-transform: translateY(6px);
+  }
 }
 
 @keyframes floatBounce {
@@ -236,9 +293,28 @@ html {
   box-shadow: 0 4px 14px -2px rgba(107, 23, 36, 0.45);
 }
 
-/* Concept A: Archival Museum Frame */
+/* Concept A: Sticky Archival Museum Frame */
 .archival-frame {
   box-shadow: 0 20px 45px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(197, 168, 128, 0.35);
+}
+
+/* Cross-browser Sticky Viewport */
+.sticky-viewport,
+.lg\:sticky {
+  position: -webkit-sticky;
+  position: sticky;
+}
+
+#sticky-photo {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              filter 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+              -webkit-filter 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              -webkit-transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .narrative-milestone {
@@ -251,17 +327,47 @@ html {
   box-shadow: 0 10px 25px -5px rgba(107, 23, 36, 0.08);
 }
 
-/* Concept C: 3D Memory Deck */
+/* Concept C: 3D Memory Deck (Full WebKit & Gecko Compatibility) */
 .perspective-1000 {
   perspective: 1000px;
+  -webkit-perspective: 1000px;
 }
+
 .deck-card {
+  -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   will-change: transform, opacity;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
+
 .deck-card.flipped {
+  -webkit-transform: translateY(-90px) rotateY(180deg) scale(0.85) !important;
   transform: translateY(-90px) rotateY(180deg) scale(0.85) !important;
   opacity: 0 !important;
   pointer-events: none !important;
+}
+
+/* Accessibility: Respect Reduced Motion Preference */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    -webkit-animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .story-slide.active .story-bg-media {
+    animation: none !important;
+    -webkit-animation: none !important;
+  }
+  .scroll-wheel-indicator {
+    animation: none !important;
+    -webkit-animation: none !important;
+  }
 }
 

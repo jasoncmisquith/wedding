@@ -206,40 +206,68 @@ function initStoryConcepts() {
   const milestones = document.querySelectorAll('.narrative-milestone');
 
   if (stickyPhoto && milestones.length > 0) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const target = entry.target;
-          const newImg = target.getAttribute('data-img');
-          const newYear = target.getAttribute('data-year');
-          const newEffect = target.getAttribute('data-effect');
+    function updateActiveMilestone(target) {
+      const newImg = target.getAttribute('data-img');
+      const newYear = target.getAttribute('data-year');
+      const newEffect = target.getAttribute('data-effect');
 
-          // Highlight active milestone card
-          milestones.forEach(m => m.classList.remove('active'));
-          target.classList.add('active');
+      // Highlight active milestone card
+      milestones.forEach(m => m.classList.remove('active'));
+      target.classList.add('active');
 
-          // Smooth photo morph with focus/scale
-          if (stickyPhoto.src !== newImg) {
-            stickyPhoto.style.opacity = '0.35';
-            stickyPhoto.style.filter = 'blur(10px) scale(0.97)';
-            
-            setTimeout(() => {
-              stickyPhoto.src = newImg;
-              if (stickyYearBadge) stickyYearBadge.innerHTML = newYear;
-              if (stickyEffectCue) stickyEffectCue.innerHTML = newEffect;
+      // Smooth cross-browser photo morph (Valid CSS: separate filter and transform)
+      if (stickyPhoto.src !== newImg) {
+        stickyPhoto.style.opacity = '0.35';
+        stickyPhoto.style.filter = 'blur(10px)';
+        stickyPhoto.style.webkitFilter = 'blur(10px)';
+        stickyPhoto.style.transform = 'scale(0.97)';
+        stickyPhoto.style.webkitTransform = 'scale(0.97)';
+        
+        setTimeout(() => {
+          stickyPhoto.src = newImg;
+          if (stickyYearBadge) stickyYearBadge.innerHTML = newYear;
+          if (stickyEffectCue) stickyEffectCue.innerHTML = newEffect;
 
-              stickyPhoto.style.opacity = '1';
-              stickyPhoto.style.filter = 'blur(0px) scale(1.0)';
-            }, 300);
+          stickyPhoto.style.opacity = '1';
+          stickyPhoto.style.filter = 'blur(0px)';
+          stickyPhoto.style.webkitFilter = 'blur(0px)';
+          stickyPhoto.style.transform = 'scale(1.0)';
+          stickyPhoto.style.webkitTransform = 'scale(1.0)';
+        }, 280);
+      }
+    }
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            updateActiveMilestone(entry.target);
           }
-        }
+        });
+      }, {
+        root: null,
+        rootMargin: '-10% 0px -20% 0px', // Robust focal band across mobile & desktop viewports
+        threshold: [0.15, 0.4]
       });
-    }, {
-      root: null,
-      threshold: 0.6 // Triggers when milestone is centered in viewport
-    });
 
-    milestones.forEach(m => observer.observe(m));
+      milestones.forEach(m => observer.observe(m));
+    } else {
+      // Fallback for older browsers without IntersectionObserver
+      let scrollTimeout;
+      window.addEventListener('scroll', () => {
+        if (scrollTimeout) return;
+        scrollTimeout = setTimeout(() => {
+          scrollTimeout = null;
+          const viewportMid = window.innerHeight * 0.45;
+          milestones.forEach(m => {
+            const rect = m.getBoundingClientRect();
+            if (rect.top <= viewportMid && rect.bottom >= viewportMid) {
+              updateActiveMilestone(m);
+            }
+          });
+        }, 100);
+      }, { passive: true });
+    }
   }
 
   // -----------------------------------------------------------
@@ -324,7 +352,8 @@ function initStoryConcepts() {
 // =============================================================
 function initCountdown() {
   // Wedding Nuptials: Saturday, November 28, 2026 at 3:30 PM IST (UTC+05:30)
-  const targetDate = new Date('2026-11-28T15:30:00+05:30').getTime();
+  // Date.UTC returns exact epoch milliseconds (10:00:00 UTC), 100% immune to Safari/Chrome/Firefox timezone string discrepancies
+  const targetDate = Date.UTC(2026, 10, 28, 10, 0, 0);
 
   const daysEl = document.getElementById('cd-days');
   const hoursEl = document.getElementById('cd-hours');
@@ -398,12 +427,21 @@ function initCalendarDownloads() {
       ].join("\r\n");
 
       const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-      const link = document.createElement('a');
-      link.href = window.URL.createObjectURL(blob);
-      link.setAttribute('download', 'roopa-and-jason-wedding.ics');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveOrOpenBlob(blob, 'roopa-and-jason-wedding.ics');
+      } else {
+        const link = document.createElement('a');
+        const objectUrl = window.URL.createObjectURL(blob);
+        link.href = objectUrl;
+        link.setAttribute('download', 'roopa-and-jason-wedding.ics');
+        link.setAttribute('target', '_blank');
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => {
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(objectUrl);
+        }, 200);
+      }
     });
   }
 
