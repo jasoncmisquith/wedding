@@ -43,7 +43,7 @@ html {
 .btn-maroon:hover {
   background-color: var(--color-maroon-hover);
   transform: translateY(-1px);
-  box-shadow: 0 8px 20px -4px rgba(107, 23, 36, 0.3);
+  box-shadow: 0 8px 24px -4px rgba(107, 23, 36, 0.35);
 }
 
 .btn-outline-dark {
@@ -70,27 +70,116 @@ html {
   color: var(--color-maroon);
 }
 
-/* Subtle image frames */
-.editorial-frame {
-  position: relative;
-  overflow: hidden;
-  background-color: #ECE9E2;
-}
-
-.editorial-frame::after {
-  content: '';
-  position: absolute;
-  inset: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  pointer-events: none;
-}
-
 /* Glassmorphism Header */
 .glass-header {
-  background: rgba(250, 249, 246, 0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(232, 229, 223, 0.7);
+  background: rgba(250, 249, 246, 0.90);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(232, 229, 223, 0.75);
+}
+
+/* -------------------------------------------------------------
+ * 1. APERTURE REVEAL HERO STYLES
+ * ------------------------------------------------------------- */
+#aperture-hero-wrapper {
+  position: relative;
+  height: 200vh; /* Scroll runway for scrub */
+}
+
+#aperture-sticky-box {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: var(--color-bg);
+}
+
+#aperture-frame {
+  position: relative;
+  overflow: hidden;
+  will-change: width, height, border-radius, transform;
+  transition: box-shadow 0.3s ease;
+  box-shadow: 0 25px 60px -15px rgba(20, 20, 20, 0.2);
+}
+
+#aperture-monogram-overlay {
+  transition: opacity 0.3s ease;
+  background: radial-gradient(circle at center, rgba(250, 249, 246, 0.95) 0%, rgba(250, 249, 246, 0.8) 100%);
+}
+
+#hero-content-reveal {
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* -------------------------------------------------------------
+ * 2. 4-YEAR JOURNEY (HORIZONTAL & EDITORIAL STYLES)
+ * ------------------------------------------------------------- */
+/* Mode Switcher Pill */
+.mode-toggle-btn {
+  transition: all 0.25s ease;
+}
+.mode-toggle-btn.active {
+  background-color: var(--color-maroon);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(107, 23, 36, 0.25);
+}
+
+/* Concept A: Horizontal Scroller */
+.journey-horizontal-container {
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+.journey-horizontal-container::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.journey-card {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+}
+.journey-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px -10px rgba(20, 20, 20, 0.12);
+}
+
+/* Concept B: Editorial Parallax Yearbook */
+.editorial-year-stamp {
+  font-family: var(--font-serif);
+  line-height: 0.85;
+  color: var(--color-maroon);
+  user-select: none;
+}
+
+.editorial-card-frame {
+  position: relative;
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.06);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.editorial-card-frame:hover {
+  transform: translateY(-4px);
+}
+
+/* Scroll progress track */
+.progress-track {
+  background-color: #E5E0D8;
+  height: 3px;
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+.progress-thumb {
+  background-color: var(--color-maroon);
+  height: 100%;
+  width: 25%;
+  border-radius: 2px;
+  transition: transform 0.2s ease-out;
 }
 
 /* Custom scrollbar */
