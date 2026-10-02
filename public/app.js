@@ -193,13 +193,14 @@ function initStickyStoryGallery() {
     const newImg = target.getAttribute('data-img');
     const newYear = target.getAttribute('data-year');
     const newEffect = target.getAttribute('data-effect');
+    const newPos = target.getAttribute('data-pos') || 'center center';
 
     // Highlight active milestone card
     milestones.forEach(m => m.classList.remove('active'));
     target.classList.add('active');
 
     // Smooth cross-browser photo morph (Valid CSS: separate filter and transform)
-    if (stickyPhoto.src !== newImg) {
+    if (!stickyPhoto.src.endsWith(newImg)) {
       stickyPhoto.style.opacity = '0.35';
       stickyPhoto.style.filter = 'blur(10px)';
       stickyPhoto.style.webkitFilter = 'blur(10px)';
@@ -208,6 +209,7 @@ function initStickyStoryGallery() {
       
       setTimeout(() => {
         stickyPhoto.src = newImg;
+        stickyPhoto.style.objectPosition = newPos;
         if (stickyYearBadge) stickyYearBadge.innerHTML = newYear;
         if (stickyEffectCue) stickyEffectCue.innerHTML = newEffect;
 
