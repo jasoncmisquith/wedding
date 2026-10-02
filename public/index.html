@@ -90,84 +90,75 @@
 
 
   <!-- ======================================================== -->
-  <!-- 2. APERTURE REVEAL HERO (SCROLL-SCRUBBED)                -->
+  <!-- 2. LUXURY EDITORIAL HERO                                 -->
   <!-- ======================================================== -->
-  <div id="aperture-hero-wrapper">
-    <div id="aperture-sticky-box">
-      <!-- The Expanding Aperture Frame -->
-      <div id="aperture-frame" class="w-[340px] h-[380px] rounded-[36px] border border-gray-200/90 relative">
-        
-        <!-- High-res Hero Couple Image (Zooms slightly on scroll) -->
-        <img 
-          id="aperture-hero-img"
-          src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1800&q=85" 
-          alt="Jacob and Aisha" 
-          class="absolute inset-0 w-full h-full object-cover filter contrast-[1.02] brightness-95 scale-[1.15] transition-transform duration-100 ease-out"
-        />
-
-        <!-- Cinematic Gradient Overlays -->
-        <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-black/30 pointer-events-none"></div>
-
-        <!-- Monogram Seal Overlay (Fades out smoothly as user scrolls) -->
-        <div id="aperture-monogram-overlay" class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center z-10">
-          <div class="w-16 h-16 rounded-full border border-maroon/30 flex items-center justify-center mb-4 bg-white/80 backdrop-blur-sm">
-            <span class="font-serif text-3xl font-semibold text-maroon tracking-widest">J&amp;A</span>
-          </div>
-          <span class="text-[11px] uppercase tracking-[0.35em] text-gray-700 font-semibold mb-2">The Wedding Celebration</span>
-          <p class="font-serif italic text-lg text-gray-600">Jacob &amp; Aisha</p>
-          <div id="aperture-scroll-prompt" class="mt-8 flex flex-col items-center animate-bounce text-maroon">
-            <span class="text-[10px] uppercase tracking-[0.25em] font-semibold">Scroll to enter</span>
-            <svg class="w-4 h-4 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-            </svg>
-          </div>
-        </div>
-
-        <!-- Full Hero Content (Fades in dynamically as frame expands) -->
-        <div id="hero-content-reveal" class="absolute inset-0 flex flex-col justify-end p-8 sm:p-14 text-white z-20 opacity-0 translate-y-8 pointer-events-none">
-          <div class="max-w-4xl mx-auto w-full text-center">
-            <div class="inline-flex items-center justify-center space-x-3 mb-3">
-              <span class="w-6 h-[1px] bg-gold"></span>
-              <span class="text-xs uppercase tracking-[0.3em] text-gold font-semibold">Together with our families</span>
-              <span class="w-6 h-[1px] bg-gold"></span>
-            </div>
-
-            <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl tracking-tight text-white font-normal leading-tight mb-2 drop-shadow-md">
-              Jacob <span class="font-light italic text-gold">&amp;</span> Aisha
-            </h1>
-
-            <p class="text-xs sm:text-sm tracking-[0.25em] uppercase text-gray-200 font-light mb-8 max-w-lg mx-auto">
-              Saturday, December 12, 2026 &bull; San Francisco, CA
-            </p>
-
-            <!-- Embedded Compact Countdown Clock inside Hero -->
-            <div class="inline-flex bg-black/40 backdrop-blur-md border border-white/20 rounded-2xl px-6 py-3 space-x-4 sm:space-x-8 text-center pointer-events-auto">
-              <div>
-                <span id="cd-days" class="font-serif text-2xl sm:text-3xl text-white font-semibold">00</span>
-                <span class="block text-[9px] uppercase tracking-widest text-gray-300">Days</span>
-              </div>
-              <div class="w-[1px] bg-white/20"></div>
-              <div>
-                <span id="cd-hours" class="font-serif text-2xl sm:text-3xl text-white font-semibold">00</span>
-                <span class="block text-[9px] uppercase tracking-widest text-gray-300">Hours</span>
-              </div>
-              <div class="w-[1px] bg-white/20"></div>
-              <div>
-                <span id="cd-minutes" class="font-serif text-2xl sm:text-3xl text-white font-semibold">00</span>
-                <span class="block text-[9px] uppercase tracking-widest text-gray-300">Mins</span>
-              </div>
-              <div class="w-[1px] bg-white/20"></div>
-              <div>
-                <span id="cd-seconds" class="font-serif text-2xl sm:text-3xl text-gold font-semibold">00</span>
-                <span class="block text-[9px] uppercase tracking-widest text-gray-300">Secs</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
+  <header class="relative pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden">
+    <div class="max-w-5xl mx-auto px-6 text-center">
+      
+      <!-- Monogram Tag -->
+      <div class="inline-flex items-center justify-center space-x-3 mb-4">
+        <span class="w-8 h-[1px] bg-gold"></span>
+        <span class="text-xs uppercase tracking-[0.35em] text-maroon font-semibold">The Wedding Celebration</span>
+        <span class="w-8 h-[1px] bg-gold"></span>
       </div>
+
+      <!-- Couple Names -->
+      <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl tracking-tight text-charcoal font-normal leading-tight mb-3">
+        Jacob <span class="font-light italic text-maroon">&amp;</span> Aisha
+      </h1>
+
+      <!-- Date & Location -->
+      <p class="text-xs sm:text-sm tracking-[0.25em] uppercase text-gray-600 font-medium max-w-xl mx-auto mb-8">
+        Saturday, December 12, 2026 &bull; San Francisco, California
+      </p>
+
+      <!-- Live Countdown Clock -->
+      <div class="inline-flex bg-white/95 backdrop-blur-md rounded-2xl p-4 sm:p-5 shadow-sm border border-gray-200 mb-12">
+        <div class="grid grid-cols-4 gap-4 sm:gap-8 text-center">
+          <div class="px-2">
+            <span id="cd-days" class="block font-serif text-2xl sm:text-4xl text-charcoal font-semibold">00</span>
+            <span class="text-[10px] sm:text-xs tracking-widest uppercase text-gray-500 font-medium">Days</span>
+          </div>
+          <div class="px-2 border-l border-gray-100">
+            <span id="cd-hours" class="block font-serif text-2xl sm:text-4xl text-charcoal font-semibold">00</span>
+            <span class="text-[10px] sm:text-xs tracking-widest uppercase text-gray-500 font-medium">Hours</span>
+          </div>
+          <div class="px-2 border-l border-gray-100">
+            <span id="cd-minutes" class="block font-serif text-2xl sm:text-4xl text-charcoal font-semibold">00</span>
+            <span class="text-[10px] sm:text-xs tracking-widest uppercase text-gray-500 font-medium">Mins</span>
+          </div>
+          <div class="px-2 border-l border-gray-100">
+            <span id="cd-seconds" class="block font-serif text-2xl sm:text-4xl text-maroon font-semibold">00</span>
+            <span class="text-[10px] sm:text-xs tracking-widest uppercase text-gray-500 font-medium">Secs</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cinematic Aperture Portrait Frame -->
+      <div class="hero-aperture-card relative max-w-3xl mx-auto rounded-3xl overflow-hidden border border-gray-200/90 shadow-2xl">
+        <img 
+          src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=85" 
+          alt="Jacob & Aisha" 
+          class="hero-portrait-img w-full h-[420px] sm:h-[540px] object-cover filter contrast-[1.02] brightness-95"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
+
+        <!-- Floating Monogram Badge -->
+        <div id="hero-monogram-badge" class="absolute top-6 left-6 z-10 bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full border border-gray-200 text-maroon flex items-center space-x-2 shadow-sm transition-all duration-300">
+          <span class="font-serif font-bold tracking-widest text-sm">J &amp; A</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+          <span class="text-[10px] uppercase tracking-widest font-semibold text-gray-600">Forever</span>
+        </div>
+
+        <!-- Lower caption -->
+        <div class="absolute bottom-6 left-6 right-6 text-white text-center sm:text-left flex flex-col sm:flex-row items-center justify-between pointer-events-none">
+          <p class="font-serif italic text-xl tracking-wide opacity-95">Together with our families</p>
+          <p class="text-xs tracking-[0.2em] uppercase text-white/80 mt-2 sm:mt-0 font-light">Join us in celebrating our union</p>
+        </div>
+      </div>
+
     </div>
-  </div>
+  </header>
 
 
   <!-- ======================================================== -->
@@ -200,9 +191,9 @@
       <!-- ---------------------------------------------------- -->
       <div id="journey-horizontal-view" class="transition-opacity duration-300">
         
-        <!-- Navigation Buttons -->
+        <!-- Navigation Buttons & Help text -->
         <div class="flex items-center justify-between mb-4">
-          <span class="text-xs uppercase tracking-widest text-gray-400 font-semibold">Scroll or swipe through years</span>
+          <span class="text-xs uppercase tracking-widest text-gray-400 font-semibold">Scroll with mouse wheel, swipe, or use arrows</span>
           <div class="flex space-x-2">
             <button id="journey-prev-btn" aria-label="Previous year" class="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-maroon hover:text-white hover:border-maroon transition-colors text-charcoal">
               &larr;

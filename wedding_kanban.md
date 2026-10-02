@@ -6,7 +6,7 @@ kanban-plugin: basic
 
 ## 📋 Phase 2: Feature Backlog
 
-- [ ] **Guest-Specific RSVP System**: Token/magic links (\`?code=XYZ\`) so guests only see events they are invited to
+- [ ] **Guest-Specific RSVP System**: Token/magic links (`?code=XYZ`) so guests only see events they are invited to
 - [ ] **Google Photos / Media Pipeline**: Automated sync from album to optimized WebP thumbnails
 - [ ] **Video Highlight Reel**: 9:16 vertical stories player with progress bars & tap-to-unmute
 - [ ] **Venue Navigation QR Codes**: Scannable QR codes for car dashboards & direct Apple/Google Maps deep-links
@@ -17,28 +17,29 @@ kanban-plugin: basic
 
 ## 🎯 Next Up (MVP Tasks)
 
-- [ ] **Connect GitHub Remote**: Link local repo to your GitHub account
-- [ ] **Deploy to Cloudflare Pages or Vercel**: Free automated deployment on git push
-- [ ] **Custom Domain Binding**: Connect custom domain when ready (post-MVP)
+- [ ] **Personalize Content**: Drop in your real couple photos (`hero.jpg`, `2023.jpg`, etc.) and finalize names/dates
+- [ ] **Deploy to Free Cloud Hosting**: Connect GitHub repo to Cloudflare Pages or Vercel
+- [ ] **Custom Domain Setup**: Attach custom domain (optional / post-MVP)
 
 
 ## ⏳ In Progress
 
-- [ ] **Review & Personalize Layout**: Preview locally on \`http://localhost:3000\`, update names, dates, and couple portraits
+- [ ] **Review Animations**: Test Aperture Reveal & Concept A/B switcher locally on `http://localhost:3000`
 
 
 ## ✅ Done
 
 - [x] Analyze project pitfalls (Google Photos limits, RSVP privacy, domain costs)
 - [x] Scope down MVP to core layout + hosting infrastructure
-- [x] Install Obsidian app for task & backlog tracking
+- [x] Setup Obsidian central notes store (`~/Developer/Notes/Obsidian/Antigravity`)
 - [x] Align on aesthetic style: Modern Monochrome & Velvet Maroon
-- [x] Initialize Git repository & local Docker Compose environment
-- [x] Build mobile-first responsive layout (Hero, Story, Timeline, Venue, Calendar Sync, FAQs)
+- [x] Setup Git repository and push to `git@github.com:jasoncmisquith/wedding.git`
+- [x] Build Apple-style scroll-driven **Aperture Reveal Hero**
+- [x] Build 4-Year Journey with **interactive Concept A/B switcher** (Horizontal Filmstrip vs Editorial Yearbook)
 
 
 %% kanban:settings
-\`\`\`
+```
 {"kanban-plugin":"basic"}
-\`\`\`
+```
 %%

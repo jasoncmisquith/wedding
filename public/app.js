@@ -3,7 +3,7 @@
 // -------------------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', () => {
-  initApertureReveal();
+  initHeroParallax();
   initJourneySwitcher();
   initHorizontalScroller();
   initCountdown();
@@ -13,68 +13,32 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // =============================================================
-// 1. APERTURE REVEAL HERO (APPLE-STYLE SCROLL SCRUBBER)
+// 1. HERO PARALLAX & CINEMATIC APERTURE MOTION
 // =============================================================
-function initApertureReveal() {
-  const heroWrapper = document.getElementById('aperture-hero-wrapper');
-  const frame = document.getElementById('aperture-frame');
-  const monogramOverlay = document.getElementById('aperture-monogram-overlay');
-  const heroContent = document.getElementById('hero-content-reveal');
-  const heroImg = document.getElementById('aperture-hero-img');
-  const scrollPrompt = document.getElementById('aperture-scroll-prompt');
+function initHeroParallax() {
+  const heroCard = document.querySelector('.hero-aperture-card');
+  const heroImg = document.querySelector('.hero-portrait-img');
+  const monogramBadge = document.getElementById('hero-monogram-badge');
 
-  if (!heroWrapper || !frame || !monogramOverlay || !heroContent) return;
+  if (!heroCard || !heroImg) return;
 
   function onScroll() {
-    const rect = heroWrapper.getBoundingClientRect();
-    const scrollDistance = -rect.top;
-    const maxScroll = rect.height - window.innerHeight;
+    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    if (scrollY > 700) return; // Stop calculating after hero is off screen
 
-    if (maxScroll <= 0) return;
+    const progress = Math.min(1, scrollY / 500);
 
-    // Progress normalized between 0.0 (top of page) and 1.0 (fully scrolled)
-    let progress = scrollDistance / maxScroll;
-    progress = Math.max(0, Math.min(1, progress));
+    // Subtle scale expansion on portrait as you scroll down
+    heroImg.style.transform = `scale(${1 + (progress * 0.08)})`;
 
-    const isMobile = window.innerWidth < 768;
-    const initialWidth = isMobile ? Math.min(280, window.innerWidth - 48) : 340;
-    const initialHeight = isMobile ? 320 : 380;
-    const initialRadius = isMobile ? 24 : 36;
-
-    // Interpolate dimensions towards 100vw and 100vh
-    const currentWidth = initialWidth + (window.innerWidth - initialWidth) * progress;
-    const currentHeight = initialHeight + (window.innerHeight - initialHeight) * progress;
-    const currentRadius = initialRadius * (1 - progress);
-
-    // Apply calculated frame dimensions
-    frame.style.width = `${currentWidth}px`;
-    frame.style.height = `${currentHeight}px`;
-    frame.style.borderRadius = `${currentRadius}px`;
-
-    // Monogram overlay fades out as you scroll (fully gone by 60% progress)
-    const overlayOpacity = Math.max(0, 1 - (progress * 1.8));
-    monogramOverlay.style.opacity = overlayOpacity;
-    monogramOverlay.style.pointerEvents = overlayOpacity <= 0.05 ? 'none' : 'auto';
-
-    if (scrollPrompt) {
-      scrollPrompt.style.opacity = Math.max(0, 1 - (progress * 3));
-    }
-
-    // Hero content (names, date, countdown) fades in after 40% progress
-    const contentProgress = Math.max(0, Math.min(1, (progress - 0.35) / 0.65));
-    heroContent.style.opacity = contentProgress;
-    heroContent.style.transform = `translateY(${(1 - contentProgress) * 35}px)`;
-
-    // Gentle camera zoom on background image
-    if (heroImg) {
-      const imgScale = 1.15 - (0.15 * progress);
-      heroImg.style.transform = `scale(${imgScale})`;
+    // Subtle fade and elevate for monogram badge
+    if (monogramBadge) {
+      monogramBadge.style.opacity = `${1 - (progress * 1.5)}`;
+      monogramBadge.style.transform = `translateY(${progress * -20}px)`;
     }
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-  onScroll(); // Initial position call
 }
 
 // =============================================================
@@ -104,7 +68,7 @@ function initJourneySwitcher() {
 }
 
 // =============================================================
-// 3. HORIZONTAL SCROLLER CONTROLS & PROGRESS
+// 3. HORIZONTAL SCROLLER (MOUSE WHEEL, SWIPE & PROGRESS)
 // =============================================================
 function initHorizontalScroller() {
   const container = document.getElementById('journey-cards-scroll');
@@ -124,6 +88,21 @@ function initHorizontalScroller() {
   }
 
   container.addEventListener('scroll', updateProgress, { passive: true });
+
+  // Mouse wheel horizontal translation: lets desktop mouse users scroll horizontally!
+  container.addEventListener('wheel', (e) => {
+    // Only capture if deltaY exists and scrolling horizontally inside container bounds
+    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+      const atStart = container.scrollLeft <= 0;
+      const atEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 1;
+
+      // Allow vertical page scroll to continue if user reached the ends
+      if ((e.deltaY > 0 && !atEnd) || (e.deltaY < 0 && !atStart)) {
+        e.preventDefault();
+        container.scrollLeft += e.deltaY * 1.5;
+      }
+    }
+  }, { passive: false });
 
   if (prevBtn) {
     prevBtn.addEventListener('click', () => {

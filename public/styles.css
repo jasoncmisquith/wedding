@@ -72,71 +72,59 @@ html {
 
 /* Glassmorphism Header */
 .glass-header {
-  background: rgba(250, 249, 246, 0.90);
+  background: rgba(250, 249, 246, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(232, 229, 223, 0.75);
+  border-bottom: 1px solid rgba(232, 229, 223, 0.8);
 }
 
 /* -------------------------------------------------------------
- * 1. APERTURE REVEAL HERO STYLES
+ * 1. HERO & CINEMATIC APERTURE FRAME
  * ------------------------------------------------------------- */
-#aperture-hero-wrapper {
-  position: relative;
-  height: 200vh; /* Scroll runway for scrub */
-}
-
-#aperture-sticky-box {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  background-color: var(--color-bg);
-}
-
-#aperture-frame {
+.hero-aperture-card {
   position: relative;
   overflow: hidden;
-  will-change: width, height, border-radius, transform;
-  transition: box-shadow 0.3s ease;
-  box-shadow: 0 25px 60px -15px rgba(20, 20, 20, 0.2);
+  border-radius: 28px;
+  box-shadow: 0 20px 50px -15px rgba(20, 20, 20, 0.2);
+  transform-origin: center center;
+  will-change: transform;
 }
 
-#aperture-monogram-overlay {
-  transition: opacity 0.3s ease;
-  background: radial-gradient(circle at center, rgba(250, 249, 246, 0.95) 0%, rgba(250, 249, 246, 0.8) 100%);
+.hero-portrait-img {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 
-#hero-content-reveal {
-  transition: opacity 0.4s ease, transform 0.4s ease;
+.hero-aperture-card:hover .hero-portrait-img {
+  transform: scale(1.03);
 }
 
 /* -------------------------------------------------------------
- * 2. 4-YEAR JOURNEY (HORIZONTAL & EDITORIAL STYLES)
+ * 2. 4-YEAR JOURNEY STYLING
  * ------------------------------------------------------------- */
-/* Mode Switcher Pill */
 .mode-toggle-btn {
   transition: all 0.25s ease;
+  color: #555555;
 }
 .mode-toggle-btn.active {
   background-color: var(--color-maroon);
   color: #FFFFFF;
-  box-shadow: 0 4px 12px rgba(107, 23, 36, 0.25);
+  box-shadow: 0 4px 14px rgba(107, 23, 36, 0.28);
 }
 
 /* Concept A: Horizontal Scroller */
 .journey-horizontal-container {
   overflow-x: auto;
   scroll-behavior: smooth;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  cursor: grab;
+}
+.journey-horizontal-container:active {
+  cursor: grabbing;
 }
 .journey-horizontal-container::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+  display: none;
 }
 
 .journey-card {
@@ -144,7 +132,7 @@ html {
 }
 .journey-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 20px 40px -10px rgba(20, 20, 20, 0.12);
+  box-shadow: 0 22px 45px -12px rgba(20, 20, 20, 0.15);
 }
 
 /* Concept B: Editorial Parallax Yearbook */
@@ -160,16 +148,17 @@ html {
   background-color: #FFFFFF;
   border: 1px solid var(--color-border);
   box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.06);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
 }
 .editorial-card-frame:hover {
   transform: translateY(-4px);
+  box-shadow: 0 18px 40px -10px rgba(0, 0, 0, 0.1);
 }
 
 /* Scroll progress track */
 .progress-track {
   background-color: #E5E0D8;
-  height: 3px;
+  height: 4px;
   border-radius: 2px;
   position: relative;
   overflow: hidden;
@@ -179,7 +168,7 @@ html {
   height: 100%;
   width: 25%;
   border-radius: 2px;
-  transition: transform 0.2s ease-out;
+  transition: transform 0.15s ease-out;
 }
 
 /* Custom scrollbar */
