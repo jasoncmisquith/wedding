@@ -323,7 +323,8 @@ function initStoryConcepts() {
 // 2. LIVE COUNTDOWN TIMER
 // =============================================================
 function initCountdown() {
-  const targetDate = new Date('2026-12-12T15:00:00').getTime();
+  // Wedding Nuptials: Saturday, November 28, 2026 at 3:30 PM IST (UTC+05:30)
+  const targetDate = new Date('2026-11-28T15:30:00+05:30').getTime();
 
   const daysEl = document.getElementById('cd-days');
   const hoursEl = document.getElementById('cd-hours');
@@ -367,11 +368,11 @@ function initCalendarDownloads() {
   const googleCalBtn = document.getElementById('google-cal-btn');
 
   const eventDetails = {
-    title: "Jacob & Aisha's Wedding Celebration",
-    description: "Join us in celebrating our wedding ceremony and reception!",
-    location: "The Fairmont Grand Ballroom, 950 Mason St, San Francisco, CA 94108",
-    start: "20261212T230000Z",
-    end: "20261213T070000Z"
+    title: "Wedding of Roopa & Jason",
+    description: "Join us in celebrating the wedding celebration of Roopa S Nayar & Jason Conred Misquith. Nuptials at 3:30 PM, Twilight Reception at 7:30 PM at EDGEWATER, Mangaluru.",
+    location: "EDGEWATER, SB Rd, Bokkapatna, Gandhinagar, Mangaluru, Karnataka 575003",
+    start: "20261128T100000Z", // 3:30 PM IST (UTC 10:00 AM)
+    end: "20261128T183000Z"    // Midnight IST (UTC 6:30 PM)
   };
 
   if (downloadIcsBtn) {
@@ -380,11 +381,11 @@ function initCalendarDownloads() {
       const icsContent = [
         "BEGIN:VCALENDAR",
         "VERSION:2.0",
-        "PRODID:-//Our Wedding//Wedding Invitation//EN",
+        "PRODID:-//Roopa and Jason Wedding//Wedding Invitation//EN",
         "CALSCALE:GREGORIAN",
         "METHOD:PUBLISH",
         "BEGIN:VEVENT",
-        `UID:wedding-${Date.now()}@weddingwebsite.local`,
+        `UID:wedding-roopa-jason-${Date.now()}@weddingwebsite.local`,
         `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
         `DTSTART:${eventDetails.start}`,
         `DTEND:${eventDetails.end}`,
@@ -399,7 +400,7 @@ function initCalendarDownloads() {
       const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
-      link.setAttribute('download', 'jacob-and-aisha-wedding.ics');
+      link.setAttribute('download', 'roopa-and-jason-wedding.ics');
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
