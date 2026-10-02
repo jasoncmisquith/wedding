@@ -2,14 +2,21 @@
 // Wedding Website Client Logic: Scroll-Driven Story Slideshow
 // -------------------------------------------------------------
 
-document.addEventListener('DOMContentLoaded', () => {
+function initApp() {
   initStorySlideshow();
   initStickyStoryGallery();
   initCountdown();
   initCalendarDownloads();
   initFaqAccordion();
   initMobileMenu();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  // DOM is already parsed (Safari bfcache, fast load, or deferred script)
+  initApp();
+}
 
 // =============================================================
 // 1. FULLSCREEN STORY SLIDESHOW (CLEAN AUTO-PLAY + ARROWS)
@@ -41,28 +48,21 @@ function initStorySlideshow() {
     currentSlideIndex = index;
 
     slides.forEach((slide, i) => {
-      const content = slide.querySelector('.story-content');
       if (i === index) {
+        // Activate target slide immediately in DOM
+        slide.style.display = 'block';
+        slide.classList.remove('is-hidden');
+        void slide.offsetWidth; // Force layout reflow for CSS transition
         slide.classList.add('active');
-        if (content) {
-          content.style.display = 'block';
-          void content.offsetWidth;
-          content.style.opacity = '1';
-          content.style.transform = 'translateY(0)';
-          content.style.webkitTransform = 'translateY(0)';
-        }
       } else {
+        // Deactivate previous slide and cleanly hide it after transition
         slide.classList.remove('active');
-        if (content) {
-          content.style.opacity = '0';
-          content.style.transform = 'translateY(16px)';
-          content.style.webkitTransform = 'translateY(16px)';
-          setTimeout(() => {
-            if (i !== currentSlideIndex) {
-              content.style.display = 'none';
-            }
-          }, 350);
-        }
+        setTimeout(() => {
+          if (i !== currentSlideIndex) {
+            slide.classList.add('is-hidden');
+            slide.style.display = 'none';
+          }
+        }, 700);
       }
     });
 
