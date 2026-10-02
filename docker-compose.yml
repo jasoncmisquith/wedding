@@ -1,0 +1,9 @@
+services:
+  wedding-website:
+    build: .
+    container_name: wedding_invite_app
+    ports:
+      - "3000:80"
+    volumes:
+      - ./public:/usr/share/nginx/html:ro
+    restart: unless-stopped

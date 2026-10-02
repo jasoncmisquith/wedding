@@ -1,0 +1,109 @@
+/* -------------------------------------------------------------
+ * Theme: Modern Monochrome & Velvet Maroon Wedding Aesthetic
+ * ------------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --color-bg: #FAF9F6;
+  --color-surface: #FFFFFF;
+  --color-text-main: #141414;
+  --color-text-muted: #666666;
+  --color-maroon: #6B1724;
+  --color-maroon-hover: #520F1A;
+  --color-maroon-light: #F7EBEF;
+  --color-gold: #C5A880;
+  --color-gold-light: #F4EFE6;
+  --color-border: #E8E5DF;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  font-family: var(--font-sans);
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+/* Velvet Maroon Buttons & Badges */
+.btn-maroon {
+  background-color: var(--color-maroon);
+  color: #FFFFFF;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-maroon:hover {
+  background-color: var(--color-maroon-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px -4px rgba(107, 23, 36, 0.3);
+}
+
+.btn-outline-dark {
+  border: 1px solid var(--color-text-main);
+  color: var(--color-text-main);
+  transition: all 0.25s ease;
+}
+
+.btn-outline-dark:hover {
+  background-color: var(--color-text-main);
+  color: #FFFFFF;
+}
+
+/* Hairline borders and decorative elements */
+.border-gold {
+  border-color: var(--color-gold);
+}
+
+.bg-maroon-light {
+  background-color: var(--color-maroon-light);
+}
+
+.text-maroon {
+  color: var(--color-maroon);
+}
+
+/* Subtle image frames */
+.editorial-frame {
+  position: relative;
+  overflow: hidden;
+  background-color: #ECE9E2;
+}
+
+.editorial-frame::after {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+}
+
+/* Glassmorphism Header */
+.glass-header {
+  background: rgba(250, 249, 246, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(232, 229, 223, 0.7);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: #D5D1C8;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-maroon);
+}

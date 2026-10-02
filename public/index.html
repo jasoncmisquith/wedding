@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jacob & Aisha — Wedding Celebration</title>
+  <meta name="description" content="Join us in celebrating the wedding of Jacob & Aisha. Event timeline, venue details, and accommodations.">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            maroon: {
+              DEFAULT: '#6B1724',
+              hover: '#520F1A',
+              light: '#F8EEF1',
+              dark: '#3E0B14'
+            },
+            ivory: '#FAF9F6',
+            charcoal: '#141414',
+            gold: '#C5A880'
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-ivory text-charcoal antialiased selection:bg-maroon selection:text-white">
+
+  <!-- ======================================================== -->
+  <!-- 1. NAVIGATION BAR                                        -->
+  <!-- ======================================================== -->
+  <nav class="fixed top-0 left-0 right-0 z-50 glass-header transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+      <!-- Monogram Logo -->
+      <a href="#" class="font-serif text-2xl tracking-widest text-maroon font-semibold hover:opacity-80 transition-opacity">
+        J &amp; A
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <div class="hidden md:flex items-center space-x-8 text-xs tracking-[0.2em] uppercase font-medium text-gray-700">
+        <a href="#story" class="hover:text-maroon transition-colors">Our Story</a>
+        <a href="#schedule" class="hover:text-maroon transition-colors">Schedule</a>
+        <a href="#venue" class="hover:text-maroon transition-colors">Venue &amp; Travel</a>
+        <a href="#calendar" class="hover:text-maroon transition-colors">Save The Date</a>
+        <a href="#details" class="hover:text-maroon transition-colors">Details &amp; Q+A</a>
+      </div>
+
+      <!-- Action Button -->
+      <div class="hidden md:block">
+        <a href="#calendar" class="btn-maroon px-5 py-2.5 rounded-full text-xs uppercase tracking-widest font-medium">
+          Add To Calendar
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-btn" aria-label="Toggle menu" class="md:hidden p-2 text-charcoal hover:text-maroon">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-ivory border-b border-gray-200 px-6 py-6 space-y-4 text-center">
+      <a href="#story" class="mobile-nav-link block text-sm tracking-widest uppercase py-2 hover:text-maroon">Our Story</a>
+      <a href="#schedule" class="mobile-nav-link block text-sm tracking-widest uppercase py-2 hover:text-maroon">Schedule</a>
+      <a href="#venue" class="mobile-nav-link block text-sm tracking-widest uppercase py-2 hover:text-maroon">Venue &amp; Travel</a>
+      <a href="#calendar" class="mobile-nav-link block text-sm tracking-widest uppercase py-2 hover:text-maroon">Save The Date</a>
+      <a href="#details" class="mobile-nav-link block text-sm tracking-widest uppercase py-2 hover:text-maroon">Details &amp; Q+A</a>
+      <div class="pt-2">
+        <a href="#calendar" class="mobile-nav-link inline-block btn-maroon px-6 py-3 rounded-full text-xs uppercase tracking-widest font-medium w-full">
+          Add To Calendar
+        </a>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- ======================================================== -->
+  <!-- 2. HERO SECTION                                          -->
+  <!-- ======================================================== -->
+  <header class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+    <div class="max-w-5xl mx-auto px-6 text-center">
+      <!-- Monogram Tag -->
+      <div class="inline-flex items-center justify-center space-x-3 mb-6">
+        <span class="w-8 h-[1px] bg-gold"></span>
+        <span class="text-xs uppercase tracking-[0.3em] text-gray-500 font-semibold">The Wedding Celebration</span>
+        <span class="w-8 h-[1px] bg-gold"></span>
+      </div>
+
+      <!-- Couple Names -->
+      <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl tracking-tight text-charcoal font-normal leading-tight mb-4">
+        Jacob <span class="font-light italic text-maroon">&amp;</span> Aisha
+      </h1>
+
+      <!-- Date & Location -->
+      <p class="text-sm sm:text-base tracking-[0.25em] uppercase text-gray-600 font-medium max-w-xl mx-auto mb-10">
+        Saturday, December 12, 2026 &bull; San Francisco, California
+      </p>
+
+      <!-- Editorial Portrait Hero Card -->
+      <div class="relative max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-2xl border border-gray-200/80 mb-12">
+        <!-- High-res aesthetic editorial placeholder image (Replaceable with your personal photo) -->
+        <img 
+          src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=80" 
+          alt="Jacob & Aisha" 
+          class="w-full h-[400px] sm:h-[520px] object-cover filter contrast-[1.02] brightness-95"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+        <div class="absolute bottom-6 left-6 right-6 text-white text-center sm:text-left flex flex-col sm:flex-row items-center justify-between">
+          <p class="font-serif italic text-xl tracking-wide opacity-95">Together with our families</p>
+          <p class="text-xs tracking-[0.2em] uppercase text-white/80 mt-2 sm:mt-0 font-light">Join us in celebrating our union</p>
+        </div>
+      </div>
+
+      <!-- Live Countdown Clock -->
+      <div class="max-w-xl mx-auto bg-white/90 backdrop-blur-md rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-200">
+        <p class="text-xs uppercase tracking-[0.25em] text-maroon font-semibold mb-4 text-center">Counting down the days</p>
+        <div class="grid grid-cols-4 gap-3 sm:gap-6 text-center">
+          <div class="p-3 bg-ivory rounded-xl border border-gray-100">
+            <span id="cd-days" class="block font-serif text-3xl sm:text-4xl text-charcoal font-semibold">00</span>
+            <span class="text-[10px] sm:text-xs tracking-widest uppercase text-gray-500 font-medium">Days</span>
+          </div>
+          <div class="p-3 bg-ivory rounded-xl border border-gray-100">
+            <span id="cd-hours" class="block font-serif text-3xl sm:text-4xl text-charcoal font-semibold">00</span>
+            <span class="text-[10px] sm:text-xs tracking-widest uppercase text-gray-500 font-medium">Hours</span>
+          </div>
+          <div class="p-3 bg-ivory rounded-xl border border-gray-100">
+            <span id="cd-minutes" class="block font-serif text-3xl sm:text-4xl text-charcoal font-semibold">00</span>
+            <span class="text-[10px] sm:text-xs tracking-widest uppercase text-gray-500 font-medium">Mins</span>
+          </div>
+          <div class="p-3 bg-ivory rounded-xl border border-gray-100">
+            <span id="cd-seconds" class="block font-serif text-3xl sm:text-4xl text-maroon font-semibold">00</span>
+            <span class="text-[10px] sm:text-xs tracking-widest uppercase text-gray-500 font-medium">Secs</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ======================================================== -->
+  <!-- 3. WELCOME & OUR STORY                                   -->
+  <!-- ======================================================== -->
+  <section id="story" class="py-20 bg-white border-y border-gray-200">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <span class="text-xs uppercase tracking-[0.3em] text-maroon font-semibold">Welcome Dear Friends &amp; Family</span>
+      <h2 class="font-serif text-3xl sm:text-5xl text-charcoal mt-3 mb-8 font-normal">
+        We Can't Wait to Celebrate With You
+      </h2>
+      <p class="text-gray-600 leading-relaxed text-base sm:text-lg mb-6 font-light">
+        As we embark on this new chapter of our lives, we are filled with immense gratitude for the friends and family who have supported, inspired, and shaped our journey. Having you by our side to witness our vows means everything to us.
+      </p>
+      <p class="text-gray-600 leading-relaxed text-base sm:text-lg font-light">
+        Please explore this page for ceremony details, event schedules, directions, and hotel recommendations. We look forward to creating unforgettable memories together!
+      </p>
+      <div class="mt-8">
+        <span class="font-serif italic text-2xl text-maroon">With love, Jacob &amp; Aisha</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ======================================================== -->
+  <!-- 4. EVENT SCHEDULE & TIMELINE                             -->
+  <!-- ======================================================== -->
+  <section id="schedule" class="py-24 bg-ivory">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center max-w-xl mx-auto mb-16">
+        <span class="text-xs uppercase tracking-[0.3em] text-maroon font-semibold">The Schedule</span>
+        <h2 class="font-serif text-4xl sm:text-5xl text-charcoal mt-2 mb-4 font-normal">Events &amp; Timeline</h2>
+        <p class="text-sm text-gray-500 tracking-wider uppercase font-medium">December 11 – 12, 2026</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Event Card 1: Welcome & Sangeet -->
+        <div class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+          <div>
+            <div class="inline-block px-3 py-1 bg-maroon-light text-maroon rounded-full text-[11px] font-semibold tracking-widest uppercase mb-4">
+              Friday &bull; Dec 11
+            </div>
+            <h3 class="font-serif text-2xl text-charcoal mb-1">Welcome Cocktails &amp; Sangeet</h3>
+            <p class="text-xs tracking-wider uppercase text-gray-400 font-semibold mb-6">6:30 PM &ndash; 10:30 PM</p>
+            <p class="text-sm text-gray-600 leading-relaxed font-light mb-6">
+              Kick off the wedding weekend with drinks, celebratory music, dancing, and light hors d'oeuvres.
+            </p>
+          </div>
+          <div class="border-t border-gray-100 pt-4 text-xs space-y-1.5 text-gray-500">
+            <p><strong class="text-charcoal font-medium">Venue:</strong> The Terrace Pavilion</p>
+            <p><strong class="text-charcoal font-medium">Attire:</strong> Festive Formal / Cocktail</p>
+          </div>
+        </div>
+
+        <!-- Event Card 2: Wedding Ceremony (Highlighted with Maroon border) -->
+        <div class="bg-white rounded-2xl p-8 border-2 border-maroon shadow-md relative flex flex-col justify-between">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-maroon text-white text-[10px] tracking-widest uppercase font-bold py-1 px-4 rounded-full">
+            Main Event
+          </div>
+          <div>
+            <div class="inline-block px-3 py-1 bg-maroon-light text-maroon rounded-full text-[11px] font-semibold tracking-widest uppercase mb-4 mt-2">
+              Saturday &bull; Dec 12
+            </div>
+            <h3 class="font-serif text-2xl text-charcoal mb-1">The Wedding Ceremony</h3>
+            <p class="text-xs tracking-wider uppercase text-gray-400 font-semibold mb-6">3:00 PM &ndash; 4:30 PM</p>
+            <p class="text-sm text-gray-600 leading-relaxed font-light mb-6">
+              Our marriage vows and sacred ceremony. Guests are requested to be seated by 2:45 PM.
+            </p>
+          </div>
+          <div class="border-t border-gray-100 pt-4 text-xs space-y-1.5 text-gray-500">
+            <p><strong class="text-charcoal font-medium">Venue:</strong> Grand Rosewood Courtyard</p>
+            <p><strong class="text-charcoal font-medium">Attire:</strong> Formal / Black &amp; White with Maroon Accents</p>
+          </div>
+        </div>
+
+        <!-- Event Card 3: Dinner & Reception -->
+        <div class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+          <div>
+            <div class="inline-block px-3 py-1 bg-maroon-light text-maroon rounded-full text-[11px] font-semibold tracking-widest uppercase mb-4">
+              Saturday &bull; Dec 12
+            </div>
+            <h3 class="font-serif text-2xl text-charcoal mb-1">Dinner &amp; Grand Reception</h3>
+            <p class="text-xs tracking-wider uppercase text-gray-400 font-semibold mb-6">6:00 PM &ndash; Midnight</p>
+            <p class="text-sm text-gray-600 leading-relaxed font-light mb-6">
+              Join us for a seated multi-course dinner, heartfelt toasts, champagne, and dancing late into the night.
+            </p>
+          </div>
+          <div class="border-t border-gray-100 pt-4 text-xs space-y-1.5 text-gray-500">
+            <p><strong class="text-charcoal font-medium">Venue:</strong> The Crystal Ballroom</p>
+            <p><strong class="text-charcoal font-medium">Attire:</strong> Black Tie / Formal Eveningwear</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ======================================================== -->
+  <!-- 5. VENUE & TRAVEL GUIDE                                  -->
+  <!-- ======================================================== -->
+  <section id="venue" class="py-24 bg-white border-t border-gray-200">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center max-w-xl mx-auto mb-16">
+        <span class="text-xs uppercase tracking-[0.3em] text-maroon font-semibold">Location &amp; Travel</span>
+        <h2 class="font-serif text-4xl sm:text-5xl text-charcoal mt-2 mb-4 font-normal">The Venue</h2>
+        <p class="text-sm text-gray-500 tracking-wider uppercase font-medium">San Francisco, California</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <!-- Venue Image -->
+        <div class="rounded-2xl overflow-hidden shadow-lg border border-gray-200">
+          <img 
+            src="https://images.unsplash.com/photo-1545232979-fbf68fe9b1af?auto=format&fit=crop&w=1200&q=80" 
+            alt="Venue Architecture" 
+            class="w-full h-80 sm:h-96 object-cover"
+          />
+        </div>
+
+        <!-- Venue Details & Directions -->
+        <div>
+          <span class="text-xs uppercase tracking-[0.2em] text-gold font-semibold">Ceremony &amp; Reception Estate</span>
+          <h3 class="font-serif text-3xl sm:text-4xl text-charcoal mt-2 mb-3">The Fairmont Grand Estate</h3>
+          <p class="text-sm text-gray-500 font-normal mb-6">
+            950 Mason Street, Nob Hill, San Francisco, CA 94108
+          </p>
+
+          <p class="text-sm text-gray-600 leading-relaxed font-light mb-8">
+            Complimentary valet parking will be provided at the main porte-cochère. If you are staying in the city, rideshare services (Uber and Lyft) can drop you off directly in front of the main lobby.
+          </p>
+
+          <!-- Navigation Action Buttons -->
+          <div class="flex flex-wrap gap-4 mb-8">
+            <a 
+              href="https://maps.google.com/?q=The+Fairmont+San+Francisco+950+Mason+St" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="btn-maroon px-6 py-3 rounded-full text-xs uppercase tracking-widest font-semibold inline-flex items-center space-x-2"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
+              </svg>
+              <span>Google Maps</span>
+            </a>
+
+            <a 
+              href="https://maps.apple.com/?q=The+Fairmont+San+Francisco" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="btn-outline-dark px-6 py-3 rounded-full text-xs uppercase tracking-widest font-semibold inline-flex items-center space-x-2"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 21a9 9 0 100-18 9 9 0 000 18z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v6m-3-3h6"/>
+              </svg>
+              <span>Apple Maps</span>
+            </a>
+          </div>
+
+          <!-- Hotel Room Block -->
+          <div class="bg-ivory rounded-xl p-5 border border-gray-200">
+            <h4 class="text-xs uppercase tracking-widest text-charcoal font-semibold mb-1">Recommended Accommodations</h4>
+            <p class="text-xs text-gray-500 leading-relaxed font-light">
+              We have reserved a preferred guest room block under "Jacob & Aisha Wedding". Please reserve before November 1st for the group rate.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ======================================================== -->
+  <!-- 6. SAVE THE DATE & CALENDAR SYNC                         -->
+  <!-- ======================================================== -->
+  <section id="calendar" class="py-20 bg-ivory border-t border-gray-200">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <div class="w-12 h-12 mx-auto rounded-full bg-maroon-light text-maroon flex items-center justify-center mb-6">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
+        </svg>
+      </div>
+
+      <span class="text-xs uppercase tracking-[0.3em] text-maroon font-semibold">Save To Your Calendar</span>
+      <h2 class="font-serif text-3xl sm:text-5xl text-charcoal mt-2 mb-4 font-normal">Never Miss a Moment</h2>
+      <p class="text-gray-600 text-sm sm:text-base leading-relaxed font-light max-w-lg mx-auto mb-8">
+        Add the ceremony and reception directly to your digital calendar with a single click.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <!-- Google Calendar Button -->
+        <a 
+          id="google-cal-btn" 
+          href="#" 
+          class="w-full sm:w-auto btn-maroon px-8 py-3.5 rounded-full text-xs uppercase tracking-widest font-semibold shadow-md"
+        >
+          Add to Google Calendar
+        </a>
+
+        <!-- Apple / Outlook .ics Button -->
+        <button 
+          id="download-ics-btn" 
+          class="w-full sm:w-auto btn-outline-dark px-8 py-3.5 rounded-full text-xs uppercase tracking-widest font-semibold"
+        >
+          Download Apple / Outlook (.ics)
+        </button>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ======================================================== -->
+  <!-- 7. IMPORTANT DETAILS & FAQS                              -->
+  <!-- ======================================================== -->
+  <section id="details" class="py-24 bg-white border-t border-gray-200">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <span class="text-xs uppercase tracking-[0.3em] text-maroon font-semibold">Frequently Asked Questions</span>
+        <h2 class="font-serif text-4xl sm:text-5xl text-charcoal mt-2 mb-4 font-normal">Important Details</h2>
+        <p class="text-sm text-gray-500 font-light">Everything you need to know about celebrating with us.</p>
+      </div>
+
+      <div class="space-y-4">
+        <!-- Question 1: Dress Code -->
+        <div class="border border-gray-200 rounded-xl overflow-hidden">
+          <button class="faq-toggle w-full text-left p-6 bg-ivory/60 hover:bg-ivory flex items-center justify-between text-charcoal transition-colors" aria-expanded="false">
+            <span class="font-medium text-sm sm:text-base">What is the dress code?</span>
+            <span class="faq-icon text-maroon text-xl font-light transition-transform duration-200">+</span>
+          </button>
+          <div class="faq-content hidden p-6 text-sm text-gray-600 font-light leading-relaxed bg-white border-t border-gray-100">
+            We kindly invite guests to dress in formal attire. Our wedding palette is inspired by classic <strong>monochrome (black &amp; white) with rich velvet maroon accents</strong>. Formal suits, tuxedos, evening gowns, or celebratory traditional formalwear are all warmly encouraged.
+          </div>
+        </div>
+
+        <!-- Question 2: Plus-Ones and Children -->
+        <div class="border border-gray-200 rounded-xl overflow-hidden">
+          <button class="faq-toggle w-full text-left p-6 bg-ivory/60 hover:bg-ivory flex items-center justify-between text-charcoal transition-colors" aria-expanded="false">
+            <span class="font-medium text-sm sm:text-base">Can I bring a plus-one or children?</span>
+            <span class="faq-icon text-maroon text-xl font-light transition-transform duration-200">+</span>
+          </button>
+          <div class="faq-content hidden p-6 text-sm text-gray-600 font-light leading-relaxed bg-white border-t border-gray-100">
+            Due to venue capacity restrictions, we are only able to accommodate the specific guests formally listed on your invitation envelope. We appreciate your understanding and cooperation!
+          </div>
+        </div>
+
+        <!-- Question 3: Gifts & Registry -->
+        <div class="border border-gray-200 rounded-xl overflow-hidden">
+          <button class="faq-toggle w-full text-left p-6 bg-ivory/60 hover:bg-ivory flex items-center justify-between text-charcoal transition-colors" aria-expanded="false">
+            <span class="font-medium text-sm sm:text-base">What is your gift policy?</span>
+            <span class="faq-icon text-maroon text-xl font-light transition-transform duration-200">+</span>
+          </button>
+          <div class="faq-content hidden p-6 text-sm text-gray-600 font-light leading-relaxed bg-white border-t border-gray-100">
+            Your presence, love, and prayers at our wedding are the greatest gifts we could ever ask for. If you wish to bless us with a gift, a contribution towards our honeymoon and future home would be deeply appreciated.
+          </div>
+        </div>
+
+        <!-- Question 4: Contact & Help -->
+        <div class="border border-gray-200 rounded-xl overflow-hidden">
+          <button class="faq-toggle w-full text-left p-6 bg-ivory/60 hover:bg-ivory flex items-center justify-between text-charcoal transition-colors" aria-expanded="false">
+            <span class="font-medium text-sm sm:text-base">Who should I contact if I have questions on the wedding day?</span>
+            <span class="faq-icon text-maroon text-xl font-light transition-transform duration-200">+</span>
+          </button>
+          <div class="faq-content hidden p-6 text-sm text-gray-600 font-light leading-relaxed bg-white border-t border-gray-100">
+            Please feel free to reach out to our wedding coordinator, Elena Roberts, at <strong class="text-charcoal font-medium">coordinator@weddingevent.com</strong> or via phone at <strong class="text-charcoal font-medium">(415) 555-0198</strong> for any venue or scheduling questions.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ======================================================== -->
+  <!-- 8. FOOTER                                                -->
+  <!-- ======================================================== -->
+  <footer class="py-16 bg-charcoal text-white text-center">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="font-serif text-3xl tracking-widest text-gold mb-3 font-semibold">
+        J &amp; A
+      </div>
+      <p class="font-serif italic text-lg sm:text-xl text-gray-300 mb-6 font-light">
+        "Two lives, two hearts, joined together in friendship, united forever in love."
+      </p>
+      <div class="w-12 h-[1px] bg-gold/50 mx-auto mb-6"></div>
+      <p class="text-xs tracking-[0.25em] uppercase text-gray-400 font-medium">
+        Jacob &amp; Aisha &bull; December 12, 2026
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+</body>
+</html>
