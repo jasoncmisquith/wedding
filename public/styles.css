@@ -109,7 +109,7 @@ button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .
   width: 100%;
   height: 100vh;
   height: 100dvh;
-  min-height: 600px;
+  min-height: 560px;
   min-height: 100dvh;
   overflow: hidden;
   background-color: #0A0A0A;
@@ -119,60 +119,41 @@ button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .
 
 .story-slide {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
   opacity: 0;
-  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s ease;
+  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 1;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
 }
 
 .story-slide.active {
   opacity: 1;
-  visibility: visible;
   pointer-events: auto;
   z-index: 10;
 }
 
-/* Cinematic Photo Background & Subtle Ken Burns Drift */
+/* Cinematic Photo Background & Subtle Smooth Zoom
+ * Safari-Safe: Avoids keyframe transform loops on object-fit: cover images which cause blank screens */
 .story-bg-media {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  -webkit-transform-origin: center center;
-  transform-origin: center center;
-  -webkit-transform: scale(1.04);
-  transform: scale(1.04);
-  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), -webkit-transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
+  -webkit-transform: scale(1.08);
+  transform: scale(1.08);
+  transition: transform 6s cubic-bezier(0.15, 0.9, 0.25, 1), -webkit-transform 6s cubic-bezier(0.15, 0.9, 0.25, 1);
 }
 
 .story-slide.active .story-bg-media {
   -webkit-transform: scale(1.0);
   transform: scale(1.0);
-  animation: kenBurnsDrift 16s ease-out infinite alternate;
-  -webkit-animation: kenBurnsDrift 16s ease-out infinite alternate;
-}
-
-@-webkit-keyframes kenBurnsDrift {
-  0% {
-    -webkit-transform: scale(1.0) translate(0, 0);
-  }
-  100% {
-    -webkit-transform: scale(1.05) translate(-1%, -0.8%);
-  }
-}
-
-@keyframes kenBurnsDrift {
-  0% {
-    transform: scale(1.0) translate(0, 0);
-  }
-  100% {
-    transform: scale(1.05) translate(-1%, -0.8%);
-  }
 }
 
 /* Story Typography & Content: STRICTLY PREVENTS ANY TEXT OVERLAP */
@@ -211,7 +192,6 @@ button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .
   height: 100%;
   width: 0%;
   border-radius: 2px;
-  transition: width 0.1s linear;
 }
 
 .story-progress-fill.completed {
@@ -277,32 +257,30 @@ button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .
 }
 
 /* -------------------------------------------------------------
- * INTERACTIVE STORY CONCEPTS SHOWCASE STYLES
+ * OUR 4-YEAR STORY: STICKY ARCHIVAL MUSEUM GALLERY
  * ------------------------------------------------------------- */
-.concept-tab-btn {
-  background: transparent;
-  color: #555555;
-  cursor: pointer;
-}
-.concept-tab-btn:hover {
-  color: var(--color-maroon);
-}
-.concept-tab-btn.active {
-  background: var(--color-maroon);
-  color: #FFFFFF;
-  box-shadow: 0 4px 14px -2px rgba(107, 23, 36, 0.45);
-}
-
-/* Concept A: Sticky Archival Museum Frame */
-.archival-frame {
-  box-shadow: 0 20px 45px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(197, 168, 128, 0.35);
-}
-
 /* Cross-browser Sticky Viewport */
 .sticky-viewport,
 .lg\:sticky {
   position: -webkit-sticky;
   position: sticky;
+}
+
+/* Archival Museum Frame:
+ * Constrained so it always fits comfortably above the macOS Dock in Chrome/Safari */
+.archival-frame {
+  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(197, 168, 128, 0.35);
+  max-height: calc(100vh - 7rem);
+  max-height: calc(100dvh - 7rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Sticky Photo Container: Never exceeds viewport height, leaving >100px breathing room above Mac dock */
+.sticky-photo-container {
+  max-height: min(440px, calc(100vh - 13.5rem), calc(100dvh - 13.5rem));
+  width: 100%;
 }
 
 #sticky-photo {
@@ -325,29 +303,6 @@ button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .
   border-color: var(--color-maroon) !important;
   border-left: 3px solid var(--color-maroon);
   box-shadow: 0 10px 25px -5px rgba(107, 23, 36, 0.08);
-}
-
-/* Concept C: 3D Memory Deck (Full WebKit & Gecko Compatibility) */
-.perspective-1000 {
-  perspective: 1000px;
-  -webkit-perspective: 1000px;
-}
-
-.deck-card {
-  -webkit-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  will-change: transform, opacity;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
-
-.deck-card.flipped {
-  -webkit-transform: translateY(-90px) rotateY(180deg) scale(0.85) !important;
-  transform: translateY(-90px) rotateY(180deg) scale(0.85) !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
 }
 
 /* Accessibility: Respect Reduced Motion Preference */

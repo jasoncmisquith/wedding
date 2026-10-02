@@ -4,7 +4,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   initStorySlideshow();
-  initStoryConcepts();
+  initStickyStoryGallery();
   initCountdown();
   initCalendarDownloads();
   initFaqAccordion();
@@ -32,7 +32,8 @@ function initStorySlideshow() {
 
   let currentSlideIndex = 0;
   let autoplayTimer = null;
-  let isAutoplaying = true; // Auto-play by default as requested
+  let isAutoplaying = true;
+  const slideDuration = 4500; // 4.5 seconds per slide
 
   function goToSlide(index) {
     if (index >= totalSlides) index = 0;
@@ -48,12 +49,14 @@ function initStorySlideshow() {
           void content.offsetWidth;
           content.style.opacity = '1';
           content.style.transform = 'translateY(0)';
+          content.style.webkitTransform = 'translateY(0)';
         }
       } else {
         slide.classList.remove('active');
         if (content) {
           content.style.opacity = '0';
           content.style.transform = 'translateY(16px)';
+          content.style.webkitTransform = 'translateY(16px)';
           setTimeout(() => {
             if (i !== currentSlideIndex) {
               content.style.display = 'none';
@@ -63,8 +66,9 @@ function initStorySlideshow() {
       }
     });
 
-    // Update segmented progress bars
+    // Update segmented progress bars with smooth animated fill
     progressFills.forEach((fill, i) => {
+      fill.style.transition = 'none';
       if (i < index) {
         fill.classList.remove('current-active');
         fill.classList.add('completed');
@@ -72,7 +76,14 @@ function initStorySlideshow() {
       } else if (i === index) {
         fill.classList.add('current-active');
         fill.classList.remove('completed');
-        fill.style.width = '100%';
+        fill.style.width = '0%';
+        void fill.offsetWidth; // Force layout reflow
+        if (isAutoplaying) {
+          fill.style.transition = `width ${slideDuration}ms linear`;
+          fill.style.width = '100%';
+        } else {
+          fill.style.width = '100%';
+        }
       } else {
         fill.classList.remove('current-active', 'completed');
         fill.style.width = '0%';
@@ -124,7 +135,7 @@ function initStorySlideshow() {
     });
   });
 
-  // Autoplay Controller (Switches every 4.5s)
+  // Autoplay Controller
   function startAutoplay() {
     isAutoplaying = true;
     if (playIcon) playIcon.classList.add('hidden');
@@ -133,7 +144,7 @@ function initStorySlideshow() {
     clearInterval(autoplayTimer);
     autoplayTimer = setInterval(() => {
       goToSlide(currentSlideIndex + 1);
-    }, 4500);
+    }, slideDuration);
   }
 
   function stopAutoplay() {
@@ -149,7 +160,7 @@ function initStorySlideshow() {
       clearInterval(autoplayTimer);
       autoplayTimer = setInterval(() => {
         goToSlide(currentSlideIndex + 1);
-      }, 4500);
+      }, slideDuration);
     }
   }
 
@@ -169,181 +180,77 @@ function initStorySlideshow() {
 }
 
 // =============================================================
-// 2. INTERACTIVE 4-YEAR STORY CONCEPTS SHOWCASE
+// 2. OUR 4-YEAR STORY: STICKY ARCHIVAL GALLERY OBSERVER
 // =============================================================
-function initStoryConcepts() {
-  const tabs = document.querySelectorAll('.concept-tab-btn');
-  const views = document.querySelectorAll('.concept-view');
-
-  if (tabs.length === 0) return;
-
-  // Tab Switching
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const targetConcept = tab.getAttribute('data-concept');
-
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-
-      views.forEach(v => {
-        if (v.id === targetConcept) {
-          v.classList.remove('hidden');
-          v.classList.add('block');
-        } else {
-          v.classList.remove('block');
-          v.classList.add('hidden');
-        }
-      });
-    });
-  });
-
-  // -----------------------------------------------------------
-  // A. CONCEPT A: STICKY GALLERY OBSERVER (APPLE / MUSEUM LOOK)
-  // -----------------------------------------------------------
+function initStickyStoryGallery() {
   const stickyPhoto = document.getElementById('sticky-photo');
   const stickyYearBadge = document.getElementById('sticky-year-badge');
   const stickyEffectCue = document.getElementById('sticky-effect-cue');
   const milestones = document.querySelectorAll('.narrative-milestone');
 
-  if (stickyPhoto && milestones.length > 0) {
-    function updateActiveMilestone(target) {
-      const newImg = target.getAttribute('data-img');
-      const newYear = target.getAttribute('data-year');
-      const newEffect = target.getAttribute('data-effect');
+  if (!stickyPhoto || milestones.length === 0) return;
 
-      // Highlight active milestone card
-      milestones.forEach(m => m.classList.remove('active'));
-      target.classList.add('active');
+  function updateActiveMilestone(target) {
+    const newImg = target.getAttribute('data-img');
+    const newYear = target.getAttribute('data-year');
+    const newEffect = target.getAttribute('data-effect');
 
-      // Smooth cross-browser photo morph (Valid CSS: separate filter and transform)
-      if (stickyPhoto.src !== newImg) {
-        stickyPhoto.style.opacity = '0.35';
-        stickyPhoto.style.filter = 'blur(10px)';
-        stickyPhoto.style.webkitFilter = 'blur(10px)';
-        stickyPhoto.style.transform = 'scale(0.97)';
-        stickyPhoto.style.webkitTransform = 'scale(0.97)';
-        
-        setTimeout(() => {
-          stickyPhoto.src = newImg;
-          if (stickyYearBadge) stickyYearBadge.innerHTML = newYear;
-          if (stickyEffectCue) stickyEffectCue.innerHTML = newEffect;
+    // Highlight active milestone card
+    milestones.forEach(m => m.classList.remove('active'));
+    target.classList.add('active');
 
-          stickyPhoto.style.opacity = '1';
-          stickyPhoto.style.filter = 'blur(0px)';
-          stickyPhoto.style.webkitFilter = 'blur(0px)';
-          stickyPhoto.style.transform = 'scale(1.0)';
-          stickyPhoto.style.webkitTransform = 'scale(1.0)';
-        }, 280);
-      }
+    // Smooth cross-browser photo morph (Valid CSS: separate filter and transform)
+    if (stickyPhoto.src !== newImg) {
+      stickyPhoto.style.opacity = '0.35';
+      stickyPhoto.style.filter = 'blur(10px)';
+      stickyPhoto.style.webkitFilter = 'blur(10px)';
+      stickyPhoto.style.transform = 'scale(0.97)';
+      stickyPhoto.style.webkitTransform = 'scale(0.97)';
+      
+      setTimeout(() => {
+        stickyPhoto.src = newImg;
+        if (stickyYearBadge) stickyYearBadge.innerHTML = newYear;
+        if (stickyEffectCue) stickyEffectCue.innerHTML = newEffect;
+
+        stickyPhoto.style.opacity = '1';
+        stickyPhoto.style.filter = 'blur(0px)';
+        stickyPhoto.style.webkitFilter = 'blur(0px)';
+        stickyPhoto.style.transform = 'scale(1.0)';
+        stickyPhoto.style.webkitTransform = 'scale(1.0)';
+      }, 280);
     }
+  }
 
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            updateActiveMilestone(entry.target);
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          updateActiveMilestone(entry.target);
+        }
+      });
+    }, {
+      root: null,
+      rootMargin: '-10% 0px -20% 0px', // Focus zone across laptops, MacBooks & phones
+      threshold: [0.15, 0.4]
+    });
+
+    milestones.forEach(m => observer.observe(m));
+  } else {
+    // Fallback for older browsers without IntersectionObserver
+    let scrollTimeout;
+    window.addEventListener('scroll', () => {
+      if (scrollTimeout) return;
+      scrollTimeout = setTimeout(() => {
+        scrollTimeout = null;
+        const viewportMid = window.innerHeight * 0.45;
+        milestones.forEach(m => {
+          const rect = m.getBoundingClientRect();
+          if (rect.top <= viewportMid && rect.bottom >= viewportMid) {
+            updateActiveMilestone(m);
           }
         });
-      }, {
-        root: null,
-        rootMargin: '-10% 0px -20% 0px', // Robust focal band across mobile & desktop viewports
-        threshold: [0.15, 0.4]
-      });
-
-      milestones.forEach(m => observer.observe(m));
-    } else {
-      // Fallback for older browsers without IntersectionObserver
-      let scrollTimeout;
-      window.addEventListener('scroll', () => {
-        if (scrollTimeout) return;
-        scrollTimeout = setTimeout(() => {
-          scrollTimeout = null;
-          const viewportMid = window.innerHeight * 0.45;
-          milestones.forEach(m => {
-            const rect = m.getBoundingClientRect();
-            if (rect.top <= viewportMid && rect.bottom >= viewportMid) {
-              updateActiveMilestone(m);
-            }
-          });
-        }, 100);
-      }, { passive: true });
-    }
-  }
-
-  // -----------------------------------------------------------
-  // B. CONCEPT C: 3D MEMORY DECK (INTERACTIVE KEEPSAKE)
-  // -----------------------------------------------------------
-  const flipBtn = document.getElementById('deck-flip-btn');
-  const resetBtn = document.getElementById('deck-reset-btn');
-  const deckTitle = document.getElementById('deck-story-title');
-  const deckQuote = document.getElementById('deck-story-quote');
-
-  const deckData = [
-    {
-      year: "2023 &bull; First Coffee",
-      title: "The Spark & First Coffee",
-      quote: `"A nervous first coffee in the city that turned into a four-hour conversation. The moment we both quietly realized this was the start of something rare."`
-    },
-    {
-      year: "2024 &bull; Road Trips",
-      title: "Exploring Horizons Together",
-      quote: `"Coastal road trips, mountain trails, learning each other's favorite songs, and discovering that home isn't a place—it's wherever we are together."`
-    },
-    {
-      year: "2025 &bull; The Proposal",
-      title: "The Unforgettable \"Yes!\"",
-      quote: `"Under a golden sunset, with joyful tears and trembling hands. The easiest question he ever asked, and the happiest answer she ever gave."`
-    },
-    {
-      year: "2026 &bull; Our Wedding Day",
-      title: "The Vows of a Lifetime",
-      quote: `"Now, surrounded by the people who mean the world to us, we celebrate our union. You are an essential part of our story."`
-    }
-  ];
-
-  let currentCardIndex = 0;
-
-  function flipTopCard() {
-    if (currentCardIndex < 3) {
-      const activeCard = document.getElementById(`deck-card-${currentCardIndex}`);
-      if (activeCard) {
-        activeCard.classList.add('flipped');
-      }
-      currentCardIndex++;
-      
-      // Update text
-      if (deckTitle) deckTitle.innerText = deckData[currentCardIndex].title;
-      if (deckQuote) deckQuote.innerText = deckData[currentCardIndex].quote;
-    } else {
-      // Loop back to start
-      resetDeck();
-    }
-  }
-
-  function resetDeck() {
-    for (let i = 0; i <= 3; i++) {
-      const card = document.getElementById(`deck-card-${i}`);
-      if (card) card.classList.remove('flipped');
-    }
-    currentCardIndex = 0;
-    if (deckTitle) deckTitle.innerText = deckData[0].title;
-    if (deckQuote) deckQuote.innerText = deckData[0].quote;
-  }
-
-  if (flipBtn) {
-    flipBtn.addEventListener('click', flipTopCard);
-  }
-
-  if (resetBtn) {
-    resetBtn.addEventListener('click', resetDeck);
-  }
-
-  // Allow clicking directly on any deck card to flip
-  for (let i = 0; i <= 3; i++) {
-    const card = document.getElementById(`deck-card-${i}`);
-    if (card) {
-      card.addEventListener('click', flipTopCard);
-    }
+      }, 100);
+    }, { passive: true });
   }
 }
 
