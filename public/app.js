@@ -1,5 +1,5 @@
 // -------------------------------------------------------------
-// Wedding Website Client Logic
+// Wedding Website Client Logic: Scroll-Driven Story Slideshow
 // -------------------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -11,25 +11,33 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // =============================================================
-// 1. FULLSCREEN SCROLL-DRIVEN STORY / SLIDESHOW CONTROLLER
+// 1. FULLSCREEN SCROLL-PINNED STORY SLIDESHOW CONTROLLER
 // =============================================================
 function initStorySlideshow() {
-  const wrapper = document.getElementById('story-slideshow-wrapper');
+  const container = document.getElementById('story-scroll-container');
   const slides = document.querySelectorAll('.story-slide');
   const progressFills = document.querySelectorAll('.story-progress-fill');
+  const progressBars = document.querySelectorAll('.story-progress-bar-bg');
   const playBtn = document.getElementById('story-autoplay-toggle');
   const playIcon = document.getElementById('story-play-icon');
   const pauseIcon = document.getElementById('story-pause-icon');
+  const tapLeftArea = document.getElementById('story-tap-left');
+  const tapRightArea = document.getElementById('story-tap-right');
   const totalSlides = slides.length;
 
-  if (!wrapper || totalSlides === 0) return;
+  if (!container || totalSlides === 0) return;
 
   let currentSlideIndex = 0;
   let autoplayTimer = null;
   let isAutoplaying = false;
+  let isTicking = false;
 
-  function setSlide(index, progressInsideSlide = 0) {
+  // Set visual state of slides
+  function setActiveSlide(index) {
     index = Math.max(0, Math.min(totalSlides - 1, index));
+    if (index === currentSlideIndex && slides[index].classList.contains('active')) {
+      return;
+    }
     currentSlideIndex = index;
 
     slides.forEach((slide, i) => {
@@ -39,87 +47,142 @@ function initStorySlideshow() {
         slide.classList.remove('active');
       }
     });
+  }
 
+  // Update progress bars based on overall scroll progress (0.0 to 1.0)
+  function updateProgressBars(progress) {
+    const activeIdx = Math.min(totalSlides - 1, Math.floor(progress * totalSlides));
+    
     progressFills.forEach((fill, i) => {
-      if (i < index) {
-        fill.style.width = '100%';
+      if (i < activeIdx) {
         fill.classList.remove('current-active');
         fill.classList.add('completed');
-      } else if (i === index) {
-        fill.style.width = `${Math.min(100, Math.max(5, progressInsideSlide * 100))}%`;
+        fill.style.width = '100%';
+      } else if (i === activeIdx) {
         fill.classList.add('current-active');
         fill.classList.remove('completed');
+        // Calculate progress percentage inside this specific segment
+        const segmentProgress = (progress - (i / totalSlides)) * totalSlides;
+        const fillPercent = Math.max(8, Math.min(100, segmentProgress * 100));
+        fill.style.width = `${fillPercent}%`;
       } else {
-        fill.style.width = '0%';
         fill.classList.remove('current-active', 'completed');
+        fill.style.width = '0%';
       }
     });
   }
 
-  // Scroll Scrubber (Syncs thumb / mouse scroll with slides and progress bars)
+  // Core Scroll Handler
   function onScroll() {
-    if (isAutoplaying) return; // Allow autoplay without scroll interference
+    const rect = container.getBoundingClientRect();
+    const containerHeight = container.offsetHeight;
+    const windowHeight = window.innerHeight;
+    const totalScrollable = containerHeight - windowHeight;
 
-    const rect = wrapper.getBoundingClientRect();
-    const scrollDistance = -rect.top;
-    const maxScroll = rect.height - window.innerHeight;
+    if (totalScrollable <= 0) return;
 
-    if (maxScroll <= 0) return;
+    // Scroll progress from 0.0 to 1.0
+    const scrollOffset = -rect.top;
+    const progress = Math.max(0, Math.min(1, scrollOffset / totalScrollable));
 
-    const progress = Math.max(0, Math.min(1, scrollDistance / maxScroll));
+    // Determine target slide based on progress
+    const targetIndex = Math.min(totalSlides - 1, Math.floor(progress * totalSlides));
+    setActiveSlide(targetIndex);
+    updateProgressBars(progress);
 
-    // Calculate which slide should be active and progress within it
-    const floatIndex = progress * (totalSlides - 1);
-    const targetIndex = Math.floor(floatIndex);
-    const progressInSlide = floatIndex - targetIndex;
-
-    setSlide(targetIndex, progressInSlide);
+    isTicking = false;
   }
 
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll(); // Initialize on load
+  // RequestAnimationFrame throttled scroll listener for 60fps/120fps performance
+  window.addEventListener('scroll', () => {
+    if (!isTicking) {
+      window.requestAnimationFrame(onScroll);
+      isTicking = true;
+    }
+  }, { passive: true });
 
-  // Click on Progress Bars to jump to a specific year
-  document.querySelectorAll('.story-progress-bar-bg').forEach((bar, index) => {
+  // Recalculate on window resize
+  window.addEventListener('resize', () => {
+    onScroll();
+  }, { passive: true });
+
+  // Initial calculation
+  setActiveSlide(0);
+  onScroll();
+
+  // -----------------------------------------------------------
+  // PROGRAMMATIC NAVIGATION (Clicking bars, buttons, or tap areas)
+  // -----------------------------------------------------------
+  function scrollToSlide(index) {
+    const containerHeight = container.offsetHeight;
+    const windowHeight = window.innerHeight;
+    const totalScrollable = containerHeight - windowHeight;
+    const containerTop = container.offsetTop;
+
+    // Jump to the middle of that slide's segment
+    const targetScroll = containerTop + ((index + 0.4) / totalSlides) * totalScrollable;
+    window.scrollTo({
+      top: targetScroll,
+      behavior: 'smooth'
+    });
+  }
+
+  // Progress Bar Clicks
+  progressBars.forEach((bar, index) => {
     bar.addEventListener('click', (e) => {
       e.stopPropagation();
-      jumpToSlide(index);
+      stopAutoplay();
+      scrollToSlide(index);
     });
   });
 
-  // Tap Left/Right Screen to navigate like Instagram Stories
-  const tapLeftArea = document.getElementById('story-tap-left');
-  const tapRightArea = document.getElementById('story-tap-right');
-
+  // Tap Left Area (Previous Chapter)
   if (tapLeftArea) {
     tapLeftArea.addEventListener('click', () => {
+      stopAutoplay();
       if (currentSlideIndex > 0) {
-        jumpToSlide(currentSlideIndex - 1);
+        scrollToSlide(currentSlideIndex - 1);
       }
     });
   }
 
+  // Tap Right Area (Next Chapter)
   if (tapRightArea) {
     tapRightArea.addEventListener('click', () => {
+      stopAutoplay();
       if (currentSlideIndex < totalSlides - 1) {
-        jumpToSlide(currentSlideIndex + 1);
+        scrollToSlide(currentSlideIndex + 1);
       } else {
-        // Jump down to celebration details
-        const detailsSection = document.getElementById('celebration');
-        if (detailsSection) detailsSection.scrollIntoView({ behavior: 'smooth' });
+        const celebration = document.getElementById('celebration');
+        if (celebration) celebration.scrollIntoView({ behavior: 'smooth' });
       }
     });
   }
 
-  function jumpToSlide(index) {
-    const rect = wrapper.getBoundingClientRect();
-    const maxScroll = wrapper.clientHeight - window.innerHeight;
-    const targetScrollY = window.pageYOffset + rect.top + (maxScroll * (index / (totalSlides - 1)));
-    window.scrollTo({ top: targetScrollY, behavior: 'smooth' });
-    setSlide(index, 0);
-  }
+  // Keyboard Navigation (Arrow Keys)
+  window.addEventListener('keydown', (e) => {
+    const rect = container.getBoundingClientRect();
+    // Only intercept arrow keys if the slideshow is in view
+    if (rect.top <= 100 && rect.bottom >= window.innerHeight * 0.5) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        if (currentSlideIndex < totalSlides - 1) {
+          e.preventDefault();
+          stopAutoplay();
+          scrollToSlide(currentSlideIndex + 1);
+        }
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        if (currentSlideIndex > 0) {
+          e.preventDefault();
+          stopAutoplay();
+          scrollToSlide(currentSlideIndex - 1);
+        }
+      }
+    }
+  });
 
-  // Autoplay Slideshow Toggle
+  // -----------------------------------------------------------
+  // AUTOPLAY SLIDESHOW CONTROLLER
+  // -----------------------------------------------------------
   if (playBtn) {
     playBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -137,18 +200,28 @@ function initStorySlideshow() {
     if (pauseIcon) pauseIcon.classList.remove('hidden');
 
     autoplayTimer = setInterval(() => {
-      let nextIndex = currentSlideIndex + 1;
-      if (nextIndex >= totalSlides) nextIndex = 0;
-      jumpToSlide(nextIndex);
-    }, 4500);
+      let nextIndex = (currentSlideIndex + 1) % totalSlides;
+      scrollToSlide(nextIndex);
+    }, 4000);
   }
 
   function stopAutoplay() {
+    if (!isAutoplaying) return;
     isAutoplaying = false;
     clearInterval(autoplayTimer);
+    autoplayTimer = null;
     if (playIcon) playIcon.classList.remove('hidden');
     if (pauseIcon) pauseIcon.classList.add('hidden');
   }
+
+  // Pause autoplay if user manually scrolls with touch or wheel
+  window.addEventListener('wheel', () => {
+    if (isAutoplaying) stopAutoplay();
+  }, { passive: true });
+
+  window.addEventListener('touchstart', () => {
+    if (isAutoplaying) stopAutoplay();
+  }, { passive: true });
 }
 
 // =============================================================

@@ -78,19 +78,20 @@ html {
 }
 
 /* -------------------------------------------------------------
- * FULLSCREEN SCROLL-DRIVEN STORY / SLIDESHOW
+ * FULLSCREEN SCROLL-PINNED STORY SLIDESHOW STAGE
  * ------------------------------------------------------------- */
-#story-slideshow-wrapper {
+#story-scroll-container {
   position: relative;
-  height: 400vh; /* 4 chapters x 100vh of smooth scroll runway */
+  width: 100%;
+  height: 320vh; /* Smooth, responsive scroll runway */
 }
 
 #story-sticky-stage {
   position: sticky;
   top: 0;
-  left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
+  min-height: 600px;
   overflow: hidden;
   background-color: #0A0A0A;
 }
@@ -100,35 +101,71 @@ html {
   inset: 0;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s ease;
-  will-change: opacity, transform;
+  clip-path: circle(0% at 50% 50%);
+  transform: scale(1.08);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+              clip-path 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), 
+              visibility 0.8s ease;
+  will-change: opacity, transform, clip-path;
 }
 
 .story-slide.active {
   opacity: 1;
   visibility: visible;
+  clip-path: circle(140% at 50% 50%);
+  transform: scale(1);
+  z-index: 10;
 }
 
-/* Ken Burns slow subtle zoom */
-.story-bg-img {
+/* Cinematic Photo Background & Subtle Ken Burns Drift */
+.story-bg-media {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.04);
-  transition: transform 8s ease-out;
+  transform-origin: center center;
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.story-slide.active .story-bg-img {
-  transform: scale(1.10);
+
+.story-slide.active .story-bg-media {
+  animation: kenBurnsDrift 16s ease-out infinite alternate;
+}
+
+@keyframes kenBurnsDrift {
+  0% {
+    transform: scale(1.0) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.05) translate(-1.2%, -0.8%);
+  }
+}
+
+/* Story Typography & Content Smooth Slide-Up Transition */
+.story-content {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.story-slide.active .story-content {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.15s;
 }
 
 /* Story Progress Bars (Instagram / Google Photos Style) */
 .story-progress-bar-bg {
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.3);
   height: 3px;
   border-radius: 2px;
   overflow: hidden;
   position: relative;
   cursor: pointer;
+  transition: background 0.2s ease;
+}
+.story-progress-bar-bg:hover {
+  background: rgba(255, 255, 255, 0.65);
 }
 
 .story-progress-fill {
@@ -136,29 +173,44 @@ html {
   height: 100%;
   width: 0%;
   border-radius: 2px;
-  transition: width 0.15s ease-out;
+  transition: width 0.1s linear;
 }
 
 .story-progress-fill.completed {
-  width: 100%;
+  width: 100% !important;
+  background: #FFFFFF;
 }
 
 .story-progress-fill.current-active {
   background: #E5B842; /* Warm Gold */
 }
 
-/* Floating Autoplay / Audio Widget */
+/* Story Controls */
 .story-control-btn {
-  background: rgba(20, 20, 20, 0.55);
+  background: rgba(20, 20, 20, 0.6);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   color: #FFFFFF;
   transition: all 0.2s ease;
 }
 .story-control-btn:hover {
   background: rgba(107, 23, 36, 0.85); /* Velvet Maroon */
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+/* Subtle Floating Scroll Cue */
+.scroll-wheel-indicator {
+  animation: floatBounce 2.2s infinite ease-in-out;
+}
+
+@keyframes floatBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
 }
 
 /* Custom scrollbar */
