@@ -305,8 +305,8 @@ function initCalendarDownloads() {
 
   const eventDetails = {
     title: "Wedding of Roopa & Jason",
-    description: "Join us in celebrating the wedding celebration of Roopa S Nayar & Jason Conred Misquith. Nuptials at 3:30 PM, Twilight Reception at 7:30 PM at EDGEWATER, Mangaluru.",
-    location: "EDGEWATER, SB Rd, Bokkapatna, Gandhinagar, Mangaluru, Karnataka 575003",
+    description: "Wedding Nuptials at 3:30 PM (Most Holy Redeemer Church, Derebail), followed by Twilight Reception at 7:30 PM at EDGEWATER, Mangaluru.",
+    location: "Most Holy Redeemer Church, Derebail (Nuptials) & EDGEWATER, Bokkapatna (Reception), Mangaluru",
     start: "20261128T100000Z", // 3:30 PM IST (UTC 10:00 AM)
     end: "20261128T183000Z"    // Midnight IST (UTC 6:30 PM)
   };
