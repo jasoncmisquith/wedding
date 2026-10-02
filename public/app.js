@@ -304,7 +304,7 @@ function initCalendarDownloads() {
 
   const eventDetails = {
     title: "Wedding of Roopa & Jason",
-    description: "Wedding Nuptials at 3:30 PM (Most Holy Redeemer Church, Derebail), followed by Twilight Reception at 7:30 PM at EDGEWATER, Mangaluru.",
+    description: "Wedding Nuptials at 3:30 PM (Most Holy Redeemer Church, Derebail), followed by Twilight Reception at 7:00 PM at EDGEWATER, Mangaluru.",
     location: "Most Holy Redeemer Church, Derebail (Nuptials) & EDGEWATER, Bokkapatna (Reception), Mangaluru",
     start: "20261128T100000Z", // 3:30 PM IST (UTC 10:00 AM)
     end: "20261128T183000Z"    // Midnight IST (UTC 6:30 PM)
