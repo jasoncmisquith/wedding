@@ -218,3 +218,50 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-maroon);
 }
+
+/* -------------------------------------------------------------
+ * INTERACTIVE STORY CONCEPTS SHOWCASE STYLES
+ * ------------------------------------------------------------- */
+.concept-tab-btn {
+  background: transparent;
+  color: #555555;
+  cursor: pointer;
+}
+.concept-tab-btn:hover {
+  color: var(--color-maroon);
+}
+.concept-tab-btn.active {
+  background: var(--color-maroon);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px -2px rgba(107, 23, 36, 0.45);
+}
+
+/* Concept A: Archival Museum Frame */
+.archival-frame {
+  box-shadow: 0 20px 45px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(197, 168, 128, 0.35);
+}
+
+.narrative-milestone {
+  border-left: 3px solid transparent;
+}
+.narrative-milestone.active {
+  background: #FFFFFF !important;
+  border-color: var(--color-maroon) !important;
+  border-left: 3px solid var(--color-maroon);
+  box-shadow: 0 10px 25px -5px rgba(107, 23, 36, 0.08);
+}
+
+/* Concept C: 3D Memory Deck */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.deck-card {
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+.deck-card.flipped {
+  transform: translateY(-90px) rotateY(180deg) scale(0.85) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+

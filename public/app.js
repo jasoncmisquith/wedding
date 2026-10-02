@@ -4,6 +4,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   initStorySlideshow();
+  initStoryConcepts();
   initCountdown();
   initCalendarDownloads();
   initFaqAccordion();
@@ -11,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // =============================================================
-// 1. FULLSCREEN STORY SLIDESHOW CONTROLLER
+// 1. FULLSCREEN STORY SLIDESHOW (CLEAN AUTO-PLAY + ARROWS)
 // =============================================================
 function initStorySlideshow() {
   const wrapper = document.getElementById('story-slideshow-wrapper');
@@ -21,6 +22,8 @@ function initStorySlideshow() {
   const playBtn = document.getElementById('story-autoplay-toggle');
   const playIcon = document.getElementById('story-play-icon');
   const pauseIcon = document.getElementById('story-pause-icon');
+  const prevBtn = document.getElementById('hero-prev-btn');
+  const nextBtn = document.getElementById('hero-next-btn');
   const tapLeftArea = document.getElementById('story-tap-left');
   const tapRightArea = document.getElementById('story-tap-right');
   const totalSlides = slides.length;
@@ -29,13 +32,11 @@ function initStorySlideshow() {
 
   let currentSlideIndex = 0;
   let autoplayTimer = null;
-  let isAutoplaying = false;
-  let isWheelThrottled = false;
-  let wheelAccumulator = 0;
-  const WHEEL_THRESHOLD = 30; // Natural threshold for both trackpads and mouse wheels
+  let isAutoplaying = true; // Auto-play by default as requested
 
   function goToSlide(index) {
-    index = Math.max(0, Math.min(totalSlides - 1, index));
+    if (index >= totalSlides) index = 0;
+    if (index < 0) index = totalSlides - 1;
     currentSlideIndex = index;
 
     slides.forEach((slide, i) => {
@@ -44,7 +45,6 @@ function initStorySlideshow() {
         slide.classList.add('active');
         if (content) {
           content.style.display = 'block';
-          // Ensure display:block is painted before opacity/transform transition
           void content.offsetWidth;
           content.style.opacity = '1';
           content.style.transform = 'translateY(0)';
@@ -83,156 +83,76 @@ function initStorySlideshow() {
   // Initialize on Slide 0
   goToSlide(0);
 
-  // -----------------------------------------------------------
-  // A. SCROLL / MOUSE WHEEL GESTURE CONTROLLER
-  // -----------------------------------------------------------
-  window.addEventListener('wheel', (e) => {
-    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-
-    // Only intercept when user is at the top of the webpage (viewing the story slideshow)
-    if (scrollY <= 15) {
-      if (e.deltaY > 0) {
-        // Scrolling DOWN
-        if (currentSlideIndex < totalSlides - 1) {
-          // MUST call preventDefault on every downward wheel event so the browser doesn't scroll the page!
-          e.preventDefault();
-
-          if (isWheelThrottled) return;
-
-          wheelAccumulator += e.deltaY;
-          if (wheelAccumulator >= WHEEL_THRESHOLD) {
-            wheelAccumulator = 0;
-            isWheelThrottled = true;
-            stopAutoplay();
-            goToSlide(currentSlideIndex + 1);
-            setTimeout(() => {
-              isWheelThrottled = false;
-              wheelAccumulator = 0;
-            }, 550);
-          }
-        } else {
-          // On last slide (2026: Chapter IV):
-          // Allow natural page scroll down into #celebration!
-        }
-      } else if (e.deltaY < 0) {
-        // Scrolling UP
-        if (currentSlideIndex > 0) {
-          e.preventDefault();
-
-          if (isWheelThrottled) return;
-
-          wheelAccumulator += e.deltaY;
-          if (wheelAccumulator <= -WHEEL_THRESHOLD) {
-            wheelAccumulator = 0;
-            isWheelThrottled = true;
-            stopAutoplay();
-            goToSlide(currentSlideIndex - 1);
-            setTimeout(() => {
-              isWheelThrottled = false;
-              wheelAccumulator = 0;
-            }, 550);
-          }
-        }
-      }
-    }
-  }, { passive: false });
-
-  // -----------------------------------------------------------
-  // B. TOUCH SWIPE CONTROLLER (MOBILE & TABLET)
-  // -----------------------------------------------------------
-  let touchStartY = 0;
-  let touchStartX = 0;
-
-  wrapper.addEventListener('touchstart', (e) => {
-    touchStartY = e.touches[0].clientY;
-    touchStartX = e.touches[0].clientX;
-  }, { passive: true });
-
-  wrapper.addEventListener('touchend', (e) => {
-    const touchEndY = e.changedTouches[0].clientY;
-    const touchEndX = e.changedTouches[0].clientX;
-    const diffY = touchStartY - touchEndY;
-    const diffX = touchStartX - touchEndX;
-
-    if (Math.abs(diffY) > 40 || Math.abs(diffX) > 40) {
-      stopAutoplay();
-      if (diffY > 40 || diffX > 40) {
-        // Swipe UP or LEFT -> Next
-        if (currentSlideIndex < totalSlides - 1) {
-          goToSlide(currentSlideIndex + 1);
-        } else {
-          const celebration = document.getElementById('celebration');
-          if (celebration) celebration.scrollIntoView({ behavior: 'smooth' });
-        }
-      } else if (diffY < -40 || diffX < -40) {
-        // Swipe DOWN or RIGHT -> Prev
-        if (currentSlideIndex > 0) {
-          goToSlide(currentSlideIndex - 1);
-        }
-      }
-    }
-  }, { passive: true });
-
-  // -----------------------------------------------------------
-  // C. PROGRESS BAR CLICKS & TAP AREAS
-  // -----------------------------------------------------------
-  progressBars.forEach((bar, index) => {
-    bar.addEventListener('click', (e) => {
+  // Arrow Button Navigation
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      stopAutoplay();
-      goToSlide(index);
+      goToSlide(currentSlideIndex - 1);
+      resetAutoplay();
     });
-  });
+  }
 
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      goToSlide(currentSlideIndex + 1);
+      resetAutoplay();
+    });
+  }
+
+  // Tap Left / Right Zones
   if (tapLeftArea) {
     tapLeftArea.addEventListener('click', () => {
-      stopAutoplay();
-      if (currentSlideIndex > 0) {
-        goToSlide(currentSlideIndex - 1);
-      }
+      goToSlide(currentSlideIndex - 1);
+      resetAutoplay();
     });
   }
 
   if (tapRightArea) {
     tapRightArea.addEventListener('click', () => {
-      stopAutoplay();
-      if (currentSlideIndex < totalSlides - 1) {
-        goToSlide(currentSlideIndex + 1);
-      } else {
-        const celebration = document.getElementById('celebration');
-        if (celebration) celebration.scrollIntoView({ behavior: 'smooth' });
-      }
+      goToSlide(currentSlideIndex + 1);
+      resetAutoplay();
     });
   }
 
-  // -----------------------------------------------------------
-  // D. KEYBOARD NAVIGATION (ARROW KEYS)
-  // -----------------------------------------------------------
-  window.addEventListener('keydown', (e) => {
-    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-    if (scrollY <= 50) {
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-        if (currentSlideIndex < totalSlides - 1) {
-          e.preventDefault();
-          stopAutoplay();
-          goToSlide(currentSlideIndex + 1);
-        } else {
-          const celebration = document.getElementById('celebration');
-          if (celebration) celebration.scrollIntoView({ behavior: 'smooth' });
-        }
-      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-        if (currentSlideIndex > 0) {
-          e.preventDefault();
-          stopAutoplay();
-          goToSlide(currentSlideIndex - 1);
-        }
-      }
-    }
+  // Progress Bar Clicks
+  progressBars.forEach((bar, index) => {
+    bar.addEventListener('click', (e) => {
+      e.stopPropagation();
+      goToSlide(index);
+      resetAutoplay();
+    });
   });
 
-  // -----------------------------------------------------------
-  // E. AUTOPLAY CONTROLLER
-  // -----------------------------------------------------------
+  // Autoplay Controller (Switches every 4.5s)
+  function startAutoplay() {
+    isAutoplaying = true;
+    if (playIcon) playIcon.classList.add('hidden');
+    if (pauseIcon) pauseIcon.classList.remove('hidden');
+
+    clearInterval(autoplayTimer);
+    autoplayTimer = setInterval(() => {
+      goToSlide(currentSlideIndex + 1);
+    }, 4500);
+  }
+
+  function stopAutoplay() {
+    isAutoplaying = false;
+    clearInterval(autoplayTimer);
+    autoplayTimer = null;
+    if (playIcon) playIcon.classList.remove('hidden');
+    if (pauseIcon) pauseIcon.classList.add('hidden');
+  }
+
+  function resetAutoplay() {
+    if (isAutoplaying) {
+      clearInterval(autoplayTimer);
+      autoplayTimer = setInterval(() => {
+        goToSlide(currentSlideIndex + 1);
+      }, 4500);
+    }
+  }
+
   if (playBtn) {
     playBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -244,34 +164,159 @@ function initStorySlideshow() {
     });
   }
 
-  function startAutoplay() {
-    isAutoplaying = true;
-    if (playIcon) playIcon.classList.add('hidden');
-    if (pauseIcon) pauseIcon.classList.remove('hidden');
+  // Start initial autoplay
+  startAutoplay();
+}
 
-    autoplayTimer = setInterval(() => {
-      let nextIndex = (currentSlideIndex + 1) % totalSlides;
-      goToSlide(nextIndex);
-    }, 4000);
+// =============================================================
+// 2. INTERACTIVE 4-YEAR STORY CONCEPTS SHOWCASE
+// =============================================================
+function initStoryConcepts() {
+  const tabs = document.querySelectorAll('.concept-tab-btn');
+  const views = document.querySelectorAll('.concept-view');
+
+  if (tabs.length === 0) return;
+
+  // Tab Switching
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const targetConcept = tab.getAttribute('data-concept');
+
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      views.forEach(v => {
+        if (v.id === targetConcept) {
+          v.classList.remove('hidden');
+          v.classList.add('block');
+        } else {
+          v.classList.remove('block');
+          v.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // -----------------------------------------------------------
+  // A. CONCEPT A: STICKY GALLERY OBSERVER (APPLE / MUSEUM LOOK)
+  // -----------------------------------------------------------
+  const stickyPhoto = document.getElementById('sticky-photo');
+  const stickyYearBadge = document.getElementById('sticky-year-badge');
+  const stickyEffectCue = document.getElementById('sticky-effect-cue');
+  const milestones = document.querySelectorAll('.narrative-milestone');
+
+  if (stickyPhoto && milestones.length > 0) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const target = entry.target;
+          const newImg = target.getAttribute('data-img');
+          const newYear = target.getAttribute('data-year');
+          const newEffect = target.getAttribute('data-effect');
+
+          // Highlight active milestone card
+          milestones.forEach(m => m.classList.remove('active'));
+          target.classList.add('active');
+
+          // Smooth photo morph with focus/scale
+          if (stickyPhoto.src !== newImg) {
+            stickyPhoto.style.opacity = '0.35';
+            stickyPhoto.style.filter = 'blur(10px) scale(0.97)';
+            
+            setTimeout(() => {
+              stickyPhoto.src = newImg;
+              if (stickyYearBadge) stickyYearBadge.innerHTML = newYear;
+              if (stickyEffectCue) stickyEffectCue.innerHTML = newEffect;
+
+              stickyPhoto.style.opacity = '1';
+              stickyPhoto.style.filter = 'blur(0px) scale(1.0)';
+            }, 300);
+          }
+        }
+      });
+    }, {
+      root: null,
+      threshold: 0.6 // Triggers when milestone is centered in viewport
+    });
+
+    milestones.forEach(m => observer.observe(m));
   }
 
-  function stopAutoplay() {
-    if (!isAutoplaying) return;
-    isAutoplaying = false;
-    clearInterval(autoplayTimer);
-    autoplayTimer = null;
-    if (playIcon) playIcon.classList.remove('hidden');
-    if (pauseIcon) pauseIcon.classList.add('hidden');
+  // -----------------------------------------------------------
+  // B. CONCEPT C: 3D MEMORY DECK (INTERACTIVE KEEPSAKE)
+  // -----------------------------------------------------------
+  const flipBtn = document.getElementById('deck-flip-btn');
+  const resetBtn = document.getElementById('deck-reset-btn');
+  const deckTitle = document.getElementById('deck-story-title');
+  const deckQuote = document.getElementById('deck-story-quote');
+
+  const deckData = [
+    {
+      year: "2023 &bull; First Coffee",
+      title: "The Spark & First Coffee",
+      quote: `"A nervous first coffee in the city that turned into a four-hour conversation. The moment we both quietly realized this was the start of something rare."`
+    },
+    {
+      year: "2024 &bull; Road Trips",
+      title: "Exploring Horizons Together",
+      quote: `"Coastal road trips, mountain trails, learning each other's favorite songs, and discovering that home isn't a place—it's wherever we are together."`
+    },
+    {
+      year: "2025 &bull; The Proposal",
+      title: "The Unforgettable \"Yes!\"",
+      quote: `"Under a golden sunset, with joyful tears and trembling hands. The easiest question he ever asked, and the happiest answer she ever gave."`
+    },
+    {
+      year: "2026 &bull; Our Wedding Day",
+      title: "The Vows of a Lifetime",
+      quote: `"Now, surrounded by the people who mean the world to us, we celebrate our union. You are an essential part of our story."`
+    }
+  ];
+
+  let currentCardIndex = 0;
+
+  function flipTopCard() {
+    if (currentCardIndex < 3) {
+      const activeCard = document.getElementById(`deck-card-${currentCardIndex}`);
+      if (activeCard) {
+        activeCard.classList.add('flipped');
+      }
+      currentCardIndex++;
+      
+      // Update text
+      if (deckTitle) deckTitle.innerText = deckData[currentCardIndex].title;
+      if (deckQuote) deckQuote.innerText = deckData[currentCardIndex].quote;
+    } else {
+      // Loop back to start
+      resetDeck();
+    }
   }
 
-  // Stop autoplay if user manually scrolls or touches
-  window.addEventListener('wheel', () => {
-    if (isAutoplaying) stopAutoplay();
-  }, { passive: true });
+  function resetDeck() {
+    for (let i = 0; i <= 3; i++) {
+      const card = document.getElementById(`deck-card-${i}`);
+      if (card) card.classList.remove('flipped');
+    }
+    currentCardIndex = 0;
+    if (deckTitle) deckTitle.innerText = deckData[0].title;
+    if (deckQuote) deckQuote.innerText = deckData[0].quote;
+  }
 
-  window.addEventListener('touchstart', () => {
-    if (isAutoplaying) stopAutoplay();
-  }, { passive: true });
+  if (flipBtn) {
+    flipBtn.addEventListener('click', flipTopCard);
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', resetDeck);
+  }
+
+  // Allow clicking directly on any deck card to flip
+  for (let i = 0; i <= 3; i++) {
+    const card = document.getElementById(`deck-card-${i}`);
+    if (card) {
+      card.addEventListener('click', flipTopCard);
+    }
+  }
 }
 
 // =============================================================
