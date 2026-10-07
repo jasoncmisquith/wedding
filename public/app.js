@@ -360,7 +360,7 @@ function initMobileStoryCarousel() {
 // 3. LIVE COUNTDOWN TIMER
 // =============================================================
 function initCountdown() {
-  // Wedding Nuptials: Saturday, November 28, 2026 at 3:30 PM IST (UTC+05:30)
+  // Wedding Ceremony: Saturday, November 28, 2026 at 3:30 PM IST (UTC+05:30)
   // Date.UTC returns exact epoch milliseconds (10:00:00 UTC), 100% immune to Safari/Chrome/Firefox timezone string discrepancies
   const targetDate = Date.UTC(2026, 10, 28, 10, 0, 0);
 
