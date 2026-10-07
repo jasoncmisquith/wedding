@@ -399,23 +399,21 @@ function initCountdown() {
 }
 
 // =============================================================
-// 3. CALENDAR EXPORT (GOOGLE & APPLE .ICS)
+// 4. CALENDAR EXPORT (PER-EVENT & GLOBAL .ICS / GOOGLE CAL)
 // =============================================================
 function initCalendarDownloads() {
-  const downloadIcsBtn = document.getElementById('download-ics-btn');
-  const googleCalBtn = document.getElementById('google-cal-btn');
+  const icsButtons = document.querySelectorAll('.btn-download-ics');
 
-  const eventDetails = {
-    title: "Wedding of Roopa & Jason",
-    description: "Wedding Nuptials at 3:30 PM (Most Holy Redeemer Church, Derebail), followed by Reception at 7:00 PM at EDGEWATER, Mangaluru.",
-    location: "Most Holy Redeemer Church, Derebail (Nuptials) & EDGEWATER, Bokkapatna (Reception), Mangaluru",
-    start: "20261128T100000Z", // 3:30 PM IST (UTC 10:00 AM)
-    end: "20261128T183000Z"    // Midnight IST (UTC 6:30 PM)
-  };
-
-  if (downloadIcsBtn) {
-    downloadIcsBtn.addEventListener('click', (e) => {
+  icsButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
       e.preventDefault();
+      const title = btn.getAttribute('data-title') || "Wedding Event — Roopa & Jason";
+      const desc = btn.getAttribute('data-desc') || "Wedding celebration for Roopa & Jason";
+      const loc = btn.getAttribute('data-loc') || "Mangaluru, Karnataka";
+      const start = btn.getAttribute('data-start') || "20261128T100000Z";
+      const end = btn.getAttribute('data-end') || "20261128T183000Z";
+      const filename = btn.getAttribute('data-file') || "wedding-event.ics";
+
       const icsContent = [
         "BEGIN:VCALENDAR",
         "VERSION:2.0",
@@ -423,13 +421,13 @@ function initCalendarDownloads() {
         "CALSCALE:GREGORIAN",
         "METHOD:PUBLISH",
         "BEGIN:VEVENT",
-        `UID:wedding-roopa-jason-${Date.now()}@weddingwebsite.local`,
+        `UID:wedding-event-${Date.now()}@weddingwebsite.local`,
         `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
-        `DTSTART:${eventDetails.start}`,
-        `DTEND:${eventDetails.end}`,
-        `SUMMARY:${eventDetails.title}`,
-        `DESCRIPTION:${eventDetails.description}`,
-        `LOCATION:${eventDetails.location}`,
+        `DTSTART:${start}`,
+        `DTEND:${end}`,
+        `SUMMARY:${title}`,
+        `DESCRIPTION:${desc}`,
+        `LOCATION:${loc}`,
         "STATUS:CONFIRMED",
         "END:VEVENT",
         "END:VCALENDAR"
@@ -437,12 +435,12 @@ function initCalendarDownloads() {
 
       const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
       if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-        window.navigator.msSaveOrOpenBlob(blob, 'roopa-and-jason-wedding.ics');
+        window.navigator.msSaveOrOpenBlob(blob, filename);
       } else {
         const link = document.createElement('a');
         const objectUrl = window.URL.createObjectURL(blob);
         link.href = objectUrl;
-        link.setAttribute('download', 'roopa-and-jason-wedding.ics');
+        link.setAttribute('download', filename);
         link.setAttribute('target', '_blank');
         document.body.appendChild(link);
         link.click();
@@ -452,14 +450,7 @@ function initCalendarDownloads() {
         }, 200);
       }
     });
-  }
-
-  if (googleCalBtn) {
-    const gCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventDetails.title)}&dates=${eventDetails.start}/${eventDetails.end}&details=${encodeURIComponent(eventDetails.description)}&location=${encodeURIComponent(eventDetails.location)}`;
-    googleCalBtn.setAttribute('href', gCalUrl);
-    googleCalBtn.setAttribute('target', '_blank');
-    googleCalBtn.setAttribute('rel', 'noopener noreferrer');
-  }
+  });
 }
 
 // =============================================================
