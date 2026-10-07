@@ -5,6 +5,7 @@
 function initApp() {
   initStorySlideshow();
   initStickyStoryGallery();
+  initMobileStoryCarousel();
   initCountdown();
   initCalendarDownloads();
   initMobileMenu();
@@ -124,6 +125,36 @@ function initStorySlideshow() {
       resetAutoplay();
     });
   }
+
+  // Touch Swipe Gesture Navigation (Mobile Phones & Tablets)
+  let touchStartX = 0;
+  let touchStartY = 0;
+
+  wrapper.addEventListener('touchstart', (e) => {
+    if (e.touches && e.touches.length === 1) {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }
+  }, { passive: true });
+
+  wrapper.addEventListener('touchend', (e) => {
+    if (e.changedTouches && e.changedTouches.length === 1) {
+      const touchEndX = e.changedTouches[0].clientX;
+      const touchEndY = e.changedTouches[0].clientY;
+      const diffX = touchEndX - touchStartX;
+      const diffY = touchEndY - touchStartY;
+
+      // Trigger horizontal slide transition if horizontal swipe > vertical movement & threshold >= 40px
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) >= 40) {
+        if (diffX < 0) {
+          goToSlide(currentSlideIndex + 1);
+        } else {
+          goToSlide(currentSlideIndex - 1);
+        }
+        resetAutoplay();
+      }
+    }
+  }, { passive: true });
 
   // Progress Bar Clicks
   progressBars.forEach((bar, index) => {
@@ -256,7 +287,77 @@ function initStickyStoryGallery() {
 }
 
 // =============================================================
-// 2. LIVE COUNTDOWN TIMER
+// 2.5 MOBILE STORY CAROUSEL & CHAPTER TABS (< lg)
+// =============================================================
+function initMobileStoryCarousel() {
+  const carousel = document.getElementById('story-mobile-carousel');
+  const tabs = document.querySelectorAll('.story-tab-pill');
+  const dots = document.querySelectorAll('.story-dot');
+  const cards = document.querySelectorAll('.story-mobile-card');
+
+  if (!carousel || cards.length === 0) return;
+
+  // Click tab pill -> scroll to card
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => {
+      if (cards[index]) {
+        cards[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    });
+  });
+
+  // Click dot -> scroll to card
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      if (cards[index]) {
+        cards[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    });
+  });
+
+  // Update active tab and dot on scroll
+  let scrollRafId = null;
+  carousel.addEventListener('scroll', () => {
+    if (scrollRafId) cancelAnimationFrame(scrollRafId);
+    scrollRafId = requestAnimationFrame(() => {
+      const carouselCenter = carousel.scrollLeft + (carousel.offsetWidth / 2);
+      let closestIndex = 0;
+      let minDiff = Infinity;
+
+      cards.forEach((card, i) => {
+        const cardCenter = card.offsetLeft + (card.offsetWidth / 2);
+        const diff = Math.abs(carouselCenter - cardCenter);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestIndex = i;
+        }
+      });
+
+      // Update tabs
+      tabs.forEach((tab, i) => {
+        if (i === closestIndex) {
+          tab.classList.add('bg-maroon', 'text-white', 'border-maroon');
+          tab.classList.remove('bg-white/80', 'text-charcoal', 'border-gray-200');
+        } else {
+          tab.classList.remove('bg-maroon', 'text-white', 'border-maroon');
+          tab.classList.add('bg-white/80', 'text-charcoal', 'border-gray-200');
+        }
+      });
+
+      // Update dots
+      dots.forEach((dot, i) => {
+        if (i === closestIndex) {
+          dot.className = 'story-dot h-2 w-7 bg-maroon rounded-full transition-all duration-300';
+        } else {
+          dot.className = 'story-dot h-2 w-2 bg-gray-300 rounded-full transition-all duration-300';
+        }
+      });
+    });
+  }, { passive: true });
+}
+
+// =============================================================
+// 3. LIVE COUNTDOWN TIMER
 // =============================================================
 function initCountdown() {
   // Wedding Nuptials: Saturday, November 28, 2026 at 3:30 PM IST (UTC+05:30)

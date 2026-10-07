@@ -310,6 +310,41 @@ button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .
   box-shadow: 0 10px 25px -5px rgba(107, 23, 36, 0.08);
 }
 
+/* -------------------------------------------------------------
+ * MOBILE SCROLL-SNAP STORY CAROUSEL (< lg)
+ * ------------------------------------------------------------- */
+.story-mobile-carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  gap: 1rem;
+  padding: 0.5rem 0.75rem 1.25rem 0.75rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.story-mobile-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.story-mobile-card {
+  scroll-snap-align: center;
+  flex: 0 0 88%;
+  max-width: 380px;
+}
+
+.story-tab-pill {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.story-dot {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* Accessibility: Respect Reduced Motion Preference */
 @media (prefers-reduced-motion: reduce) {
   html {
