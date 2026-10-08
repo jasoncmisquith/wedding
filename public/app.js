@@ -360,9 +360,10 @@ function initMobileStoryCarousel() {
 // 3. LIVE COUNTDOWN TIMER
 // =============================================================
 function initCountdown() {
-  // Wedding Ceremony: Saturday, November 28, 2026 at 3:30 PM IST (UTC+05:30)
-  // Date.UTC returns exact epoch milliseconds (10:00:00 UTC), 100% immune to Safari/Chrome/Firefox timezone string discrepancies
-  const targetDate = Date.UTC(2026, 10, 28, 10, 0, 0);
+  const celebrationEl = document.getElementById('celebration');
+  const customTarget = celebrationEl ? celebrationEl.getAttribute('data-target-date') : null;
+  // Default: Saturday, November 28, 2026 at 3:30 PM IST (UTC 10:00:00)
+  const targetDate = customTarget ? new Date(customTarget).getTime() : Date.UTC(2026, 10, 28, 10, 0, 0);
 
   const daysEl = document.getElementById('cd-days');
   const hoursEl = document.getElementById('cd-hours');
