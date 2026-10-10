@@ -258,7 +258,7 @@
             <!-- Image Column -->
             <div class="lg:col-span-5 relative h-64 sm:h-72 lg:h-auto overflow-hidden bg-gray-100">
               <img 
-                src="assets/images/events/hindu-wedding.jpg" 
+                src="assets/images/events/hindu-wedding.jpg?v=3.8" 
                 alt="Traditional Hindu Wedding Ceremony Mandap — Golden Orca, Udupi" 
                 class="w-full h-full object-cover object-center"
                 loading="lazy"
@@ -586,269 +586,217 @@
       <!-- MOBILE VIEW (< lg): Horizontal Scroll-Snap Stories Deck   -->
       <!-- ======================================================== -->
       <div class="block lg:hidden">
-        
-        <!-- Chapter Quick Switcher Tabs -->
-        <div class="flex items-center space-x-2 overflow-x-auto pb-4 mb-4 scrollbar-none px-1">
-          <button type="button" class="mobile-chapter-tab active px-3.5 py-1.5 rounded-full text-[11px] uppercase tracking-wider font-semibold whitespace-nowrap bg-maroon text-white transition-all shadow-sm" data-target-index="0">
-            I &bull; Dinner Date
+        <!-- Interactive Chapter Tab Pills -->
+        <div class="flex items-center justify-center space-x-2 mb-5 overflow-x-auto no-scrollbar py-1 px-1">
+          <button class="story-tab-pill px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-maroon text-white border border-maroon shadow-sm" data-tab-index="0">
+            Ch. I
           </button>
-          <button type="button" class="mobile-chapter-tab px-3.5 py-1.5 rounded-full text-[11px] uppercase tracking-wider font-semibold whitespace-nowrap bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all" data-target-index="1">
-            II &bull; Everyday Love
+          <button class="story-tab-pill px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-white/80 text-charcoal border border-gray-200" data-tab-index="1">
+            Ch. II
           </button>
-          <button type="button" class="mobile-chapter-tab px-3.5 py-1.5 rounded-full text-[11px] uppercase tracking-wider font-semibold whitespace-nowrap bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all" data-target-index="2">
-            III &bull; Festive Sunshine
+          <button class="story-tab-pill px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-white/80 text-charcoal border border-gray-200" data-tab-index="2">
+            Ch. III
           </button>
-          <button type="button" class="mobile-chapter-tab px-3.5 py-1.5 rounded-full text-[11px] uppercase tracking-wider font-semibold whitespace-nowrap bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all" data-target-index="3">
-            IV &bull; Carried Away
+          <button class="story-tab-pill px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-white/80 text-charcoal border border-gray-200" data-tab-index="3">
+            Ch. IV
           </button>
-          <button type="button" class="mobile-chapter-tab px-3.5 py-1.5 rounded-full text-[11px] uppercase tracking-wider font-semibold whitespace-nowrap bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all" data-target-index="4">
-            V &bull; The Promise
+          <button class="story-tab-pill px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-white/80 text-charcoal border border-gray-200" data-tab-index="4">
+            Ch. V
           </button>
         </div>
 
-        <!-- Horizontal Swipeable Track -->
-        <div id="mobile-story-carousel" class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth space-x-4 pb-6 px-1 -mx-2 px-2 scrollbar-none">
+        <!-- Scroll-Snap Horizontal Carousel -->
+        <div id="story-mobile-carousel" class="story-mobile-carousel">
           
-          <!-- Slide 1 -->
-          <div class="mobile-story-card flex-shrink-0 w-[88vw] max-w-[360px] snap-center bg-white rounded-3xl border border-gold/40 shadow-sm overflow-hidden flex flex-col" data-slide-index="0">
-            <div class="relative aspect-[4/5] w-full overflow-hidden bg-charcoal">
-              <img src="assets/images/story/01-dinner-date.jpg" alt="Dinner Date" class="w-full h-full object-cover object-top" loading="lazy" />
-              <div class="absolute top-3 left-3 bg-maroon/90 text-white text-[10px] uppercase tracking-widest font-semibold px-2.5 py-1 rounded-full backdrop-blur-sm">
-                Chapter I &bull; 2023
+          <!-- Card 0: Dinner Date -->
+          <div class="story-mobile-card bg-white p-4 rounded-2xl shadow-md border border-gold/40 flex flex-col" data-card-index="0">
+            <div class="relative w-full aspect-[4/5] rounded-xl overflow-hidden bg-black mb-3 shadow-inner">
+              <img 
+                src="assets/images/story/01-dinner-date.jpg" 
+                alt="Endless Conversations" 
+                class="w-full h-full object-cover" 
+                style="object-position: center 30%;"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none"></div>
+              <div class="absolute top-3 left-3 z-10">
+                <span class="px-3 py-1 bg-maroon/90 text-white text-[11px] font-bold tracking-widest uppercase rounded-full backdrop-blur-md shadow">
+                  Chapter I
+                </span>
               </div>
             </div>
-            <div class="p-6 flex-1 flex flex-col justify-between">
-              <div>
-                <h3 class="font-serif text-2xl text-charcoal font-normal">Endless Conversations</h3>
-                <p class="font-serif italic text-sm text-gold mt-1">&ldquo;Hours felt like seconds, and every word made us lean in a little closer.&rdquo;</p>
-                <p class="text-xs text-gray-600 leading-relaxed font-light mt-3">
-                  It started across candlelit tables, quiet chuckles, and talking long past the restaurant's last call. We realized our conversations weren't just passing time—they were laying the foundation for everything to come.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Slide 2 -->
-          <div class="mobile-story-card flex-shrink-0 w-[88vw] max-w-[360px] snap-center bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden flex flex-col" data-slide-index="1">
-            <div class="relative aspect-[4/5] w-full overflow-hidden bg-charcoal">
-              <img src="assets/images/story/02-everyday-love.jpg" alt="Everyday Love" class="w-full h-full object-cover object-[center_35%]" loading="lazy" />
-              <div class="absolute top-3 left-3 bg-maroon/90 text-white text-[10px] uppercase tracking-widest font-semibold px-2.5 py-1 rounded-full backdrop-blur-sm">
-                Chapter II &bull; 2024
-              </div>
-            </div>
-            <div class="p-6 flex-1 flex flex-col justify-between">
-              <div>
-                <h3 class="font-serif text-2xl text-charcoal font-normal">Everyday Magic</h3>
-                <p class="font-serif italic text-sm text-gold mt-1">&ldquo;Finding home not in a place, but in each other's quiet warmth.&rdquo;</p>
-                <p class="text-xs text-gray-600 leading-relaxed font-light mt-3">
-                  Between shared coffees, lazy Sunday errands, and spontaneous road trips, love stopped being a grand idea and became our daily reality. Life became infinitely sweeter simply by having each other in it.
-                </p>
-              </div>
+            <div class="px-1 py-1">
+              <span class="text-[10px] uppercase tracking-[0.25em] text-maroon font-semibold block mb-0.5">Chapter I</span>
+              <h3 class="font-serif text-2xl text-charcoal font-normal">Endless Conversations</h3>
             </div>
           </div>
 
-          <!-- Slide 3 -->
-          <div class="mobile-story-card flex-shrink-0 w-[88vw] max-w-[360px] snap-center bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden flex flex-col" data-slide-index="2">
-            <div class="relative aspect-[4/5] w-full overflow-hidden bg-charcoal">
-              <img src="assets/images/story/03-festive-sunshine.jpg" alt="Festive Sunshine" class="w-full h-full object-cover object-top" loading="lazy" />
-              <div class="absolute top-3 left-3 bg-maroon/90 text-white text-[10px] uppercase tracking-widest font-semibold px-2.5 py-1 rounded-full backdrop-blur-sm">
-                Chapter III &bull; 2025
+          <!-- Card 1: Everyday Love -->
+          <div class="story-mobile-card bg-white p-4 rounded-2xl shadow-md border border-gold/40 flex flex-col" data-card-index="1">
+            <div class="relative w-full aspect-[4/5] rounded-xl overflow-hidden bg-black mb-3 shadow-inner">
+              <img 
+                src="assets/images/story/02-everyday-love.jpg" 
+                alt="Everyday Magic" 
+                class="w-full h-full object-cover" 
+                style="object-position: center 20%;"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none"></div>
+              <div class="absolute top-3 left-3 z-10">
+                <span class="px-3 py-1 bg-maroon/90 text-white text-[11px] font-bold tracking-widest uppercase rounded-full backdrop-blur-md shadow">
+                  Chapter II
+                </span>
               </div>
             </div>
-            <div class="p-6 flex-1 flex flex-col justify-between">
-              <div>
-                <h3 class="font-serif text-2xl text-charcoal font-normal">Sunlit Arches</h3>
-                <p class="font-serif italic text-sm text-gold mt-1">&ldquo;Dressed in vibrant hues, basking under golden skies and heartfelt blessings.&rdquo;</p>
-                <p class="text-xs text-gray-600 leading-relaxed font-light mt-3">
-                  Under the radiant courtyard arches, adorned in celebratory attire, we paused to take it all in. Hand in hand, we stepped into family traditions with open hearts and big smiles.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Slide 4 -->
-          <div class="mobile-story-card flex-shrink-0 w-[88vw] max-w-[360px] snap-center bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden flex flex-col" data-slide-index="3">
-            <div class="relative aspect-[4/5] w-full overflow-hidden bg-charcoal">
-              <img src="assets/images/story/04-carried-away.jpg" alt="Carried Away" class="w-full h-full object-cover object-[center_20%]" loading="lazy" />
-              <div class="absolute top-3 left-3 bg-maroon/90 text-white text-[10px] uppercase tracking-widest font-semibold px-2.5 py-1 rounded-full backdrop-blur-sm">
-                Chapter IV &bull; 2025
-              </div>
-            </div>
-            <div class="p-6 flex-1 flex flex-col justify-between">
-              <div>
-                <h3 class="font-serif text-2xl text-charcoal font-normal">Swept Off Our Feet</h3>
-                <p class="font-serif italic text-sm text-gold mt-1">&ldquo;Unfiltered joy, spontaneous spins, and laughter that echoes forever.&rdquo;</p>
-                <p class="text-xs text-gray-600 leading-relaxed font-light mt-3">
-                  Because love is also playful, silly, and wildly joyous. In our favorite candid moment, swept up in pure delight, we knew we never wanted to stop laughing through life together.
-                </p>
-              </div>
+            <div class="px-1 py-1">
+              <span class="text-[10px] uppercase tracking-[0.25em] text-maroon font-semibold block mb-0.5">Chapter II</span>
+              <h3 class="font-serif text-2xl text-charcoal font-normal">Everyday Magic</h3>
             </div>
           </div>
 
-          <!-- Slide 5 -->
-          <div class="mobile-story-card flex-shrink-0 w-[88vw] max-w-[360px] snap-center bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden flex flex-col" data-slide-index="4">
-            <div class="relative aspect-[4/5] w-full overflow-hidden bg-charcoal">
-              <img src="assets/images/story/05-stargazing-promise.jpg" alt="Stargazing Promise" class="w-full h-full object-cover object-[center_30%]" loading="lazy" />
-              <div class="absolute top-3 left-3 bg-maroon/90 text-white text-[10px] uppercase tracking-widest font-semibold px-2.5 py-1 rounded-full backdrop-blur-sm">
-                Chapter V &bull; 2026
+          <!-- Card 2: Sunshine & Heritage -->
+          <div class="story-mobile-card bg-white p-4 rounded-2xl shadow-md border border-gold/40 flex flex-col" data-card-index="2">
+            <div class="relative w-full aspect-[4/5] rounded-xl overflow-hidden bg-black mb-3 shadow-inner">
+              <img 
+                src="assets/images/story/03-festive-sunshine.jpg" 
+                alt="Sunlit Arches" 
+                class="w-full h-full object-cover" 
+                style="object-position: center 20%;"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none"></div>
+              <div class="absolute top-3 left-3 z-10">
+                <span class="px-3 py-1 bg-maroon/90 text-white text-[11px] font-bold tracking-widest uppercase rounded-full backdrop-blur-md shadow">
+                  Chapter III
+                </span>
               </div>
             </div>
-            <div class="p-6 flex-1 flex flex-col justify-between">
-              <div>
-                <h3 class="font-serif text-2xl text-charcoal font-normal">Under the Evening Sky</h3>
-                <p class="font-serif italic text-sm text-gold mt-1">&ldquo;From this moment until forever, two souls stepping into one destiny.&rdquo;</p>
-                <p class="text-xs text-gray-600 leading-relaxed font-light mt-3">
-                  Under the deep twilight sky, our promise crystallized. Here we stand, ready to exchange sacred vows and embark on a lifetime of shared dreams, friendship, and unconditional devotion.
-                </p>
+            <div class="px-1 py-1">
+              <span class="text-[10px] uppercase tracking-[0.25em] text-maroon font-semibold block mb-0.5">Chapter III</span>
+              <h3 class="font-serif text-2xl text-charcoal font-normal">Sunlit Arches</h3>
+            </div>
+          </div>
+
+          <!-- Card 3: Swept Away -->
+          <div class="story-mobile-card bg-white p-4 rounded-2xl shadow-md border border-gold/40 flex flex-col" data-card-index="3">
+            <div class="relative w-full aspect-[4/5] rounded-xl overflow-hidden bg-black mb-3 shadow-inner">
+              <img 
+                src="assets/images/story/04-carried-away.jpg" 
+                alt="Swept Off Our Feet" 
+                class="w-full h-full object-cover" 
+                style="object-position: center 15%;"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none"></div>
+              <div class="absolute top-3 left-3 z-10">
+                <span class="px-3 py-1 bg-maroon/90 text-white text-[11px] font-bold tracking-widest uppercase rounded-full backdrop-blur-md shadow">
+                  Chapter IV
+                </span>
               </div>
+            </div>
+            <div class="px-1 py-1">
+              <span class="text-[10px] uppercase tracking-[0.25em] text-maroon font-semibold block mb-0.5">Chapter IV</span>
+              <h3 class="font-serif text-2xl text-charcoal font-normal">Swept Off Our Feet</h3>
+            </div>
+          </div>
+
+          <!-- Card 4: Stargazing Promise -->
+          <div class="story-mobile-card bg-white p-4 rounded-2xl shadow-md border border-gold/40 flex flex-col" data-card-index="4">
+            <div class="relative w-full aspect-[4/5] rounded-xl overflow-hidden bg-black mb-3 shadow-inner">
+              <img 
+                src="assets/images/story/05-stargazing-promise.jpg" 
+                alt="Under the Evening Sky" 
+                class="w-full h-full object-cover" 
+                style="object-position: center center;"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none"></div>
+              <div class="absolute top-3 left-3 z-10">
+                <span class="px-3 py-1 bg-maroon/90 text-white text-[11px] font-bold tracking-widest uppercase rounded-full backdrop-blur-md shadow">
+                  Chapter V
+                </span>
+              </div>
+            </div>
+            <div class="px-1 py-1">
+              <span class="text-[10px] uppercase tracking-[0.25em] text-gold font-bold block mb-0.5">Chapter V</span>
+              <h3 class="font-serif text-2xl text-charcoal font-normal">Under the Evening Sky</h3>
             </div>
           </div>
 
         </div>
 
-        <!-- Swipe Indicator Dots -->
-        <div class="flex items-center justify-center space-x-2 pt-2">
-          <span class="mobile-carousel-dot w-2 h-2 rounded-full bg-maroon transition-all" data-dot-index="0"></span>
-          <span class="mobile-carousel-dot w-2 h-2 rounded-full bg-gray-300 transition-all" data-dot-index="1"></span>
-          <span class="mobile-carousel-dot w-2 h-2 rounded-full bg-gray-300 transition-all" data-dot-index="2"></span>
-          <span class="mobile-carousel-dot w-2 h-2 rounded-full bg-gray-300 transition-all" data-dot-index="3"></span>
-          <span class="mobile-carousel-dot w-2 h-2 rounded-full bg-gray-300 transition-all" data-dot-index="4"></span>
+        <!-- Dot Indicators & Helper Prompt -->
+        <div class="flex items-center justify-center space-x-2 mt-4">
+          <button class="story-dot h-2 w-7 bg-maroon rounded-full transition-all duration-300" aria-label="Go to slide 1"></button>
+          <button class="story-dot h-2 w-2 bg-gray-300 rounded-full transition-all duration-300" aria-label="Go to slide 2"></button>
+          <button class="story-dot h-2 w-2 bg-gray-300 rounded-full transition-all duration-300" aria-label="Go to slide 3"></button>
+          <button class="story-dot h-2 w-2 bg-gray-300 rounded-full transition-all duration-300" aria-label="Go to slide 4"></button>
+          <button class="story-dot h-2 w-2 bg-gray-300 rounded-full transition-all duration-300" aria-label="Go to slide 5"></button>
         </div>
+        <p class="text-[11px] text-gray-400 font-medium tracking-wider uppercase text-center mt-2 flex items-center justify-center space-x-1.5">
+          <span>&larr; Swipe left or right to explore &rarr;</span>
+        </p>
       </div>
 
       <!-- ======================================================== -->
-      <!-- DESKTOP VIEW (lg+): Side-by-Side Sticky Archival Frame   -->
+      <!-- DESKTOP VIEW (>= lg): Sticky Archival Gallery Viewport   -->
       <!-- ======================================================== -->
-      <div class="hidden lg:grid grid-cols-12 gap-12 items-start relative">
+      <div class="hidden lg:grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
         
-        <!-- Left: Pinned Sticky Photo Frame -->
-        <div class="lg:col-span-5 sticky top-28">
-          <div class="p-4 bg-white rounded-3xl border border-gold/40 shadow-xl">
-            <div class="relative aspect-[3/4] max-h-[min(540px,calc(100vh-12rem))] rounded-2xl overflow-hidden bg-charcoal">
+        <!-- Left: Sticky Framed Photo Viewport (Fits cleanly above macOS Dock on all displays) -->
+        <div class="lg:col-span-6 lg:sticky lg:top-24 z-20">
+          <div class="bg-white p-3.5 sm:p-5 rounded-2xl shadow-xl border border-gold/40 archival-frame max-w-md mx-auto">
+            <div class="relative w-full aspect-[4/5] sticky-photo-container rounded-xl overflow-hidden bg-black mx-auto">
               <img 
-                id="sticky-story-image"
+                id="sticky-photo" 
                 src="assets/images/story/01-dinner-date.jpg" 
-                alt="Story Milestone Photo"
-                class="w-full h-full object-cover object-top transition-all duration-700 ease-out"
+                alt="Endless Conversations" 
+                class="w-full h-full object-cover transition-all duration-700 ease-out" 
+                style="object-position: center 30%;"
               />
-              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none"></div>
               
-              <div class="absolute top-4 left-4">
-                <span id="sticky-story-badge" class="px-3 py-1 bg-maroon/90 text-white rounded-full text-[11px] font-semibold tracking-widest uppercase backdrop-blur-sm">
-                  Chapter I &bull; 2023
+              <!-- Year Pill Badge -->
+              <div class="absolute top-3.5 left-3.5 z-20">
+                <span id="sticky-year-badge" class="px-3.5 py-1 bg-maroon/90 text-white text-[11px] sm:text-xs font-bold tracking-widest uppercase rounded-full backdrop-blur-md shadow">
+                  Chapter I
                 </span>
-              </div>
-
-              <div class="absolute bottom-4 left-4 right-4 text-white">
-                <p id="sticky-story-caption" class="font-serif italic text-base leading-snug drop-shadow-md">
-                  &ldquo;Hours felt like seconds, and every word made us lean in a little closer.&rdquo;
-                </p>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Right: Flowing Story Milestones Stack -->
-        <div class="lg:col-span-7 space-y-12">
+        <!-- Right: Scrolling Narrative Milestones -->
+        <div class="lg:col-span-6 space-y-16 sm:space-y-24 py-4">
           
-          <!-- Story Item 1 -->
-          <div 
-            class="story-milestone p-8 rounded-3xl bg-ivory border border-gold/40 shadow-sm transition-all duration-500"
-            data-story-index="0"
-            data-image="assets/images/story/01-dinner-date.jpg"
-            data-pos="center top"
-            data-badge="Chapter I &bull; 2023"
-            data-quote="&ldquo;Hours felt like seconds, and every word made us lean in a little closer.&rdquo;"
-          >
-            <span class="text-xs uppercase tracking-[0.25em] text-maroon font-semibold block mb-1">The First Chapters</span>
-            <h3 class="font-serif text-3xl sm:text-4xl text-charcoal font-normal mb-3">Endless Conversations</h3>
-            <p class="text-sm sm:text-base text-gray-600 font-light leading-relaxed mb-4">
-              It started across candlelit tables, quiet chuckles, and talking long past the restaurant's last call. We realized our conversations weren't just passing time—they were laying the foundation for everything to come.
-            </p>
-            <div class="pt-3 border-t border-gold/20 flex items-center justify-between text-xs text-gray-500 font-medium">
-              <span>Chapter I &bull; 2023</span>
-              <span class="text-gold font-serif italic text-sm">Where the spark caught fire</span>
-            </div>
+          <!-- Milestone 0: Dinner Date -->
+          <div class="narrative-milestone active p-6 sm:p-8 rounded-2xl bg-white/70 border border-gold/40 shadow-sm transition-all duration-500" data-index="0" data-img="assets/images/story/01-dinner-date.jpg" data-year="Chapter I" data-pos="center 30%">
+            <span class="text-xs uppercase tracking-[0.25em] text-maroon font-semibold mb-1.5 block">Chapter I</span>
+            <h3 class="font-serif text-3xl sm:text-4xl text-charcoal font-normal">Endless Conversations</h3>
           </div>
 
-          <!-- Story Item 2 -->
-          <div 
-            class="story-milestone p-8 rounded-3xl bg-white border border-gray-200 shadow-sm transition-all duration-500 opacity-60"
-            data-story-index="1"
-            data-image="assets/images/story/02-everyday-love.jpg"
-            data-pos="center 35%"
-            data-badge="Chapter II &bull; 2024"
-            data-quote="&ldquo;Finding home not in a place, but in each other's quiet warmth.&rdquo;"
-          >
-            <span class="text-xs uppercase tracking-[0.25em] text-maroon font-semibold block mb-1">Growing Closer</span>
-            <h3 class="font-serif text-3xl sm:text-4xl text-charcoal font-normal mb-3">Everyday Magic</h3>
-            <p class="text-sm sm:text-base text-gray-600 font-light leading-relaxed mb-4">
-              Between shared coffees, lazy Sunday errands, and spontaneous road trips, love stopped being a grand idea and became our daily reality. Life became infinitely sweeter simply by having each other in it.
-            </p>
-            <div class="pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500 font-medium">
-              <span>Chapter II &bull; 2024</span>
-              <span class="text-gold font-serif italic text-sm">Comfort in every moment</span>
-            </div>
+          <!-- Milestone 1: Everyday Love -->
+          <div class="narrative-milestone p-6 sm:p-8 rounded-2xl bg-white/40 border border-gray-200 transition-all duration-500 hover:bg-white/80" data-index="1" data-img="assets/images/story/02-everyday-love.jpg" data-year="Chapter II" data-pos="center 20%">
+            <span class="text-xs uppercase tracking-[0.25em] text-maroon font-semibold mb-1.5 block">Chapter II</span>
+            <h3 class="font-serif text-3xl sm:text-4xl text-charcoal font-normal">Everyday Magic</h3>
           </div>
 
-          <!-- Story Item 3 -->
-          <div 
-            class="story-milestone p-8 rounded-3xl bg-white border border-gray-200 shadow-sm transition-all duration-500 opacity-60"
-            data-story-index="2"
-            data-image="assets/images/story/03-festive-sunshine.jpg"
-            data-pos="center top"
-            data-badge="Chapter III &bull; 2025"
-            data-quote="&ldquo;Dressed in vibrant hues, basking under golden skies and heartfelt blessings.&rdquo;"
-          >
-            <span class="text-xs uppercase tracking-[0.25em] text-maroon font-semibold block mb-1">Celebrations &amp; Heritage</span>
-            <h3 class="font-serif text-3xl sm:text-4xl text-charcoal font-normal mb-3">Sunlit Arches</h3>
-            <p class="text-sm sm:text-base text-gray-600 font-light leading-relaxed mb-4">
-              Under the radiant courtyard arches, adorned in celebratory attire, we paused to take it all in. Hand in hand, we stepped into family traditions with open hearts and big smiles.
-            </p>
-            <div class="pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500 font-medium">
-              <span>Chapter III &bull; 2025</span>
-              <span class="text-gold font-serif italic text-sm">Wrapped in sunshine &amp; grace</span>
-            </div>
+          <!-- Milestone 2: Sunshine & Heritage -->
+          <div class="narrative-milestone p-6 sm:p-8 rounded-2xl bg-white/40 border border-gray-200 transition-all duration-500 hover:bg-white/80" data-index="2" data-img="assets/images/story/03-festive-sunshine.jpg" data-year="Chapter III" data-pos="center 20%">
+            <span class="text-xs uppercase tracking-[0.25em] text-maroon font-semibold mb-1.5 block">Chapter III</span>
+            <h3 class="font-serif text-3xl sm:text-4xl text-charcoal font-normal">Sunlit Arches</h3>
           </div>
 
-          <!-- Story Item 4 -->
-          <div 
-            class="story-milestone p-8 rounded-3xl bg-white border border-gray-200 shadow-sm transition-all duration-500 opacity-60"
-            data-story-index="3"
-            data-image="assets/images/story/04-carried-away.jpg"
-            data-pos="center 20%"
-            data-badge="Chapter IV &bull; 2025"
-            data-quote="&ldquo;Unfiltered joy, spontaneous spins, and laughter that echoes forever.&rdquo;"
-          >
-            <span class="text-xs uppercase tracking-[0.25em] text-maroon font-semibold block mb-1">Spontaneous Delight</span>
-            <h3 class="font-serif text-3xl sm:text-4xl text-charcoal font-normal mb-3">Swept Off Our Feet</h3>
-            <p class="text-sm sm:text-base text-gray-600 font-light leading-relaxed mb-4">
-              Because love is also playful, silly, and wildly joyous. In our favorite candid moment, swept up in pure delight, we knew we never wanted to stop laughing through life together.
-            </p>
-            <div class="pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500 font-medium">
-              <span>Chapter IV &bull; 2025</span>
-              <span class="text-gold font-serif italic text-sm">Pure unfiltered joy</span>
-            </div>
+          <!-- Milestone 3: Swept Away -->
+          <div class="narrative-milestone p-6 sm:p-8 rounded-2xl bg-white/40 border border-gray-200 transition-all duration-500 hover:bg-white/80" data-index="3" data-img="assets/images/story/04-carried-away.jpg" data-year="Chapter IV" data-pos="center 15%">
+            <span class="text-xs uppercase tracking-[0.25em] text-maroon font-semibold mb-1.5 block">Chapter IV</span>
+            <h3 class="font-serif text-3xl sm:text-4xl text-charcoal font-normal">Swept Off Our Feet</h3>
           </div>
 
-          <!-- Story Item 5 -->
-          <div 
-            class="story-milestone p-8 rounded-3xl bg-white border border-gray-200 shadow-sm transition-all duration-500 opacity-60"
-            data-story-index="4"
-            data-image="assets/images/story/05-stargazing-promise.jpg"
-            data-pos="center 30%"
-            data-badge="Chapter V &bull; 2026"
-            data-quote="&ldquo;From this moment until forever, two souls stepping into one destiny.&rdquo;"
-          >
-            <span class="text-xs uppercase tracking-[0.25em] text-maroon font-semibold block mb-1">The Sacred Horizon</span>
-            <h3 class="font-serif text-3xl sm:text-4xl text-charcoal font-normal mb-3">Under the Evening Sky</h3>
-            <p class="text-sm sm:text-base text-gray-600 font-light leading-relaxed mb-4">
-              Under the deep twilight sky, our promise crystallized. Here we stand, ready to exchange sacred vows and embark on a lifetime of shared dreams, friendship, and unconditional devotion.
-            </p>
-            <div class="pt-3 border-t border-gold/40 flex items-center justify-between text-xs text-maroon font-semibold">
-              <span>Chapter V &bull; 2026</span>
-              <span class="text-gold font-serif italic text-sm">The threshold of forever</span>
-            </div>
+          <!-- Milestone 4: Stargazing Promise -->
+          <div class="narrative-milestone p-6 sm:p-8 rounded-2xl bg-white/40 border border-gray-200 transition-all duration-500 hover:bg-white/80" data-index="4" data-img="assets/images/story/05-stargazing-promise.jpg" data-year="Chapter V" data-pos="center center">
+            <span class="text-xs uppercase tracking-[0.25em] text-gold font-bold mb-1.5 block">Chapter V</span>
+            <h3 class="font-serif text-3xl sm:text-4xl text-charcoal font-normal">Under the Evening Sky</h3>
           </div>
 
         </div>
