@@ -561,29 +561,47 @@ function initAmbientMedia() {
     }
   }
 
+  let fadeTimer = null;
   function fadeInVolume() {
+    if (fadeTimer) clearInterval(fadeTimer);
     let currentVol = 0;
+    try {
+      audio.volume = 0;
+    } catch (e) {
+      // Some mobile platforms (iOS) manage volume strictly via hardware buttons
+      return;
+    }
+
     const step = targetVolume / 12;
-    const fadeTimer = setInterval(function() {
+    fadeTimer = setInterval(function() {
       currentVol += step;
       if (currentVol >= targetVolume) {
         audio.volume = targetVolume;
         clearInterval(fadeTimer);
+        fadeTimer = null;
       } else {
-        audio.volume = currentVol;
+        try {
+          audio.volume = currentVol;
+        } catch (e) {
+          clearInterval(fadeTimer);
+          fadeTimer = null;
+        }
       }
     }, 100);
   }
 
   function playAudioWithFade() {
-    audio.volume = 0;
+    try {
+      audio.volume = 0;
+    } catch (e) {}
+
     const playPromise = audio.play();
     if (playPromise !== undefined) {
       playPromise.then(function() {
         updateAudioUI(true);
         fadeInVolume();
       }).catch(function(err) {
-        console.log('Autoplay waiting for user gesture:', err);
+        console.log('Autoplay deferred pending user interaction (standard browser policy):', err.name);
         updateAudioUI(false);
         if (audioPromptBanner) {
           audioPromptBanner.classList.remove('hidden');
@@ -655,18 +673,44 @@ function initAmbientMedia() {
     });
   }
 
+  let gestureArmed = false;
   function armGestureListeners() {
-    const gestureEvents = ['click', 'touchstart', 'touchend', 'pointerdown', 'scroll', 'wheel', 'keydown'];
-    const onAnyGesture = function() {
-      if (audio && audio.paused) {
-        playAudioWithFade();
+    if (gestureArmed) return;
+    gestureArmed = true;
+
+    // Modern browsers require a genuine user activation (click, touch, pointer, keypress).
+    // Passive scroll/wheel does not count as activation and must not disarm these listeners.
+    const validActivationEvents = ['click', 'touchstart', 'touchend', 'pointerdown', 'keydown'];
+
+    function handleFirstGesture() {
+      if (!audio) return;
+      if (!audio.paused) {
+        disarmGestureListeners();
+        return;
       }
-      gestureEvents.forEach(function(evt) {
-        window.removeEventListener(evt, onAnyGesture, { capture: true });
+
+      const promise = audio.play();
+      if (promise !== undefined) {
+        promise.then(function() {
+          updateAudioUI(true);
+          fadeInVolume();
+          disarmGestureListeners();
+        }).catch(function(err) {
+          // If gesture was not recognized as activation, keep armed for the next click/tap
+          console.warn('Waiting for direct user interaction:', err);
+        });
+      }
+    }
+
+    function disarmGestureListeners() {
+      gestureArmed = false;
+      validActivationEvents.forEach(function(evt) {
+        window.removeEventListener(evt, handleFirstGesture, { capture: true });
       });
-    };
-    gestureEvents.forEach(function(evt) {
-      window.addEventListener(evt, onAnyGesture, { capture: true, once: true });
+    }
+
+    validActivationEvents.forEach(function(evt) {
+      window.addEventListener(evt, handleFirstGesture, { capture: true, passive: true });
     });
   }
 
