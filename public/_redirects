@@ -1,0 +1,6 @@
+# Cloudflare Pages / Netlify Redirect Rules
+/hindu /h 301
+/hindu-wedding /h 301
+/h.html /h 301
+/hindu.html /h 301
+/hindu-wedding.html /h 301
