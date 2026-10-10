@@ -511,16 +511,8 @@ function initAmbientMedia() {
   }
 
   const audio = document.getElementById('soundtrack-audio');
-  const vinylDisc = document.getElementById('vinyl-disc');
-  const vinylDiscBtn = document.getElementById('vinyl-disc-btn');
-  const vinylDiscSvg = document.getElementById('vinyl-disc-svg');
-  const audioPlayBtn = document.getElementById('audio-play-btn');
-  const audioPlayIcon = document.getElementById('audio-play-icon');
-  const audioPauseIcon = document.getElementById('audio-pause-icon');
-  const audioProgressBar = document.getElementById('audio-progress-bar');
-  const audioProgressFill = document.getElementById('audio-progress-fill');
-  const audioCurrentTime = document.getElementById('audio-current-time');
-  const audioDuration = document.getElementById('audio-duration');
+  const audioToggleBtn = document.getElementById('audio-toggle-btn');
+  const audioToggleLabel = document.getElementById('audio-toggle-label');
   const audioPromptBanner = document.getElementById('audio-prompt-banner');
 
   if (!audio) return;
@@ -528,38 +520,24 @@ function initAmbientMedia() {
   let isAudioPlaying = false;
   let targetVolume = 0.55;
 
-  function formatTime(seconds) {
-    if (isNaN(seconds)) return '0:00';
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return mins + ':' + (secs < 10 ? '0' : '') + secs;
-  }
-
   function updateAudioUI(playing) {
     isAudioPlaying = playing;
-    if (playing) {
-      if (vinylDisc) {
-        vinylDisc.classList.remove('vinyl-paused');
-        vinylDisc.classList.add('vinyl-spinning');
+    if (audioToggleBtn) {
+      if (playing) {
+        audioToggleBtn.classList.remove('is-paused', 'sound-awaiting-gesture');
+        audioToggleBtn.classList.add('is-playing');
+        audioToggleBtn.setAttribute('aria-label', 'Pause wedding soundtrack');
+        if (audioToggleLabel) audioToggleLabel.textContent = 'Sound: On';
+      } else {
+        audioToggleBtn.classList.remove('is-playing');
+        audioToggleBtn.classList.add('is-paused');
+        audioToggleBtn.setAttribute('aria-label', 'Play wedding soundtrack');
+        if (audioToggleLabel) audioToggleLabel.textContent = 'Sound: Off';
       }
-      if (audioPlayIcon) audioPlayIcon.classList.add('hidden');
-      if (audioPauseIcon) audioPauseIcon.classList.remove('hidden');
-      if (vinylDiscSvg) {
-        vinylDiscSvg.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
-      }
-      if (audioPromptBanner) {
-        audioPromptBanner.style.opacity = '0';
-        setTimeout(() => { audioPromptBanner.style.display = 'none'; }, 500);
-      }
-    } else {
-      if (vinylDisc) {
-        vinylDisc.classList.add('vinyl-paused');
-      }
-      if (audioPlayIcon) audioPlayIcon.classList.remove('hidden');
-      if (audioPauseIcon) audioPauseIcon.classList.add('hidden');
-      if (vinylDiscSvg) {
-        vinylDiscSvg.innerHTML = '<path d="M8 5v14l11-7z"/>';
-      }
+    }
+    if (audioPromptBanner && playing) {
+      audioPromptBanner.style.opacity = '0';
+      setTimeout(() => { audioPromptBanner.style.display = 'none'; }, 500);
     }
   }
 
@@ -605,9 +583,11 @@ function initAmbientMedia() {
       }).catch(function(err) {
         console.log('Autoplay deferred pending user interaction (standard browser policy):', err.name);
         updateAudioUI(false);
-        if (audioPromptBanner) {
-          audioPromptBanner.classList.remove('hidden');
-          audioPromptBanner.style.opacity = '1';
+        if (audioToggleBtn) {
+          audioToggleBtn.classList.add('sound-awaiting-gesture');
+        }
+        if (audioToggleLabel) {
+          audioToggleLabel.textContent = 'Tap for Sound';
         }
         armGestureListeners();
       });
@@ -627,15 +607,8 @@ function initAmbientMedia() {
     }
   }
 
-  if (audioPlayBtn) {
-    audioPlayBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      toggleAudio();
-    });
-  }
-
-  if (vinylDiscBtn) {
-    vinylDiscBtn.addEventListener('click', function(e) {
+  if (audioToggleBtn) {
+    audioToggleBtn.addEventListener('click', function(e) {
       e.stopPropagation();
       toggleAudio();
     });
@@ -648,32 +621,10 @@ function initAmbientMedia() {
     });
   }
 
-  audio.addEventListener('loadedmetadata', function() {
-    if (audioDuration) audioDuration.textContent = formatTime(audio.duration);
-  });
-
-  audio.addEventListener('timeupdate', function() {
-    if (!audio.duration) return;
-    const pct = (audio.currentTime / audio.duration) * 100;
-    if (audioProgressFill) audioProgressFill.style.width = pct + '%';
-    if (audioCurrentTime) audioCurrentTime.textContent = formatTime(audio.currentTime);
-  });
-
   audio.addEventListener('ended', function() {
     audio.currentTime = 0;
     playAudioWithFade();
   });
-
-  if (audioProgressBar) {
-    audioProgressBar.addEventListener('click', function(e) {
-      e.stopPropagation();
-      const rect = audioProgressBar.getBoundingClientRect();
-      const clickPos = (e.clientX - rect.left) / rect.width;
-      if (audio.duration) {
-        audio.currentTime = clickPos * audio.duration;
-      }
-    });
-  }
 
   let gestureArmed = false;
   function armGestureListeners() {

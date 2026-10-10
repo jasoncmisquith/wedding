@@ -38,7 +38,7 @@
   <meta http-equiv="Expires" content="0">
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="styles.css?v=4.3">
+  <link rel="stylesheet" href="styles.css?v=4.4">
 </head>
 <body class="bg-ivory text-charcoal antialiased selection:bg-maroon selection:text-white relative min-h-screen">
 
@@ -1061,98 +1061,33 @@
   </footer>
 
   <!-- ======================================================== -->
-  <!-- FLOATING GOLD-RIMMED VINYL SOUNDTRACK PLAYER             -->
+  <!-- FLOATING STICKY SOUNDTRACK BUTTON                        -->
   <!-- ======================================================== -->
-  <aside 
-    id="vinyl-player" 
-    class="fixed z-50 vinyl-dock bg-white/95 backdrop-blur-xl border border-gold/60 shadow-2xl rounded-2xl p-3 sm:p-4 transition-all duration-300 w-full max-w-[340px] sm:max-w-sm"
-    aria-label="Soundtrack Player"
+  <button 
+    id="audio-toggle-btn" 
+    type="button" 
+    class="sound-pill group inline-flex items-center space-x-2.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full text-charcoal cursor-pointer focus:outline-none focus:ring-2 focus:ring-gold/60"
+    title="JVKE &bull; her (Wedding Soundtrack)"
+    aria-label="Toggle wedding soundtrack"
   >
-    <div class="flex items-center space-x-3.5">
-      <!-- Vinyl Disc Graphic -->
-      <button 
-        type="button" 
-        id="vinyl-disc-btn" 
-        class="relative flex-shrink-0 group focus:outline-none" 
-        title="Play / Pause Soundtrack"
-        aria-label="Play or pause JVKE - her"
-      >
-        <div 
-          id="vinyl-disc" 
-          class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-gold shadow-md flex items-center justify-center transition-transform duration-300 vinyl-paused"
-          style="background: radial-gradient(circle, #2a2a2a 0%, #151515 45%, #2a2a2a 50%, #0d0d0d 70%, #202020 90%, #0a0a0a 100%);"
-        >
-          <!-- Center Label -->
-          <div class="w-5 h-5 rounded-full bg-gold flex items-center justify-center border border-white/40">
-            <div class="w-1.5 h-1.5 rounded-full bg-[#111111]"></div>
-          </div>
-        </div>
+    <!-- Micro Equalizer Animation -->
+    <span class="flex items-end space-x-0.5 h-4 w-3.5 justify-center pb-0.5" aria-hidden="true">
+      <span class="eq-bar h-2"></span>
+      <span class="eq-bar h-3.5"></span>
+      <span class="eq-bar h-2.5"></span>
+    </span>
 
-        <!-- Disc Overlay Play/Pause Icon -->
-        <div class="absolute inset-0 flex items-center justify-center text-white drop-shadow opacity-0 group-hover:opacity-100 transition-opacity bg-black/30 rounded-full">
-          <svg id="vinyl-disc-svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z"/>
-          </svg>
-        </div>
-      </button>
-
-      <!-- Track Information & Controls -->
-      <div class="flex-1 min-w-0 pr-1">
-        <div class="flex items-center justify-between">
-          <div class="truncate">
-            <div class="flex items-center space-x-1.5">
-              <span class="w-1.5 h-1.5 rounded-full bg-gold animate-pulse"></span>
-              <h4 class="font-serif text-base sm:text-lg text-charcoal font-semibold leading-tight truncate">her</h4>
-            </div>
-            <p class="text-[10px] tracking-widest uppercase text-gray-500 font-medium mt-0.5">JVKE &bull; Soundtrack</p>
-          </div>
-
-          <!-- Play / Pause Pill Button -->
-          <button 
-            type="button" 
-            id="audio-play-btn" 
-            class="ml-2 w-9 h-9 rounded-full bg-maroon text-white hover:bg-maroon-hover transition-all flex items-center justify-center shadow-sm flex-shrink-0 focus:outline-none"
-            aria-label="Play or pause audio"
-          >
-            <!-- Play Icon -->
-            <svg id="audio-play-icon" class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M8 5v14l11-7z"/>
-            </svg>
-            <!-- Pause Icon -->
-            <svg id="audio-pause-icon" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-            </svg>
-          </button>
-        </div>
-
-        <!-- Audio Scrubber & Timing -->
-        <div class="mt-2 flex items-center space-x-2">
-          <span id="audio-current-time" class="text-[10px] tabular-nums text-gray-500 font-medium">0:00</span>
-          <div id="audio-progress-bar" class="flex-1 h-1.5 bg-gray-200 hover:bg-gray-300 rounded-full overflow-hidden cursor-pointer transition-colors" title="Seek song">
-            <div id="audio-progress-fill" class="h-full bg-maroon rounded-full w-0 transition-all duration-100"></div>
-          </div>
-          <span id="audio-duration" class="text-[10px] tabular-nums text-gray-500 font-medium">2:51</span>
-        </div>
-      </div>
+    <!-- Label & Track Title Hint -->
+    <div class="flex items-center space-x-1.5 text-left leading-none">
+      <span id="audio-toggle-label" class="font-sans text-[11px] sm:text-xs font-semibold tracking-wider uppercase text-charcoal">Sound: On</span>
+      <span class="hidden sm:inline-block text-[10px] text-gray-400 font-serif italic tracking-normal">&bull; JVKE &ldquo;her&rdquo;</span>
     </div>
+  </button>
 
-    <!-- Hidden HTML5 Audio Element -->
-    <audio id="soundtrack-audio" preload="auto">
-      <source src="assets/audio/her-jvke.mp3" type="audio/mpeg">
-    </audio>
-  </aside>
-
-  <!-- Polite First-Touch Banner for Mobile Audio Policies (only shown if browser blocks autoplay) -->
-  <div 
-    id="audio-prompt-banner" 
-    class="hidden opacity-0 fixed bottom-24 sm:bottom-28 right-4 sm:right-6 z-40 bg-charcoal/90 text-white backdrop-blur-md px-4 py-2.5 rounded-full shadow-lg border border-gold/40 text-xs flex items-center space-x-2 animate-bounce cursor-pointer transition-opacity duration-500"
-    title="Click to play soundtrack"
-  >
-    <svg class="w-3.5 h-3.5 text-gold" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-    </svg>
-    <span>Tap to play soundtrack &ldquo;her&rdquo;</span>
-  </div>
+  <!-- Hidden HTML5 Audio Element -->
+  <audio id="soundtrack-audio" preload="auto">
+    <source src="assets/audio/her-jvke.mp3" type="audio/mpeg">
+  </audio>
 
   <!-- ======================================================== -->
   <!-- LIGHTBOX MODAL FOR MOMENTS OF US                         -->
@@ -1218,6 +1153,6 @@
   </div>
 
   <!-- Client Application Script -->
-  <script src="app.js?v=4.3"></script>
+  <script src="app.js?v=4.4"></script>
 </body>
 </html>
