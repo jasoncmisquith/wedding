@@ -394,4 +394,28 @@ button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .
   }
 }
 
+/* -------------------------------------------------------------
+ * Dream Version Background Translucency for Page Sections
+ * ------------------------------------------------------------- */
+.dream-backdrop {
+  background: rgba(250, 249, 246, 0.68);
+  backdrop-filter: blur(2.5px);
+  -webkit-backdrop-filter: blur(2.5px);
+}
+
+.dream-backdrop-card {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(197, 168, 128, 0.45);
+}
+
+.dream-backdrop-card-subtle {
+  background: rgba(250, 249, 246, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(197, 168, 128, 0.35);
+}
+
+
 
