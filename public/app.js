@@ -518,6 +518,7 @@ function initAmbientMedia() {
   if (!audio) return;
 
   let isAudioPlaying = false;
+  let isAudioStarting = false;
   let targetVolume = 0.55;
 
   function updateAudioUI(playing) {
@@ -544,15 +545,15 @@ function initAmbientMedia() {
   let fadeTimer = null;
   function fadeInVolume() {
     if (fadeTimer) clearInterval(fadeTimer);
-    let currentVol = 0;
+    let currentVol = 0.2;
     try {
-      audio.volume = 0;
+      audio.volume = 0.2;
     } catch (e) {
-      // Some mobile platforms (iOS) manage volume strictly via hardware buttons
+      // Mobile platforms (iOS WebKit) manage volume strictly via hardware buttons
       return;
     }
 
-    const step = targetVolume / 12;
+    const step = (targetVolume - 0.2) / 8;
     fadeTimer = setInterval(function() {
       currentVol += step;
       if (currentVol >= targetVolume) {
@@ -567,20 +568,27 @@ function initAmbientMedia() {
           fadeTimer = null;
         }
       }
-    }, 100);
+    }, 50);
   }
 
   function playAudioWithFade() {
+    if (isAudioStarting) return;
     try {
-      audio.volume = 0;
+      if (audio.readyState === 0) {
+        audio.load();
+      }
     } catch (e) {}
 
+    isAudioStarting = true;
     const playPromise = audio.play();
     if (playPromise !== undefined) {
       playPromise.then(function() {
+        isAudioStarting = false;
         updateAudioUI(true);
         fadeInVolume();
+        disarmGestureListeners();
       }).catch(function(err) {
+        isAudioStarting = false;
         console.log('Autoplay deferred pending user interaction (standard browser policy):', err.name);
         updateAudioUI(false);
         if (audioToggleBtn) {
@@ -591,16 +599,27 @@ function initAmbientMedia() {
         }
         armGestureListeners();
       });
+    } else {
+      isAudioStarting = false;
+      updateAudioUI(true);
+      fadeInVolume();
+      disarmGestureListeners();
     }
   }
 
   function pauseAudio() {
+    if (fadeTimer) {
+      clearInterval(fadeTimer);
+      fadeTimer = null;
+    }
     audio.pause();
     updateAudioUI(false);
   }
 
   function toggleAudio() {
-    if (audio.paused) {
+    if (isAudioStarting) return;
+
+    if (audio.paused || !isAudioPlaying) {
       playAudioWithFade();
     } else {
       pauseAudio();
@@ -610,6 +629,7 @@ function initAmbientMedia() {
   if (audioToggleBtn) {
     audioToggleBtn.addEventListener('click', function(e) {
       e.stopPropagation();
+      e.preventDefault();
       toggleAudio();
     });
   }
@@ -635,24 +655,19 @@ function initAmbientMedia() {
     // Passive scroll/wheel does not count as activation and must not disarm these listeners.
     const validActivationEvents = ['click', 'touchstart', 'touchend', 'pointerdown', 'keydown'];
 
-    function handleFirstGesture() {
+    function handleFirstGesture(e) {
+      // If the user clicked/tapped directly on the sound toggle button,
+      // allow audioToggleBtn's click listener to handle it exclusively without race conditions.
+      if (e && e.target && (e.target.id === 'audio-toggle-btn' || (e.target.closest && e.target.closest('#audio-toggle-btn')))) {
+        return;
+      }
       if (!audio) return;
       if (!audio.paused) {
         disarmGestureListeners();
         return;
       }
 
-      const promise = audio.play();
-      if (promise !== undefined) {
-        promise.then(function() {
-          updateAudioUI(true);
-          fadeInVolume();
-          disarmGestureListeners();
-        }).catch(function(err) {
-          // If gesture was not recognized as activation, keep armed for the next click/tap
-          console.warn('Waiting for direct user interaction:', err);
-        });
-      }
+      playAudioWithFade();
     }
 
     function disarmGestureListeners() {
