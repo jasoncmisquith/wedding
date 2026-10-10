@@ -6,6 +6,7 @@ function initApp() {
   initStorySlideshow();
   initStickyStoryGallery();
   initMobileStoryCarousel();
+  initMomentsLightbox();
   initCountdown();
   initCalendarDownloads();
   initMobileMenu();
@@ -733,5 +734,121 @@ function initAmbientMedia() {
       }
     }
   });
+}
+
+// =============================================================
+// 7. MOMENTS OF US LIGHTBOX MODAL (CLEAN FULL-VIEW GALLERY)
+// =============================================================
+function initMomentsLightbox() {
+  const lightbox = document.getElementById('moments-lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxCounter = document.getElementById('lightbox-counter');
+  const closeBtn = document.getElementById('lightbox-close-btn');
+  const prevBtn = document.getElementById('lightbox-prev-btn');
+  const nextBtn = document.getElementById('lightbox-next-btn');
+  const cards = document.querySelectorAll('.moment-card');
+
+  if (!lightbox || !lightboxImg || cards.length === 0) return;
+
+  const moments = Array.from(cards).map(card => {
+    const img = card.querySelector('img');
+    return {
+      src: img ? img.getAttribute('src') : '',
+      alt: img ? img.getAttribute('alt') : 'Roopa & Jason Moment'
+    };
+  });
+
+  let currentIndex = 0;
+  let isOpen = false;
+
+  function showMoment(index) {
+    if (index < 0) index = moments.length - 1;
+    if (index >= moments.length) index = 0;
+    currentIndex = index;
+
+    lightboxImg.style.opacity = '0';
+    lightboxImg.style.transform = 'scale(0.97)';
+
+    setTimeout(() => {
+      lightboxImg.src = moments[currentIndex].src;
+      lightboxImg.alt = moments[currentIndex].alt;
+      if (lightboxCounter) {
+        lightboxCounter.textContent = `${currentIndex + 1} of ${moments.length}`;
+      }
+      lightboxImg.style.opacity = '1';
+      lightboxImg.style.transform = 'scale(1)';
+    }, 120);
+  }
+
+  function openLightbox(index) {
+    isOpen = true;
+    showMoment(index);
+    lightbox.style.display = 'flex';
+    lightbox.style.visibility = 'visible';
+    lightbox.classList.remove('is-hidden');
+    void lightbox.offsetWidth;
+    lightbox.classList.add('opacity-100');
+    lightbox.classList.remove('opacity-0');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    if (!isOpen) return;
+    isOpen = false;
+    lightbox.classList.add('opacity-0');
+    lightbox.classList.remove('opacity-100');
+    document.body.style.overflow = '';
+    setTimeout(() => {
+      if (!isOpen) {
+        lightbox.classList.add('is-hidden');
+        lightbox.style.display = 'none';
+        lightbox.style.visibility = 'hidden';
+      }
+    }, 300);
+  }
+
+  cards.forEach((card, idx) => {
+    card.addEventListener('click', () => openLightbox(idx));
+  });
+
+  if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+  if (prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); showMoment(currentIndex - 1); });
+  if (nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); showMoment(currentIndex + 1); });
+
+  // Backdrop click to close (when clicking outside the center image)
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox || e.target.id === 'lightbox-stage') {
+      closeLightbox();
+    }
+  });
+
+  // Keyboard navigation: Escape, ArrowLeft, ArrowRight
+  document.addEventListener('keydown', (e) => {
+    if (!isOpen) return;
+    if (e.key === 'Escape') closeLightbox();
+    else if (e.key === 'ArrowLeft') showMoment(currentIndex - 1);
+    else if (e.key === 'ArrowRight') showMoment(currentIndex + 1);
+  });
+
+  // Touch Swipe for Mobile Safari / iOS
+  let touchStartX = 0;
+  let touchStartY = 0;
+  lightbox.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 1) {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }
+  }, { passive: true });
+
+  lightbox.addEventListener('touchend', (e) => {
+    if (e.changedTouches.length === 1) {
+      const deltaX = e.changedTouches[0].clientX - touchStartX;
+      const deltaY = e.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
+        if (deltaX > 0) showMoment(currentIndex - 1);
+        else showMoment(currentIndex + 1);
+      }
+    }
+  }, { passive: true });
 }
 

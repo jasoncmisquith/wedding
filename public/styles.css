@@ -412,5 +412,23 @@ button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .
   border: 1px solid rgba(197, 168, 128, 0.35);
 }
 
+/* -------------------------------------------------------------
+ * Moments of Us Lightbox Modal (WebKit Safe & Accessible)
+ * ------------------------------------------------------------- */
+.is-hidden {
+  display: none !important;
+  visibility: hidden !important;
+}
 
+#moments-lightbox {
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
 
+#moments-lightbox.opacity-100 {
+  opacity: 1;
+}
+
+#lightbox-img {
+  transition: opacity 0.22s ease-out, transform 0.22s ease-out;
+}
