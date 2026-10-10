@@ -378,10 +378,10 @@
     </audio>
   </aside>
 
-  <!-- Polite First-Touch Banner for Mobile Audio Policies -->
+  <!-- Polite First-Touch Banner for Mobile Audio Policies (only shown if browser blocks autoplay) -->
   <div 
     id="audio-prompt-banner" 
-    class="fixed bottom-24 sm:bottom-28 right-4 sm:right-6 z-40 bg-charcoal/90 text-white backdrop-blur-md px-4 py-2.5 rounded-full shadow-lg border border-gold/40 text-xs flex items-center space-x-2 animate-bounce cursor-pointer transition-opacity duration-500"
+    class="hidden opacity-0 fixed bottom-24 sm:bottom-28 right-4 sm:right-6 z-40 bg-charcoal/90 text-white backdrop-blur-md px-4 py-2.5 rounded-full shadow-lg border border-gold/40 text-xs flex items-center space-x-2 animate-bounce cursor-pointer transition-opacity duration-500"
     title="Click to play soundtrack"
   >
     <svg class="w-3.5 h-3.5 text-gold" fill="currentColor" viewBox="0 0 24 24">
@@ -525,23 +525,31 @@
         if (playPromise !== undefined) {
           playPromise.then(function() {
             updateAudioUI(true);
-            // Gentle fade-in over 1.2 seconds
-            let currentVol = 0;
-            const step = targetVolume / 12;
-            const fadeTimer = setInterval(function() {
-              currentVol += step;
-              if (currentVol >= targetVolume) {
-                audio.volume = targetVolume;
-                clearInterval(fadeTimer);
-              } else {
-                audio.volume = currentVol;
-              }
-            }, 100);
+            fadeInVolume();
           }).catch(function(err) {
-            console.log('Audio autoplay blocked by browser policy:', err);
+            console.log('Autoplay waiting for user gesture:', err);
             updateAudioUI(false);
+            if (audioPromptBanner) {
+              audioPromptBanner.classList.remove('hidden');
+              audioPromptBanner.style.opacity = '1';
+            }
+            armGestureListeners();
           });
         }
+      }
+
+      function fadeInVolume() {
+        let currentVol = 0;
+        const step = targetVolume / 12;
+        const fadeTimer = setInterval(function() {
+          currentVol += step;
+          if (currentVol >= targetVolume) {
+            audio.volume = targetVolume;
+            clearInterval(fadeTimer);
+          } else {
+            audio.volume = currentVol;
+          }
+        }, 100);
       }
 
       function pauseAudio() {
@@ -594,12 +602,10 @@
         });
 
         audio.addEventListener('ended', function() {
-          // Restart soundtrack seamlessly
           audio.currentTime = 0;
           playAudioWithFade();
         });
 
-        // Click on progress bar to seek
         if (audioProgressBar) {
           audioProgressBar.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -612,22 +618,24 @@
         }
       }
 
-      // Resilient First User Gesture Auto-Start
-      let gestureTriggered = false;
-      function handleFirstGesture() {
-        if (gestureTriggered) return;
-        gestureTriggered = true;
-        // Clean up listeners
-        window.removeEventListener('click', handleFirstGesture);
-        window.removeEventListener('touchstart', handleFirstGesture);
-        
-        if (audio && audio.paused) {
-          playAudioWithFade();
-        }
+      // Multi-Event Interaction Fallback for Mobile Safari / Chrome
+      function armGestureListeners() {
+        const gestureEvents = ['click', 'touchstart', 'touchend', 'pointerdown', 'scroll', 'wheel', 'keydown'];
+        const onAnyGesture = function() {
+          if (audio && audio.paused) {
+            playAudioWithFade();
+          }
+          gestureEvents.forEach(function(evt) {
+            window.removeEventListener(evt, onAnyGesture, { capture: true });
+          });
+        };
+        gestureEvents.forEach(function(evt) {
+          window.addEventListener(evt, onAnyGesture, { capture: true, once: true });
+        });
       }
 
-      window.addEventListener('click', handleFirstGesture, { once: true });
-      window.addEventListener('touchstart', handleFirstGesture, { once: true });
+      // Attempt immediate autoplay as soon as page initializes
+      playAudioWithFade();
 
       // Tab Visibility Change (Mute/Pause when user leaves tab)
       document.addEventListener('visibilitychange', function() {
