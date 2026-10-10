@@ -738,17 +738,18 @@ function initMomentsCarousel() {
 
   let singleSetWidth = sets[0].offsetWidth;
   function updateDimensions() {
-    if (sets[0]) singleSetWidth = sets[0].offsetWidth;
+    if (sets[0] && sets[0].offsetWidth > 0) {
+      singleSetWidth = sets[0].offsetWidth;
+    }
   }
   window.addEventListener('resize', updateDimensions);
+  window.addEventListener('load', updateDimensions);
 
-  // Set initial scroll offset to middle set once layout is calculated
-  setTimeout(() => {
-    updateDimensions();
-    if (singleSetWidth > 0 && viewport.scrollLeft === 0) {
-      viewport.scrollLeft = singleSetWidth;
-    }
-  }, 100);
+  // Recalculate dimensions once images finish loading in Safari
+  track.querySelectorAll('img').forEach((img) => {
+    if (img.complete) updateDimensions();
+    else img.addEventListener('load', updateDimensions);
+  });
 
   let isHovered = false;
   let isDragging = false;
@@ -757,19 +758,35 @@ function initMomentsCarousel() {
   let dragDistance = 0;
   let resumeTimer = null;
   const speed = 0.55; // Gentle, luxury auto-glide (pixels per frame)
+  let currentScroll = 0;
+
+  // Set initial scroll offset to middle set once layout is calculated
+  setTimeout(() => {
+    updateDimensions();
+    if (singleSetWidth > 0 && viewport.scrollLeft === 0) {
+      currentScroll = singleSetWidth;
+      viewport.scrollLeft = singleSetWidth;
+    } else {
+      currentScroll = viewport.scrollLeft;
+    }
+  }, 100);
 
   function autoScroll() {
     if (!isHovered && !isDragging) {
-      viewport.scrollLeft += speed;
+      // In Safari/WebKit, element.scrollLeft truncates floats to integers.
+      // We must accumulate fractions in a JS float and pass rounded integers to DOM.
+      currentScroll += speed;
 
       // Wrap forward seamlessly when reaching the end of the second set
-      if (singleSetWidth > 0 && viewport.scrollLeft >= singleSetWidth * 2) {
-        viewport.scrollLeft -= singleSetWidth;
+      if (singleSetWidth > 0 && currentScroll >= singleSetWidth * 2) {
+        currentScroll -= singleSetWidth;
       }
       // Wrap backward seamlessly if scrolled past beginning
-      if (singleSetWidth > 0 && viewport.scrollLeft <= 0) {
-        viewport.scrollLeft += singleSetWidth;
+      if (singleSetWidth > 0 && currentScroll <= 0) {
+        currentScroll += singleSetWidth;
       }
+
+      viewport.scrollLeft = Math.round(currentScroll);
     }
     requestAnimationFrame(autoScroll);
   }
@@ -778,7 +795,10 @@ function initMomentsCarousel() {
 
   // Pause on desktop mouse hover
   viewport.addEventListener('mouseenter', () => { isHovered = true; });
-  viewport.addEventListener('mouseleave', () => { isHovered = false; });
+  viewport.addEventListener('mouseleave', () => { 
+    isHovered = false; 
+    currentScroll = viewport.scrollLeft;
+  });
 
   // Mouse Drag / Swipe
   viewport.addEventListener('mousedown', (e) => {
@@ -786,6 +806,7 @@ function initMomentsCarousel() {
     dragDistance = 0;
     startX = e.pageX - viewport.offsetLeft;
     scrollStart = viewport.scrollLeft;
+    currentScroll = viewport.scrollLeft;
     viewport.style.cursor = 'grabbing';
   });
 
@@ -794,17 +815,19 @@ function initMomentsCarousel() {
     const x = e.pageX - viewport.offsetLeft;
     const walk = (x - startX) * 1.4;
     dragDistance = Math.abs(walk);
-    viewport.scrollLeft = scrollStart - walk;
+    currentScroll = scrollStart - walk;
 
     if (singleSetWidth > 0) {
-      if (viewport.scrollLeft >= singleSetWidth * 2) viewport.scrollLeft -= singleSetWidth;
-      if (viewport.scrollLeft <= 0) viewport.scrollLeft += singleSetWidth;
+      if (currentScroll >= singleSetWidth * 2) currentScroll -= singleSetWidth;
+      if (currentScroll <= 0) currentScroll += singleSetWidth;
     }
+    viewport.scrollLeft = Math.round(currentScroll);
   });
 
   window.addEventListener('mouseup', () => {
     if (isDragging) {
       isDragging = false;
+      currentScroll = viewport.scrollLeft;
       viewport.style.cursor = 'grab';
     }
   });
@@ -812,6 +835,7 @@ function initMomentsCarousel() {
   // Touch Support (iOS Safari, Android Chrome)
   viewport.addEventListener('touchstart', () => {
     isDragging = true;
+    currentScroll = viewport.scrollLeft;
     clearTimeout(resumeTimer);
   }, { passive: true });
 
@@ -819,16 +843,22 @@ function initMomentsCarousel() {
     clearTimeout(resumeTimer);
     resumeTimer = setTimeout(() => {
       isDragging = false;
+      currentScroll = viewport.scrollLeft;
     }, 1200);
   }, { passive: true });
 
   // Native momentum scroll wrap guard
   viewport.addEventListener('scroll', () => {
+    if (isDragging) {
+      currentScroll = viewport.scrollLeft;
+    }
     if (singleSetWidth > 0) {
       if (viewport.scrollLeft >= singleSetWidth * 2) {
         viewport.scrollLeft -= singleSetWidth;
+        currentScroll = viewport.scrollLeft;
       } else if (viewport.scrollLeft <= 0) {
         viewport.scrollLeft += singleSetWidth;
+        currentScroll = viewport.scrollLeft;
       }
     }
   }, { passive: true });
@@ -844,7 +874,10 @@ function initMomentsCarousel() {
       isHovered = true;
       viewport.scrollBy({ left: -getCardStep(), behavior: 'smooth' });
       clearTimeout(resumeTimer);
-      resumeTimer = setTimeout(() => { isHovered = false; }, 2000);
+      resumeTimer = setTimeout(() => { 
+        currentScroll = viewport.scrollLeft;
+        isHovered = false; 
+      }, 2000);
     });
   }
 
@@ -853,7 +886,10 @@ function initMomentsCarousel() {
       isHovered = true;
       viewport.scrollBy({ left: getCardStep(), behavior: 'smooth' });
       clearTimeout(resumeTimer);
-      resumeTimer = setTimeout(() => { isHovered = false; }, 2000);
+      resumeTimer = setTimeout(() => { 
+        currentScroll = viewport.scrollLeft;
+        isHovered = false; 
+      }, 2000);
     });
   }
 }
