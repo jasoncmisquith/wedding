@@ -379,9 +379,12 @@ button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .
   backdrop-filter: blur(14px);
   border: 1px solid rgba(197, 168, 128, 0.55);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
   -webkit-user-select: none;
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
 }
 
 @media (max-width: 640px) {
@@ -400,6 +403,28 @@ button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .
 
 .sound-pill:active {
   transform: translateY(0) scale(0.97);
+}
+
+/* Collapsible text container for auto-minimize */
+.sound-pill-text {
+  max-width: 240px;
+  opacity: 1;
+  margin-left: 0.625rem;
+  transition: max-width 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, margin 0.3s ease;
+}
+
+.sound-pill.is-minimized {
+  padding-left: 0.85rem;
+  padding-right: 0.85rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+}
+
+.sound-pill.is-minimized .sound-pill-text {
+  max-width: 0;
+  opacity: 0;
+  margin-left: 0;
+  margin-right: 0;
+  pointer-events: none;
 }
 
 .sound-pill.sound-awaiting-gesture {

@@ -517,12 +517,29 @@ function initAmbientMedia() {
 
   if (!audio) return;
 
-  let isAudioPlaying = false;
-  let isAudioStarting = false;
   let targetVolume = 0.55;
+  let minimizeTimer = null;
+
+  function expandPill() {
+    if (minimizeTimer) {
+      clearTimeout(minimizeTimer);
+      minimizeTimer = null;
+    }
+    if (audioToggleBtn) {
+      audioToggleBtn.classList.remove('is-minimized');
+    }
+  }
+
+  function scheduleMinimize(delay = 3000) {
+    if (minimizeTimer) clearTimeout(minimizeTimer);
+    minimizeTimer = setTimeout(function() {
+      if (audioToggleBtn) {
+        audioToggleBtn.classList.add('is-minimized');
+      }
+    }, delay);
+  }
 
   function updateAudioUI(playing) {
-    isAudioPlaying = playing;
     if (audioToggleBtn) {
       if (playing) {
         audioToggleBtn.classList.remove('is-paused', 'sound-awaiting-gesture');
@@ -530,7 +547,7 @@ function initAmbientMedia() {
         audioToggleBtn.setAttribute('aria-label', 'Pause wedding soundtrack');
         if (audioToggleLabel) audioToggleLabel.textContent = 'Sound: On';
       } else {
-        audioToggleBtn.classList.remove('is-playing');
+        audioToggleBtn.classList.remove('is-playing', 'sound-awaiting-gesture');
         audioToggleBtn.classList.add('is-paused');
         audioToggleBtn.setAttribute('aria-label', 'Play wedding soundtrack');
         if (audioToggleLabel) audioToggleLabel.textContent = 'Sound: Off';
@@ -542,6 +559,15 @@ function initAmbientMedia() {
     }
   }
 
+  // Synchronize UI strictly with native HTML5 audio events so state is always 100% true
+  audio.addEventListener('play', function() {
+    updateAudioUI(true);
+  });
+
+  audio.addEventListener('pause', function() {
+    updateAudioUI(false);
+  });
+
   let fadeTimer = null;
   function fadeInVolume() {
     if (fadeTimer) clearInterval(fadeTimer);
@@ -549,7 +575,6 @@ function initAmbientMedia() {
     try {
       audio.volume = 0.2;
     } catch (e) {
-      // Mobile platforms (iOS WebKit) manage volume strictly via hardware buttons
       return;
     }
 
@@ -571,25 +596,17 @@ function initAmbientMedia() {
     }, 50);
   }
 
-  function playAudioWithFade() {
-    if (isAudioStarting) return;
-    try {
-      if (audio.readyState === 0) {
-        audio.load();
-      }
-    } catch (e) {}
+  function playAudio() {
+    expandPill();
+    scheduleMinimize(3000);
 
-    isAudioStarting = true;
     const playPromise = audio.play();
     if (playPromise !== undefined) {
       playPromise.then(function() {
-        isAudioStarting = false;
-        updateAudioUI(true);
         fadeInVolume();
         disarmGestureListeners();
       }).catch(function(err) {
-        isAudioStarting = false;
-        console.log('Autoplay deferred pending user interaction (standard browser policy):', err.name);
+        console.log('Autoplay deferred pending user interaction:', err.name);
         updateAudioUI(false);
         if (audioToggleBtn) {
           audioToggleBtn.classList.add('sound-awaiting-gesture');
@@ -599,11 +616,6 @@ function initAmbientMedia() {
         }
         armGestureListeners();
       });
-    } else {
-      isAudioStarting = false;
-      updateAudioUI(true);
-      fadeInVolume();
-      disarmGestureListeners();
     }
   }
 
@@ -613,14 +625,13 @@ function initAmbientMedia() {
       fadeTimer = null;
     }
     audio.pause();
-    updateAudioUI(false);
+    expandPill();
+    scheduleMinimize(3000);
   }
 
   function toggleAudio() {
-    if (isAudioStarting) return;
-
-    if (audio.paused || !isAudioPlaying) {
-      playAudioWithFade();
+    if (audio.paused) {
+      playAudio();
     } else {
       pauseAudio();
     }
@@ -632,18 +643,27 @@ function initAmbientMedia() {
       e.preventDefault();
       toggleAudio();
     });
+
+    // Expand on hover on desktop, minimize 1.5s after mouse leaves
+    audioToggleBtn.addEventListener('mouseenter', function() {
+      expandPill();
+    });
+
+    audioToggleBtn.addEventListener('mouseleave', function() {
+      scheduleMinimize(1500);
+    });
   }
 
   if (audioPromptBanner) {
     audioPromptBanner.addEventListener('click', function(e) {
       e.stopPropagation();
-      playAudioWithFade();
+      playAudio();
     });
   }
 
   audio.addEventListener('ended', function() {
     audio.currentTime = 0;
-    playAudioWithFade();
+    playAudio();
   });
 
   let gestureArmed = false;
@@ -651,13 +671,11 @@ function initAmbientMedia() {
     if (gestureArmed) return;
     gestureArmed = true;
 
-    // Modern browsers require a genuine user activation (click, touch, pointer, keypress).
-    // Passive scroll/wheel does not count as activation and must not disarm these listeners.
     const validActivationEvents = ['click', 'touchstart', 'touchend', 'pointerdown', 'keydown'];
 
     function handleFirstGesture(e) {
       // If the user clicked/tapped directly on the sound toggle button,
-      // allow audioToggleBtn's click listener to handle it exclusively without race conditions.
+      // allow audioToggleBtn's click listener to handle it exclusively.
       if (e && e.target && (e.target.id === 'audio-toggle-btn' || (e.target.closest && e.target.closest('#audio-toggle-btn')))) {
         return;
       }
@@ -667,7 +685,7 @@ function initAmbientMedia() {
         return;
       }
 
-      playAudioWithFade();
+      playAudio();
     }
 
     function disarmGestureListeners() {
@@ -682,8 +700,9 @@ function initAmbientMedia() {
     });
   }
 
-  // Attempt immediate autoplay on load
-  playAudioWithFade();
+  // Attempt immediate autoplay on load, and auto-minimize after 3.5 seconds
+  playAudio();
+  scheduleMinimize(3500);
 
   // Tab Visibility Change
   document.addEventListener('visibilitychange', function() {

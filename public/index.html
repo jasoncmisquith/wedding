@@ -38,7 +38,7 @@
   <meta http-equiv="Expires" content="0">
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="styles.css?v=4.7">
+  <link rel="stylesheet" href="styles.css?v=4.8">
 </head>
 <body class="bg-ivory text-charcoal antialiased selection:bg-maroon selection:text-white relative min-h-screen">
 
@@ -1066,19 +1066,19 @@
   <button 
     id="audio-toggle-btn" 
     type="button" 
-    class="sound-pill group inline-flex items-center space-x-2.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full text-charcoal cursor-pointer focus:outline-none focus:ring-2 focus:ring-gold/60"
+    class="sound-pill group inline-flex items-center px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full text-charcoal cursor-pointer focus:outline-none focus:ring-2 focus:ring-gold/60"
     title="JVKE &bull; her (Wedding Soundtrack)"
     aria-label="Toggle wedding soundtrack"
   >
     <!-- Micro Equalizer Animation -->
-    <span class="flex items-end space-x-0.5 h-4 w-3.5 justify-center pb-0.5" aria-hidden="true">
+    <span class="flex-shrink-0 flex items-end space-x-0.5 h-4 w-3.5 justify-center pb-0.5" aria-hidden="true">
       <span class="eq-bar h-2"></span>
       <span class="eq-bar h-3.5"></span>
       <span class="eq-bar h-2.5"></span>
     </span>
 
-    <!-- Label & Track Title Hint -->
-    <div class="flex items-center space-x-1.5 text-left leading-none">
+    <!-- Label & Track Title Hint (collapsible) -->
+    <div class="sound-pill-text flex items-center space-x-1.5 text-left leading-none whitespace-nowrap overflow-hidden">
       <span id="audio-toggle-label" class="font-sans text-[11px] sm:text-xs font-semibold tracking-wider uppercase text-charcoal">Sound: On</span>
       <span class="hidden sm:inline-block text-[10px] text-gray-400 font-serif italic tracking-normal">&bull; JVKE &ldquo;her&rdquo;</span>
     </div>
@@ -1153,6 +1153,6 @@
   </div>
 
   <!-- Client Application Script -->
-  <script src="app.js?v=4.7"></script>
+  <script src="app.js?v=4.8"></script>
 </body>
 </html>
