@@ -371,9 +371,8 @@ button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .
  * ------------------------------------------------------------- */
 .sound-pill {
   position: fixed;
-  top: 50%;
-  right: max(1rem, env(safe-area-inset-right, 1rem));
-  transform: translateY(-50%);
+  bottom: max(1.25rem, env(safe-area-inset-bottom, 1.25rem));
+  right: max(1.25rem, env(safe-area-inset-right, 1.25rem));
   z-index: 50;
   background: rgba(255, 255, 255, 0.90);
   -webkit-backdrop-filter: blur(14px);
@@ -387,7 +386,8 @@ button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .
 
 @media (max-width: 640px) {
   .sound-pill {
-    right: max(0.6rem, env(safe-area-inset-right, 0.6rem));
+    bottom: max(1rem, env(safe-area-inset-bottom, 1rem));
+    right: max(1rem, env(safe-area-inset-right, 1rem));
   }
 }
 
@@ -395,11 +395,11 @@ button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .
   background: rgba(255, 255, 255, 0.98);
   border-color: rgba(197, 168, 128, 0.9);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
-  transform: translateY(calc(-50% - 2px));
+  transform: translateY(-2px);
 }
 
 .sound-pill:active {
-  transform: translateY(-50%) scale(0.97);
+  transform: translateY(0) scale(0.97);
 }
 
 .sound-pill.sound-awaiting-gesture {
