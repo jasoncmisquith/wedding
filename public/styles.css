@@ -432,3 +432,18 @@ button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .
 #lightbox-img {
   transition: opacity 0.22s ease-out, transform 0.22s ease-out;
 }
+
+/* -------------------------------------------------------------
+ * Infinite Scroll Moments Carousel
+ * ------------------------------------------------------------- */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+#moments-carousel-viewport {
+  -webkit-overflow-scrolling: touch;
+}

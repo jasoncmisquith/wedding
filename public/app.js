@@ -6,6 +6,7 @@ function initApp() {
   initStorySlideshow();
   initStickyStoryGallery();
   initMobileStoryCarousel();
+  initMomentsCarousel();
   initMomentsLightbox();
   initCountdown();
   initCalendarDownloads();
@@ -737,7 +738,143 @@ function initAmbientMedia() {
 }
 
 // =============================================================
-// 7. MOMENTS OF US LIGHTBOX MODAL (CLEAN FULL-VIEW GALLERY)
+// 7. MOMENTS OF US INFINITE SCROLL CAROUSEL
+// =============================================================
+function initMomentsCarousel() {
+  const viewport = document.getElementById('moments-carousel-viewport');
+  const track = document.getElementById('moments-carousel-track');
+  const prevBtn = document.getElementById('carousel-prev-btn');
+  const nextBtn = document.getElementById('carousel-next-btn');
+
+  if (!viewport || !track) return;
+
+  const sets = track.querySelectorAll('.carousel-set');
+  if (sets.length < 2) return;
+
+  let singleSetWidth = sets[0].offsetWidth;
+  function updateDimensions() {
+    if (sets[0]) singleSetWidth = sets[0].offsetWidth;
+  }
+  window.addEventListener('resize', updateDimensions);
+
+  // Set initial scroll offset to middle set once layout is calculated
+  setTimeout(() => {
+    updateDimensions();
+    if (singleSetWidth > 0 && viewport.scrollLeft === 0) {
+      viewport.scrollLeft = singleSetWidth;
+    }
+  }, 100);
+
+  let isHovered = false;
+  let isDragging = false;
+  let startX = 0;
+  let scrollStart = 0;
+  let dragDistance = 0;
+  let resumeTimer = null;
+  const speed = 0.55; // Gentle, luxury auto-glide (pixels per frame)
+
+  function autoScroll() {
+    if (!isHovered && !isDragging) {
+      viewport.scrollLeft += speed;
+
+      // Wrap forward seamlessly when reaching the end of the second set
+      if (singleSetWidth > 0 && viewport.scrollLeft >= singleSetWidth * 2) {
+        viewport.scrollLeft -= singleSetWidth;
+      }
+      // Wrap backward seamlessly if scrolled past beginning
+      if (singleSetWidth > 0 && viewport.scrollLeft <= 0) {
+        viewport.scrollLeft += singleSetWidth;
+      }
+    }
+    requestAnimationFrame(autoScroll);
+  }
+
+  requestAnimationFrame(autoScroll);
+
+  // Pause on desktop mouse hover
+  viewport.addEventListener('mouseenter', () => { isHovered = true; });
+  viewport.addEventListener('mouseleave', () => { isHovered = false; });
+
+  // Mouse Drag / Swipe
+  viewport.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    dragDistance = 0;
+    startX = e.pageX - viewport.offsetLeft;
+    scrollStart = viewport.scrollLeft;
+    viewport.style.cursor = 'grabbing';
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const x = e.pageX - viewport.offsetLeft;
+    const walk = (x - startX) * 1.4;
+    dragDistance = Math.abs(walk);
+    viewport.scrollLeft = scrollStart - walk;
+
+    if (singleSetWidth > 0) {
+      if (viewport.scrollLeft >= singleSetWidth * 2) viewport.scrollLeft -= singleSetWidth;
+      if (viewport.scrollLeft <= 0) viewport.scrollLeft += singleSetWidth;
+    }
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (isDragging) {
+      isDragging = false;
+      viewport.style.cursor = 'grab';
+    }
+  });
+
+  // Touch Support (iOS Safari, Android Chrome)
+  viewport.addEventListener('touchstart', () => {
+    isDragging = true;
+    clearTimeout(resumeTimer);
+  }, { passive: true });
+
+  viewport.addEventListener('touchend', () => {
+    clearTimeout(resumeTimer);
+    resumeTimer = setTimeout(() => {
+      isDragging = false;
+    }, 1200);
+  }, { passive: true });
+
+  // Native momentum scroll wrap guard
+  viewport.addEventListener('scroll', () => {
+    if (singleSetWidth > 0) {
+      if (viewport.scrollLeft >= singleSetWidth * 2) {
+        viewport.scrollLeft -= singleSetWidth;
+      } else if (viewport.scrollLeft <= 0) {
+        viewport.scrollLeft += singleSetWidth;
+      }
+    }
+  }, { passive: true });
+
+  // Manual Nudge Navigation Buttons
+  const getCardStep = () => {
+    const card = track.querySelector('.moment-card');
+    return card ? card.offsetWidth + 28 : 340;
+  };
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      isHovered = true;
+      viewport.scrollBy({ left: -getCardStep(), behavior: 'smooth' });
+      clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(() => { isHovered = false; }, 2000);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      isHovered = true;
+      viewport.scrollBy({ left: getCardStep(), behavior: 'smooth' });
+      clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(() => { isHovered = false; }, 2000);
+    });
+  }
+}
+
+// =============================================================
+// 8. MOMENTS OF US LIGHTBOX MODAL (CLEAN FULL-VIEW GALLERY)
 // =============================================================
 function initMomentsLightbox() {
   const lightbox = document.getElementById('moments-lightbox');
@@ -750,30 +887,37 @@ function initMomentsLightbox() {
 
   if (!lightbox || !lightboxImg || cards.length === 0) return;
 
-  const moments = Array.from(cards).map(card => {
+  // Deduplicate unique moments from repeating carousel cards
+  const uniqueMoments = [];
+  const seenSrcs = new Set();
+  cards.forEach(card => {
     const img = card.querySelector('img');
-    return {
-      src: img ? img.getAttribute('src') : '',
-      alt: img ? img.getAttribute('alt') : 'Roopa & Jason Moment'
-    };
+    const src = img ? img.getAttribute('src') : '';
+    const alt = img ? img.getAttribute('alt') : 'Roopa & Jason Moment';
+    if (src && !seenSrcs.has(src)) {
+      seenSrcs.add(src);
+      uniqueMoments.push({ src, alt });
+    }
   });
+
+  if (uniqueMoments.length === 0) return;
 
   let currentIndex = 0;
   let isOpen = false;
 
   function showMoment(index) {
-    if (index < 0) index = moments.length - 1;
-    if (index >= moments.length) index = 0;
+    if (index < 0) index = uniqueMoments.length - 1;
+    if (index >= uniqueMoments.length) index = 0;
     currentIndex = index;
 
     lightboxImg.style.opacity = '0';
     lightboxImg.style.transform = 'scale(0.97)';
 
     setTimeout(() => {
-      lightboxImg.src = moments[currentIndex].src;
-      lightboxImg.alt = moments[currentIndex].alt;
+      lightboxImg.src = uniqueMoments[currentIndex].src;
+      lightboxImg.alt = uniqueMoments[currentIndex].alt;
       if (lightboxCounter) {
-        lightboxCounter.textContent = `${currentIndex + 1} of ${moments.length}`;
+        lightboxCounter.textContent = `${currentIndex + 1} of ${uniqueMoments.length}`;
       }
       lightboxImg.style.opacity = '1';
       lightboxImg.style.transform = 'scale(1)';
@@ -807,8 +951,13 @@ function initMomentsLightbox() {
     }, 300);
   }
 
-  cards.forEach((card, idx) => {
-    card.addEventListener('click', () => openLightbox(idx));
+  cards.forEach(card => {
+    const img = card.querySelector('img');
+    const src = img ? img.getAttribute('src') : '';
+    const matchIndex = uniqueMoments.findIndex(m => m.src === src);
+    card.addEventListener('click', (e) => {
+      openLightbox(matchIndex >= 0 ? matchIndex : 0);
+    });
   });
 
   if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
