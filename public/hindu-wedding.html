@@ -38,15 +38,34 @@
   <meta http-equiv="Expires" content="0">
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="styles.css?v=3.7">
+  <link rel="stylesheet" href="styles.css?v=3.9">
 </head>
-<body class="bg-ivory text-charcoal antialiased selection:bg-maroon selection:text-white">
+<body class="bg-ivory text-charcoal antialiased selection:bg-maroon selection:text-white relative min-h-screen">
+
+  <!-- ======================================================== -->
+  <!-- AMBIENT BACKGROUND MEMORY VIDEO (CLEAR MEMORY)           -->
+  <!-- ======================================================== -->
+  <div id="ambient-video-container" class="fixed inset-0 w-full h-full pointer-events-none overflow-hidden z-0" aria-hidden="true">
+    <video 
+      id="memory-video" 
+      class="w-full h-full object-cover"
+      autoplay 
+      muted 
+      loop 
+      playsinline 
+      preload="auto"
+    >
+      <source src="assets/videos/memory-walk.mp4" type="video/mp4">
+    </video>
+    <!-- Clear Memory Overlay: ultra-clean, subtle natural tint -->
+    <div id="memory-overlay" class="absolute inset-0 bg-black/15 pointer-events-none"></div>
+  </div>
 
   <!-- ======================================================== -->
   <!-- 1. NAVIGATION BAR                                        -->
   <!-- ======================================================== -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-ivory/90 backdrop-blur-md border-b border-gray-200 transition-all duration-300">
-    <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+  <nav class="fixed top-0 left-0 right-0 z-50 glass-header transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-6 h-16 sm:h-20 flex items-center justify-between">
       
       <!-- Monogram Logo -->
       <a href="#" class="font-serif text-2xl tracking-widest text-maroon font-semibold hover:opacity-80 transition-opacity">
@@ -60,19 +79,33 @@
         <a href="#our-story" class="hover:text-maroon transition-colors">Moments of Us</a>
       </div>
 
-      <!-- Action Button -->
-      <div class="hidden md:block">
-        <a href="#events" class="btn-maroon px-5 py-2.5 rounded-full text-xs uppercase tracking-widest font-semibold shadow-sm">
-          RSVP &amp; Venues
-        </a>
-      </div>
+      <!-- Action Buttons -->
+      <div class="flex items-center space-x-2.5 sm:space-x-3">
+        <!-- Ambient Motion Toggle Button -->
+        <button 
+          id="video-toggle-btn" 
+          type="button"
+          class="inline-flex items-center space-x-2 px-3 sm:px-4 py-2 rounded-full bg-white/85 hover:bg-white text-charcoal border border-gold/40 shadow-sm backdrop-blur-md text-xs tracking-wider uppercase font-semibold transition-all"
+          title="Pause or play background memory video"
+        >
+          <span id="video-indicator-dot" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span id="video-toggle-label" class="hidden sm:inline">Pause Motion</span>
+          <span class="sm:hidden text-[11px]">Motion</span>
+        </button>
 
-      <!-- Mobile Menu Button -->
-      <button id="mobile-menu-btn" aria-label="Toggle menu" class="md:hidden p-2 text-charcoal hover:text-maroon">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
-        </svg>
-      </button>
+        <div class="hidden sm:block">
+          <a href="#events" class="btn-maroon px-5 py-2.5 rounded-full text-xs uppercase tracking-widest font-semibold shadow-sm">
+            RSVP &amp; Venues
+          </a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" aria-label="Toggle menu" class="md:hidden p-2 text-charcoal hover:text-maroon">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+          </svg>
+        </button>
+      </div>
     </div>
 
     <!-- Mobile Dropdown Menu -->
@@ -94,88 +127,93 @@
   <!-- ======================================================== -->
   <!-- 2. THE WEDDING INVITATION HERO & COUNTDOWN                -->
   <!-- ======================================================== -->
-  <section id="celebration" data-target-date="2026-11-26T04:30:00Z" class="pt-28 sm:pt-36 pb-20 sm:pb-24 bg-ivory border-b border-gray-200 scroll-mt-20">
-    <div class="max-w-4xl mx-auto px-6 text-center">
+  <section id="celebration" data-target-date="2026-11-26T04:30:00Z" class="relative z-10 pt-28 sm:pt-36 pb-20 sm:pb-28 scroll-mt-20">
+    <div class="max-w-4xl mx-auto px-6">
       
-      <!-- Auspicious Inscription & Ganesha Motif -->
-      <div class="flex flex-col items-center justify-center mb-5">
-        <img 
-          src="assets/images/ganesha-motif.png" 
-          alt="Lord Ganesha Motif" 
-          class="w-14 h-11 sm:w-16 sm:h-12 object-contain drop-shadow-sm mb-2"
-        />
-        <p class="font-serif text-sm sm:text-base tracking-[0.3em] text-maroon font-semibold uppercase">
-          ॥ श्री गणेशाय नमः ॥
-        </p>
-      </div>
+      <!-- Clear Memory Hero Glass Container -->
+      <div class="bg-white/90 backdrop-blur-md rounded-3xl p-6 sm:p-12 border border-gold/50 shadow-2xl text-center">
 
-      <!-- Section Tag -->
-      <div class="inline-flex items-center justify-center space-x-3 mb-4">
-        <span class="w-8 h-[1px] bg-gold"></span>
-        <span class="text-xs uppercase tracking-[0.35em] text-maroon font-semibold">The Wedding Celebration</span>
-        <span class="w-8 h-[1px] bg-gold"></span>
-      </div>
+        <!-- Auspicious Inscription & Ganesha Motif -->
+        <div class="flex flex-col items-center justify-center mb-5">
+          <img 
+            src="assets/images/ganesha-motif.png" 
+            alt="Lord Ganesha Motif" 
+            class="w-14 h-11 sm:w-16 sm:h-12 object-contain drop-shadow-sm mb-2"
+          />
+          <p class="font-serif text-sm sm:text-base tracking-[0.3em] text-maroon font-semibold uppercase">
+            ॥ श्री गणेशाय नमः ॥
+          </p>
+        </div>
 
-      <!-- Couple Names -->
-      <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl tracking-tight text-charcoal font-normal leading-tight mb-4">
-        Roopa <span class="font-light italic text-maroon">&amp;</span> Jason
-      </h1>
+        <!-- Section Tag -->
+        <div class="inline-flex items-center justify-center space-x-3 mb-4">
+          <span class="w-8 h-[1px] bg-gold"></span>
+          <span class="text-xs uppercase tracking-[0.35em] text-maroon font-semibold">The Wedding Celebration</span>
+          <span class="w-8 h-[1px] bg-gold"></span>
+        </div>
 
-      <!-- Invitation Card Quote -->
-      <div class="max-w-2xl mx-auto my-8 p-6 sm:p-8 bg-white/80 rounded-2xl border border-gold/40 shadow-sm">
-        <p class="font-serif italic text-base sm:text-lg text-gray-700 leading-relaxed mb-3">
-          &ldquo;With the blessings of our parents and loved ones, we invite you to join us as we celebrate the beginning of a beautiful new chapter and witness the sacred union of Roopa &amp; Jason.&rdquo;
-        </p>
-        <p class="font-serif italic text-sm sm:text-base text-gray-500 font-light">
-          &ldquo;As they begin their journey together with love, laughter, and a lifetime of togetherness.&rdquo;
-        </p>
-      </div>
+        <!-- Couple Names -->
+        <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl tracking-tight text-charcoal font-normal leading-tight mb-4">
+          Roopa <span class="font-light italic text-maroon">&amp;</span> Jason
+        </h1>
 
-      <!-- Dates & Cities -->
-      <div class="space-y-1 mb-10 max-w-xl mx-auto">
-        <p class="text-xs sm:text-sm tracking-[0.25em] uppercase text-charcoal font-semibold">
-          Thursday, Nov 26, 2026 &bull; Udupi &nbsp;|&nbsp; Saturday, Nov 28, 2026 &bull; Mangaluru
-        </p>
-      </div>
+        <!-- Invitation Card Quote -->
+        <div class="max-w-2xl mx-auto my-8 p-6 sm:p-8 bg-ivory/80 rounded-2xl border border-gold/40 shadow-sm">
+          <p class="font-serif italic text-base sm:text-lg text-gray-700 leading-relaxed mb-3">
+            &ldquo;With the blessings of our parents and loved ones, we invite you to join us as we celebrate the beginning of a beautiful new chapter and witness the sacred union of Roopa &amp; Jason.&rdquo;
+          </p>
+          <p class="font-serif italic text-sm sm:text-base text-gray-500 font-light">
+            &ldquo;As they begin their journey together with love, laughter, and a lifetime of togetherness.&rdquo;
+          </p>
+        </div>
 
-      <!-- Live Countdown Clock -->
-      <div class="inline-flex bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-200 max-w-full">
-        <div class="grid grid-cols-4 gap-2 sm:gap-6 text-center">
-          <div class="px-1.5 sm:px-3">
-            <span id="cd-days" class="block font-serif text-2xl sm:text-4xl text-charcoal font-semibold">00</span>
-            <span class="text-[9px] sm:text-xs tracking-wider sm:tracking-widest uppercase text-gray-500 font-medium">Days</span>
-          </div>
-          <div class="px-1.5 sm:px-3 border-l border-gray-100">
-            <span id="cd-hours" class="block font-serif text-2xl sm:text-4xl text-charcoal font-semibold">00</span>
-            <span class="text-[9px] sm:text-xs tracking-wider sm:tracking-widest uppercase text-gray-500 font-medium">Hours</span>
-          </div>
-          <div class="px-1.5 sm:px-3 border-l border-gray-100">
-            <span id="cd-minutes" class="block font-serif text-2xl sm:text-4xl text-charcoal font-semibold">00</span>
-            <span class="text-[9px] sm:text-xs tracking-wider sm:tracking-widest uppercase text-gray-500 font-medium">Mins</span>
-          </div>
-          <div class="px-1.5 sm:px-3 border-l border-gray-100">
-            <span id="cd-seconds" class="block font-serif text-2xl sm:text-4xl text-maroon font-semibold">00</span>
-            <span class="text-[9px] sm:text-xs tracking-wider sm:tracking-widest uppercase text-gray-500 font-medium">Secs</span>
+        <!-- Dates & Cities -->
+        <div class="space-y-1 mb-10 max-w-xl mx-auto">
+          <p class="text-xs sm:text-sm tracking-[0.25em] uppercase text-charcoal font-semibold">
+            Thursday, Nov 26, 2026 &bull; Udupi &nbsp;|&nbsp; Saturday, Nov 28, 2026 &bull; Mangaluru
+          </p>
+        </div>
+
+        <!-- Live Countdown Clock -->
+        <div class="inline-flex bg-ivory/90 rounded-2xl p-4 sm:p-6 shadow-sm border border-gold/30 max-w-full">
+          <div class="grid grid-cols-4 gap-2 sm:gap-6 text-center">
+            <div class="px-1.5 sm:px-3">
+              <span id="cd-days" class="block font-serif text-2xl sm:text-4xl text-charcoal font-semibold">00</span>
+              <span class="text-[9px] sm:text-xs tracking-wider sm:tracking-widest uppercase text-gray-500 font-medium">Days</span>
+            </div>
+            <div class="px-1.5 sm:px-3 border-l border-gold/20">
+              <span id="cd-hours" class="block font-serif text-2xl sm:text-4xl text-charcoal font-semibold">00</span>
+              <span class="text-[9px] sm:text-xs tracking-wider sm:tracking-widest uppercase text-gray-500 font-medium">Hours</span>
+            </div>
+            <div class="px-1.5 sm:px-3 border-l border-gold/20">
+              <span id="cd-minutes" class="block font-serif text-2xl sm:text-4xl text-charcoal font-semibold">00</span>
+              <span class="text-[9px] sm:text-xs tracking-wider sm:tracking-widest uppercase text-gray-500 font-medium">Mins</span>
+            </div>
+            <div class="px-1.5 sm:px-3 border-l border-gold/20">
+              <span id="cd-seconds" class="block font-serif text-2xl sm:text-4xl text-maroon font-semibold">00</span>
+              <span class="text-[9px] sm:text-xs tracking-wider sm:tracking-widest uppercase text-gray-500 font-medium">Secs</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Quick Action Navigation Row -->
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-md mx-auto mt-8">
-        <a 
-          href="#events" 
-          class="w-full sm:w-auto flex-1 btn-maroon px-8 py-3.5 rounded-full text-xs uppercase tracking-widest font-semibold inline-flex items-center justify-center space-x-2 shadow-sm"
-        >
-          <span>View Events &amp; RSVP</span>
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </a>
-        <a 
-          href="#our-story" 
-          class="w-full sm:w-auto flex-1 btn-outline-dark px-8 py-3.5 rounded-full text-xs uppercase tracking-widest font-semibold inline-flex items-center justify-center space-x-2 shadow-sm"
-        >
-          <span>Moments of Us</span>
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </a>
+        <!-- Quick Action Navigation Row -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-md mx-auto mt-8">
+          <a 
+            href="#events" 
+            class="w-full sm:w-auto flex-1 btn-maroon px-8 py-3.5 rounded-full text-xs uppercase tracking-widest font-semibold inline-flex items-center justify-center space-x-2 shadow-sm"
+          >
+            <span>View Events &amp; RSVP</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </a>
+          <a 
+            href="#our-story" 
+            class="w-full sm:w-auto flex-1 btn-outline-dark px-8 py-3.5 rounded-full text-xs uppercase tracking-widest font-semibold inline-flex items-center justify-center space-x-2 shadow-sm"
+          >
+            <span>Moments of Us</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </a>
+        </div>
+
       </div>
 
     </div>
@@ -187,7 +225,7 @@
   <!-- ======================================================== -->
   <!-- 3. WELCOME & FAMILY BLESSINGS                             -->
   <!-- ======================================================== -->
-  <section id="welcome" class="py-20 sm:py-24 bg-white border-b border-gray-200 scroll-mt-20">
+  <section id="welcome" class="relative z-10 py-20 sm:py-24 bg-white/95 backdrop-blur-md border-b border-gray-200 scroll-mt-20">
     <div id="story" class="scroll-mt-24"></div>
     <div class="max-w-3xl mx-auto px-6 text-center">
       <span class="text-xs uppercase tracking-[0.3em] text-maroon font-semibold">With The Blessings of Our Families</span>
@@ -231,7 +269,7 @@
   <div id="rsvp" class="scroll-mt-24"></div>
   <div id="calendar" class="scroll-mt-24"></div>
 
-  <section id="events" class="py-20 sm:py-28 bg-ivory border-b border-gray-200 scroll-mt-20">
+  <section id="events" class="relative z-10 py-20 sm:py-28 bg-ivory/95 backdrop-blur-md border-b border-gray-200 scroll-mt-20">
     <div class="max-w-5xl mx-auto px-4 sm:px-6">
       
       <!-- Section Header -->
@@ -564,7 +602,7 @@
   <!-- ======================================================== -->
   <!-- 5. MOMENTS OF US (PHOTO GALLERY)                         -->
   <!-- ======================================================== -->
-  <section id="our-story" class="py-20 sm:py-28 bg-white border-b border-gray-200 scroll-mt-20">
+  <section id="our-story" class="relative z-10 py-20 sm:py-28 bg-white/95 backdrop-blur-md border-b border-gray-200 scroll-mt-20">
     <div class="max-w-5xl mx-auto px-6">
       
       <!-- Section Header -->
@@ -615,7 +653,7 @@
           <svg class="w-4 h-4 text-gold group-hover:rotate-45 transition-transform" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
           </svg>
-          <span>Experience &ldquo;I&rsquo;ve Found Her&rdquo; with Soundtrack</span>
+          <span>Dedicated &ldquo;I&rsquo;ve Found Her&rdquo; Feature</span>
           <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
         </a>
       </div>
@@ -630,7 +668,7 @@
   <!-- ======================================================== -->
   <!-- 6. FOOTER                                                -->
   <!-- ======================================================== -->
-  <footer class="py-16 bg-charcoal text-white text-center">
+  <footer class="relative z-10 py-16 bg-charcoal/95 text-white text-center border-t border-gold/30">
     <div class="max-w-4xl mx-auto px-6">
       <div class="font-serif text-3xl tracking-widest text-gold mb-3 font-semibold">
         R &amp; J
@@ -645,7 +683,101 @@
     </div>
   </footer>
 
+  <!-- ======================================================== -->
+  <!-- FLOATING GOLD-RIMMED VINYL SOUNDTRACK PLAYER             -->
+  <!-- ======================================================== -->
+  <aside 
+    id="vinyl-player" 
+    class="fixed z-50 vinyl-dock bg-white/95 backdrop-blur-xl border border-gold/60 shadow-2xl rounded-2xl p-3 sm:p-4 transition-all duration-300 w-full max-w-[340px] sm:max-w-sm"
+    aria-label="Soundtrack Player"
+  >
+    <div class="flex items-center space-x-3.5">
+      <!-- Vinyl Disc Graphic -->
+      <button 
+        type="button" 
+        id="vinyl-disc-btn" 
+        class="relative flex-shrink-0 group focus:outline-none" 
+        title="Play / Pause Soundtrack"
+        aria-label="Play or pause JVKE - her"
+      >
+        <div 
+          id="vinyl-disc" 
+          class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-gold shadow-md flex items-center justify-center transition-transform duration-300 vinyl-paused"
+          style="background: radial-gradient(circle, #2a2a2a 0%, #151515 45%, #2a2a2a 50%, #0d0d0d 70%, #202020 90%, #0a0a0a 100%);"
+        >
+          <!-- Center Label -->
+          <div class="w-5 h-5 rounded-full bg-gold flex items-center justify-center border border-white/40">
+            <div class="w-1.5 h-1.5 rounded-full bg-[#111111]"></div>
+          </div>
+        </div>
+
+        <!-- Disc Overlay Play/Pause Icon -->
+        <div class="absolute inset-0 flex items-center justify-center text-white drop-shadow opacity-0 group-hover:opacity-100 transition-opacity bg-black/30 rounded-full">
+          <svg id="vinyl-disc-svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </div>
+      </button>
+
+      <!-- Track Information & Controls -->
+      <div class="flex-1 min-w-0 pr-1">
+        <div class="flex items-center justify-between">
+          <div class="truncate">
+            <div class="flex items-center space-x-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-gold animate-pulse"></span>
+              <h4 class="font-serif text-base sm:text-lg text-charcoal font-semibold leading-tight truncate">her</h4>
+            </div>
+            <p class="text-[10px] tracking-widest uppercase text-gray-500 font-medium mt-0.5">JVKE &bull; Soundtrack</p>
+          </div>
+
+          <!-- Play / Pause Pill Button -->
+          <button 
+            type="button" 
+            id="audio-play-btn" 
+            class="ml-2 w-9 h-9 rounded-full bg-maroon text-white hover:bg-maroon-hover transition-all flex items-center justify-center shadow-sm flex-shrink-0 focus:outline-none"
+            aria-label="Play or pause audio"
+          >
+            <!-- Play Icon -->
+            <svg id="audio-play-icon" class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+            <!-- Pause Icon -->
+            <svg id="audio-pause-icon" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Audio Scrubber & Timing -->
+        <div class="mt-2 flex items-center space-x-2">
+          <span id="audio-current-time" class="text-[10px] tabular-nums text-gray-500 font-medium">0:00</span>
+          <div id="audio-progress-bar" class="flex-1 h-1.5 bg-gray-200 hover:bg-gray-300 rounded-full overflow-hidden cursor-pointer transition-colors" title="Seek song">
+            <div id="audio-progress-fill" class="h-full bg-maroon rounded-full w-0 transition-all duration-100"></div>
+          </div>
+          <span id="audio-duration" class="text-[10px] tabular-nums text-gray-500 font-medium">2:51</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden HTML5 Audio Element -->
+    <audio id="soundtrack-audio" preload="auto">
+      <source src="assets/audio/her-jvke.mp3" type="audio/mpeg">
+    </audio>
+  </aside>
+
+  <!-- Polite First-Touch Banner for Mobile Audio Policies (only shown if browser blocks autoplay) -->
+  <div 
+    id="audio-prompt-banner" 
+    class="hidden opacity-0 fixed bottom-24 sm:bottom-28 right-4 sm:right-6 z-40 bg-charcoal/90 text-white backdrop-blur-md px-4 py-2.5 rounded-full shadow-lg border border-gold/40 text-xs flex items-center space-x-2 animate-bounce cursor-pointer transition-opacity duration-500"
+    title="Click to play soundtrack"
+  >
+    <svg class="w-3.5 h-3.5 text-gold" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+    </svg>
+    <span>Tap to play soundtrack &ldquo;her&rdquo;</span>
+  </div>
+
   <!-- Client Application Script -->
-  <script src="app.js?v=3.7"></script>
+  <script src="app.js?v=3.9"></script>
 </body>
 </html>

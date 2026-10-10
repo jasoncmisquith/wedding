@@ -9,6 +9,7 @@ function initApp() {
   initCountdown();
   initCalendarDownloads();
   initMobileMenu();
+  initAmbientMedia();
 }
 
 if (document.readyState === 'loading') {
@@ -474,3 +475,219 @@ function initMobileMenu() {
     });
   });
 }
+
+// =============================================================
+// 5. AMBIENT BACKGROUND VIDEO & VINYL SOUNDTRACK (CLEAR MEMORY)
+// =============================================================
+function initAmbientMedia() {
+  const video = document.getElementById('memory-video');
+  const videoToggleBtn = document.getElementById('video-toggle-btn');
+  const videoToggleLabel = document.getElementById('video-toggle-label');
+  const videoIndicatorDot = document.getElementById('video-indicator-dot');
+
+  if (video) {
+    video.play().catch(function() {});
+
+    if (videoToggleBtn) {
+      videoToggleBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (video.paused) {
+          video.play();
+          if (videoToggleLabel) videoToggleLabel.textContent = 'Pause Motion';
+          if (videoIndicatorDot) {
+            videoIndicatorDot.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
+          }
+        } else {
+          video.pause();
+          if (videoToggleLabel) videoToggleLabel.textContent = 'Play Motion';
+          if (videoIndicatorDot) {
+            videoIndicatorDot.className = 'w-2 h-2 rounded-full bg-amber-400';
+          }
+        }
+      });
+    }
+  }
+
+  const audio = document.getElementById('soundtrack-audio');
+  const vinylDisc = document.getElementById('vinyl-disc');
+  const vinylDiscBtn = document.getElementById('vinyl-disc-btn');
+  const vinylDiscSvg = document.getElementById('vinyl-disc-svg');
+  const audioPlayBtn = document.getElementById('audio-play-btn');
+  const audioPlayIcon = document.getElementById('audio-play-icon');
+  const audioPauseIcon = document.getElementById('audio-pause-icon');
+  const audioProgressBar = document.getElementById('audio-progress-bar');
+  const audioProgressFill = document.getElementById('audio-progress-fill');
+  const audioCurrentTime = document.getElementById('audio-current-time');
+  const audioDuration = document.getElementById('audio-duration');
+  const audioPromptBanner = document.getElementById('audio-prompt-banner');
+
+  if (!audio) return;
+
+  let isAudioPlaying = false;
+  let targetVolume = 0.55;
+
+  function formatTime(seconds) {
+    if (isNaN(seconds)) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return mins + ':' + (secs < 10 ? '0' : '') + secs;
+  }
+
+  function updateAudioUI(playing) {
+    isAudioPlaying = playing;
+    if (playing) {
+      if (vinylDisc) {
+        vinylDisc.classList.remove('vinyl-paused');
+        vinylDisc.classList.add('vinyl-spinning');
+      }
+      if (audioPlayIcon) audioPlayIcon.classList.add('hidden');
+      if (audioPauseIcon) audioPauseIcon.classList.remove('hidden');
+      if (vinylDiscSvg) {
+        vinylDiscSvg.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+      }
+      if (audioPromptBanner) {
+        audioPromptBanner.style.opacity = '0';
+        setTimeout(() => { audioPromptBanner.style.display = 'none'; }, 500);
+      }
+    } else {
+      if (vinylDisc) {
+        vinylDisc.classList.add('vinyl-paused');
+      }
+      if (audioPlayIcon) audioPlayIcon.classList.remove('hidden');
+      if (audioPauseIcon) audioPauseIcon.classList.add('hidden');
+      if (vinylDiscSvg) {
+        vinylDiscSvg.innerHTML = '<path d="M8 5v14l11-7z"/>';
+      }
+    }
+  }
+
+  function fadeInVolume() {
+    let currentVol = 0;
+    const step = targetVolume / 12;
+    const fadeTimer = setInterval(function() {
+      currentVol += step;
+      if (currentVol >= targetVolume) {
+        audio.volume = targetVolume;
+        clearInterval(fadeTimer);
+      } else {
+        audio.volume = currentVol;
+      }
+    }, 100);
+  }
+
+  function playAudioWithFade() {
+    audio.volume = 0;
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.then(function() {
+        updateAudioUI(true);
+        fadeInVolume();
+      }).catch(function(err) {
+        console.log('Autoplay waiting for user gesture:', err);
+        updateAudioUI(false);
+        if (audioPromptBanner) {
+          audioPromptBanner.classList.remove('hidden');
+          audioPromptBanner.style.opacity = '1';
+        }
+        armGestureListeners();
+      });
+    }
+  }
+
+  function pauseAudio() {
+    audio.pause();
+    updateAudioUI(false);
+  }
+
+  function toggleAudio() {
+    if (audio.paused) {
+      playAudioWithFade();
+    } else {
+      pauseAudio();
+    }
+  }
+
+  if (audioPlayBtn) {
+    audioPlayBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      toggleAudio();
+    });
+  }
+
+  if (vinylDiscBtn) {
+    vinylDiscBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      toggleAudio();
+    });
+  }
+
+  if (audioPromptBanner) {
+    audioPromptBanner.addEventListener('click', function(e) {
+      e.stopPropagation();
+      playAudioWithFade();
+    });
+  }
+
+  audio.addEventListener('loadedmetadata', function() {
+    if (audioDuration) audioDuration.textContent = formatTime(audio.duration);
+  });
+
+  audio.addEventListener('timeupdate', function() {
+    if (!audio.duration) return;
+    const pct = (audio.currentTime / audio.duration) * 100;
+    if (audioProgressFill) audioProgressFill.style.width = pct + '%';
+    if (audioCurrentTime) audioCurrentTime.textContent = formatTime(audio.currentTime);
+  });
+
+  audio.addEventListener('ended', function() {
+    audio.currentTime = 0;
+    playAudioWithFade();
+  });
+
+  if (audioProgressBar) {
+    audioProgressBar.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const rect = audioProgressBar.getBoundingClientRect();
+      const clickPos = (e.clientX - rect.left) / rect.width;
+      if (audio.duration) {
+        audio.currentTime = clickPos * audio.duration;
+      }
+    });
+  }
+
+  function armGestureListeners() {
+    const gestureEvents = ['click', 'touchstart', 'touchend', 'pointerdown', 'scroll', 'wheel', 'keydown'];
+    const onAnyGesture = function() {
+      if (audio && audio.paused) {
+        playAudioWithFade();
+      }
+      gestureEvents.forEach(function(evt) {
+        window.removeEventListener(evt, onAnyGesture, { capture: true });
+      });
+    };
+    gestureEvents.forEach(function(evt) {
+      window.addEventListener(evt, onAnyGesture, { capture: true, once: true });
+    });
+  }
+
+  // Attempt immediate autoplay on load
+  playAudioWithFade();
+
+  // Tab Visibility Change
+  document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'hidden') {
+      if (audio && !audio.paused) {
+        audio.pause();
+        updateAudioUI(false);
+      }
+      if (video && !video.paused) {
+        video.pause();
+      }
+    } else {
+      if (video && video.paused) {
+        video.play().catch(() => {});
+      }
+    }
+  });
+}
+

@@ -366,3 +366,32 @@ button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .
   }
 }
 
+/* -------------------------------------------------------------
+ * Floating Vinyl Soundtrack Player & Ambient Video
+ * ------------------------------------------------------------- */
+@keyframes spinDisc {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.vinyl-spinning {
+  animation: spinDisc 6s linear infinite;
+}
+.vinyl-paused {
+  animation-play-state: paused;
+}
+
+.vinyl-dock {
+  bottom: max(1.25rem, env(safe-area-inset-bottom, 1.25rem));
+  right: max(1.25rem, env(safe-area-inset-right, 1.25rem));
+  max-height: min(440px, calc(100vh - 13.5rem), calc(100dvh - 13.5rem));
+}
+
+@media (max-width: 640px) {
+  .vinyl-dock {
+    left: 1rem;
+    right: 1rem;
+    max-width: calc(100vw - 2rem);
+  }
+}
+
+
