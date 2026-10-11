@@ -486,15 +486,75 @@ function initAmbientMedia() {
   const videoToggleBtn = document.getElementById('video-toggle-btn');
   const videoToggleLabel = document.getElementById('video-toggle-label');
   const videoIndicatorDot = document.getElementById('video-indicator-dot');
+  const videoSwitchBtn = document.getElementById('video-switch-btn');
+  const videoSwitchLabel = document.getElementById('video-switch-label');
+  const mobileVideoSwitchBtn = document.getElementById('mobile-video-switch-btn');
+  const mobileVideoSwitchLabel = document.getElementById('mobile-video-switch-label');
+
+  const videoTracks = [
+    { id: 1, name: 'Video 1', fullName: 'Memory Walk 1', src: 'assets/videos/memory-walk.mp4' },
+    { id: 2, name: 'Video 2', fullName: 'Memory Walk 2', src: 'assets/videos/memory-walk-2.mp4' }
+  ];
+
+  let currentVideoIndex = 0;
+
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paramVideo = urlParams.get('video');
+    const storedVideo = localStorage.getItem('wedding_memory_video_idx');
+    if (paramVideo === '2' || storedVideo === '1') {
+      currentVideoIndex = 1;
+    }
+  } catch (err) {}
+
+  function setVideoTrack(index, playImmediate = true) {
+    if (!video || index < 0 || index >= videoTracks.length) return;
+    currentVideoIndex = index;
+    const track = videoTracks[currentVideoIndex];
+    try {
+      localStorage.setItem('wedding_memory_video_idx', currentVideoIndex.toString());
+    } catch (e) {}
+
+    if (videoSwitchLabel) videoSwitchLabel.textContent = track.name;
+    if (mobileVideoSwitchLabel) mobileVideoSwitchLabel.textContent = track.fullName;
+
+    // Crossfade effect
+    video.style.transition = 'opacity 0.35s ease';
+    video.style.opacity = '0';
+
+    setTimeout(() => {
+      video.src = track.src;
+      video.load();
+      if (playImmediate) {
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {});
+        }
+        if (videoToggleLabel) videoToggleLabel.textContent = 'Pause Motion';
+        if (videoIndicatorDot) {
+          videoIndicatorDot.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
+        }
+      }
+      setTimeout(() => {
+        video.style.opacity = '1';
+      }, 50);
+    }, 250);
+  }
 
   if (video) {
-    video.play().catch(function() {});
+    if (currentVideoIndex !== 0) {
+      setVideoTrack(currentVideoIndex, true);
+    } else {
+      video.play().catch(function() {});
+      if (videoSwitchLabel) videoSwitchLabel.textContent = videoTracks[0].name;
+      if (mobileVideoSwitchLabel) mobileVideoSwitchLabel.textContent = videoTracks[0].fullName;
+    }
 
     if (videoToggleBtn) {
       videoToggleBtn.addEventListener('click', function(e) {
         e.preventDefault();
         if (video.paused) {
-          video.play();
+          video.play().catch(() => {});
           if (videoToggleLabel) videoToggleLabel.textContent = 'Pause Motion';
           if (videoIndicatorDot) {
             videoIndicatorDot.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
@@ -506,6 +566,22 @@ function initAmbientMedia() {
             videoIndicatorDot.className = 'w-2 h-2 rounded-full bg-amber-400';
           }
         }
+      });
+    }
+
+    if (videoSwitchBtn) {
+      videoSwitchBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const nextIdx = (currentVideoIndex + 1) % videoTracks.length;
+        setVideoTrack(nextIdx, !video.paused);
+      });
+    }
+
+    if (mobileVideoSwitchBtn) {
+      mobileVideoSwitchBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const nextIdx = (currentVideoIndex + 1) % videoTracks.length;
+        setVideoTrack(nextIdx, !video.paused);
       });
     }
   }
