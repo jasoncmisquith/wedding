@@ -557,3 +557,20 @@ button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .
 .moment-card {
   flex-shrink: 0 !important;
 }
+
+/* -------------------------------------------------------------
+ * Ambient Background Memory Video Framing (Gentle Cinematic Zoom)
+ * ------------------------------------------------------------- */
+#memory-video {
+  transform: scale(1.08);
+  transform-origin: center center;
+  transition: opacity 0.35s ease, transform 0.5s ease;
+}
+
+@media (min-width: 768px) {
+  #memory-video {
+    transform: scale(1.2);
+    transform-origin: center 40%;
+  }
+}
+
