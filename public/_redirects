@@ -1,5 +1,4 @@
 # Cloudflare Pages / Netlify Redirect Rules
-/ /c 302
 /c.html /c 301
 /church /c 301
 /church.html /c 301
