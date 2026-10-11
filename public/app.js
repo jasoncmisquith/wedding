@@ -482,67 +482,172 @@ function initMobileMenu() {
 // 5. AMBIENT BACKGROUND VIDEO & VINYL SOUNDTRACK (CLEAR MEMORY)
 // =============================================================
 function initAmbientMedia() {
-  const vLeft = document.getElementById('memory-video-left');
-  const vRight = document.getElementById('memory-video-right');
+  const v1 = document.getElementById('memory-video-1');
+  const s1 = document.getElementById('scene-video-1');
+  const v2Main = document.getElementById('memory-video-2-main');
+  const v2Wings = document.getElementById('memory-video-2-wings');
+  const s2 = document.getElementById('scene-video-2');
   const videoToggleBtn = document.getElementById('video-toggle-btn');
   const videoToggleLabel = document.getElementById('video-toggle-label');
   const videoIndicatorDot = document.getElementById('video-indicator-dot');
 
-  if (vLeft && vRight) {
-    let isOffsetSynced = false;
+  let activeScene = 1; // 1 = Beach (v1), 2 = Cafe (v2Main + v2Wings)
+  let isTransitioning = false;
+  let isPausedByUser = false;
 
-    const syncAndPlay = () => {
-      // Set right video offset by exactly 5.0 seconds
-      if (!isOffsetSynced || Math.abs(vRight.currentTime - vLeft.currentTime) < 1.0) {
-        try {
-          vRight.currentTime = 5.0;
-          isOffsetSynced = true;
-        } catch (e) {}
+  function isDesktop() {
+    return window.innerWidth >= 768;
+  }
+
+  function playScene1() {
+    if (!v1) return;
+    v1.play().catch(() => {});
+  }
+
+  function pauseScene1() {
+    if (!v1) return;
+    v1.pause();
+  }
+
+  function playScene2() {
+    if (v2Main) v2Main.play().catch(() => {});
+    if (v2Wings && isDesktop()) {
+      v2Wings.play().catch(() => {});
+      if (v2Main && Math.abs(v2Wings.currentTime - v2Main.currentTime) > 0.3) {
+        try { v2Wings.currentTime = v2Main.currentTime; } catch (e) {}
       }
-      vLeft.play().catch(() => {});
-      vRight.play().catch(() => {});
-    };
-
-    if (vRight.readyState >= 1) {
-      syncAndPlay();
-    } else {
-      vRight.addEventListener('loadedmetadata', syncAndPlay, { once: true });
     }
+  }
 
-    // Safety trigger in case metadata was already ready
-    setTimeout(syncAndPlay, 200);
+  function pauseScene2() {
+    if (v2Main) v2Main.pause();
+    if (v2Wings) v2Wings.pause();
+  }
 
-    // Guard offset when looping
-    vLeft.addEventListener('seeked', () => {
-      if (vLeft.currentTime < 1.0) {
-        try {
-          vRight.currentTime = 5.0;
-        } catch (e) {}
+  function crossfadeToScene(targetScene) {
+    if (isPausedByUser || isTransitioning || targetScene === activeScene) return;
+    isTransitioning = true;
+
+    if (targetScene === 2) {
+      // Crossfade from Scene 1 to Scene 2
+      if (v2Main) v2Main.currentTime = 0;
+      if (v2Wings && isDesktop()) v2Wings.currentTime = 0;
+      playScene2();
+
+      if (s2) {
+        s2.classList.remove('opacity-0');
+        s2.classList.add('opacity-100');
+      }
+      if (s1) {
+        s1.classList.remove('opacity-100');
+        s1.classList.add('opacity-0');
+      }
+
+      setTimeout(() => {
+        if (!isPausedByUser) pauseScene1();
+        activeScene = 2;
+        isTransitioning = false;
+      }, 1200);
+
+    } else if (targetScene === 1) {
+      // Crossfade from Scene 2 to Scene 1
+      if (v1) v1.currentTime = 0;
+      playScene1();
+
+      if (s1) {
+        s1.classList.remove('opacity-0');
+        s1.classList.add('opacity-100');
+      }
+      if (s2) {
+        s2.classList.remove('opacity-100');
+        s2.classList.add('opacity-0');
+      }
+
+      setTimeout(() => {
+        if (!isPausedByUser) pauseScene2();
+        activeScene = 1;
+        isTransitioning = false;
+      }, 1200);
+    }
+  }
+
+  // Setup timeupdate trigger for Scene 1 (Beach)
+  if (v1) {
+    v1.addEventListener('timeupdate', () => {
+      if (!isTransitioning && !isPausedByUser && activeScene === 1 && v1.duration) {
+        if (v1.duration - v1.currentTime <= 1.2) {
+          crossfadeToScene(2);
+        }
       }
     });
+    v1.addEventListener('ended', () => {
+      if (!isTransitioning && !isPausedByUser && activeScene === 1) {
+        crossfadeToScene(2);
+      }
+    });
+  }
 
-    if (videoToggleBtn) {
-      videoToggleBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (vLeft.paused || vRight.paused) {
-          vLeft.play().catch(() => {});
-          vRight.play().catch(() => {});
-          if (videoToggleLabel) videoToggleLabel.textContent = 'Pause Motion';
-          if (videoIndicatorDot) {
-            videoIndicatorDot.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
-          }
-        } else {
-          vLeft.pause();
-          vRight.pause();
-          if (videoToggleLabel) videoToggleLabel.textContent = 'Play Motion';
-          if (videoIndicatorDot) {
-            videoIndicatorDot.className = 'w-2 h-2 rounded-full bg-amber-400';
-          }
+  // Setup timeupdate trigger for Scene 2 (Cafe)
+  if (v2Main) {
+    v2Main.addEventListener('timeupdate', () => {
+      if (v2Wings && isDesktop() && !v2Wings.paused) {
+        if (Math.abs(v2Wings.currentTime - v2Main.currentTime) > 0.3) {
+          try { v2Wings.currentTime = v2Main.currentTime; } catch (e) {}
         }
-      });
+      }
+
+      if (!isTransitioning && !isPausedByUser && activeScene === 2 && v2Main.duration) {
+        if (v2Main.duration - v2Main.currentTime <= 1.2) {
+          crossfadeToScene(1);
+        }
+      }
+    });
+    v2Main.addEventListener('ended', () => {
+      if (!isTransitioning && !isPausedByUser && activeScene === 2) {
+        crossfadeToScene(1);
+      }
+    });
+  }
+
+  // Start with Scene 1 playing
+  playScene1();
+
+  // Handle window resize dynamically
+  window.addEventListener('resize', () => {
+    if (activeScene === 2 && !isPausedByUser) {
+      if (isDesktop() && v2Wings && v2Wings.paused) {
+        v2Wings.play().catch(() => {});
+      } else if (!isDesktop() && v2Wings && !v2Wings.paused) {
+        v2Wings.pause();
+      }
     }
-  } else if (vLeft) {
-    vLeft.play().catch(() => {});
+  });
+
+  // Pause / Resume Toggle Button
+  if (videoToggleBtn) {
+    videoToggleBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (isPausedByUser) {
+        isPausedByUser = false;
+        if (activeScene === 1) {
+          playScene1();
+        } else {
+          playScene2();
+        }
+        if (videoToggleLabel) videoToggleLabel.textContent = 'Pause Motion';
+        if (videoIndicatorDot) {
+          videoIndicatorDot.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
+        }
+      } else {
+        isPausedByUser = true;
+        pauseScene1();
+        pauseScene2();
+        if (videoToggleLabel) videoToggleLabel.textContent = 'Play Motion';
+        if (videoIndicatorDot) {
+          videoIndicatorDot.className = 'w-2 h-2 rounded-full bg-amber-400';
+        }
+      }
+    });
   }
 
   const audio = document.getElementById('soundtrack-audio');

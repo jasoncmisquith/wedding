@@ -38,24 +38,36 @@
   <meta http-equiv="Expires" content="0">
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="styles.css?v=5.6">
+  <link rel="stylesheet" href="styles.css?v=5.7">
 </head>
 <body class="bg-ivory text-charcoal antialiased selection:bg-maroon selection:text-white relative min-h-screen">
 
-      <!-- ======================================================== -->
-  <!-- AMBIENT BACKGROUND MEMORY VIDEO (SPLIT-SCREEN DIPTYCH)   -->
+  <!-- ======================================================== -->
+  <!-- AMBIENT BACKGROUND MEMORY VIDEOS (DUAL-SCENE CROSSFADE)  -->
   <!-- ======================================================== -->
   <div id="ambient-video-container" class="fixed inset-0 w-full h-full pointer-events-none overflow-hidden z-0" aria-hidden="true">
-    <!-- Split Screen Diptych: Left from 0:00, Right offset by 5.0s -->
-    <div id="memory-diptych-wrapper" class="absolute inset-0 w-full h-full flex flex-col md:flex-row overflow-hidden">
-      <!-- Left / Top Panel: Stream 1 (0:00) -->
-      <div class="relative w-full h-1/2 md:w-1/2 md:h-full overflow-hidden border-b md:border-b-0 md:border-r border-gold/20">
+    <!-- SCENE 1: MEMORY WALK 1 (BEACH WALK) -->
+    <div id="scene-video-1" class="ambient-scene absolute inset-0 w-full h-full overflow-hidden opacity-100">
+      <video 
+        id="memory-video-1" 
+        class="ambient-beach-video absolute inset-0 w-full h-full object-cover"
+        autoplay 
+        muted 
+        playsinline 
+        preload="auto"
+      >
+        <source src="assets/videos/memory-walk.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <!-- SCENE 2: MEMORY WALK 2 (CAFE MOMENT WITH DESKTOP AMBIENT WINGS) -->
+    <div id="scene-video-2" class="ambient-scene absolute inset-0 w-full h-full overflow-hidden opacity-0">
+      <!-- Desktop Ambient Stretched Wings (fills widescreen with soft glowing motion) -->
+      <div class="hidden md:block absolute inset-0 w-full h-full overflow-hidden">
         <video 
-          id="memory-video-left" 
-          class="diptych-video absolute inset-0 w-full h-full object-cover"
-          autoplay 
+          id="memory-video-2-wings" 
+          class="ambient-wings-video absolute inset-0 w-full h-full object-cover"
           muted 
-          loop 
           playsinline 
           preload="auto"
         >
@@ -63,22 +75,23 @@
         </video>
       </div>
 
-      <!-- Right / Bottom Panel: Stream 2 (+5.0s offset) -->
-      <div class="relative w-full h-1/2 md:w-1/2 md:h-full overflow-hidden">
-        <video 
-          id="memory-video-right" 
-          class="diptych-video absolute inset-0 w-full h-full object-cover"
-          autoplay 
-          muted 
-          loop 
-          playsinline 
-          preload="auto"
-        >
-          <source src="assets/videos/memory-walk-2.mp4" type="video/mp4">
-        </video>
+      <!-- Main Video: Edge-to-edge on mobile, crisp centered vertical frame on desktop -->
+      <div class="absolute inset-0 w-full h-full flex items-center justify-center overflow-hidden">
+        <div class="relative w-full h-full md:w-auto md:h-full md:aspect-[9/16] overflow-hidden flex items-center justify-center ambient-center-card">
+          <video 
+            id="memory-video-2-main" 
+            class="ambient-vertical-video"
+            muted 
+            playsinline 
+            preload="auto"
+          >
+            <source src="assets/videos/memory-walk-2.mp4" type="video/mp4">
+          </video>
+        </div>
       </div>
     </div>
-    <!-- Raw Unclouded Video (zero darkening overlay) -->
+
+    <!-- Raw Unclouded Video Overlay Container -->
     <div id="memory-overlay" class="hidden pointer-events-none"></div>
   </div>
 
@@ -1483,6 +1496,6 @@
   </div>
 
   <!-- Client Application Script -->
-  <script src="app.js?v=5.6"></script>
+  <script src="app.js?v=5.7"></script>
 </body>
 </html>
