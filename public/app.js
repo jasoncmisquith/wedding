@@ -482,84 +482,58 @@ function initMobileMenu() {
 // 5. AMBIENT BACKGROUND VIDEO & VINYL SOUNDTRACK (CLEAR MEMORY)
 // =============================================================
 function initAmbientMedia() {
-  const v1 = document.getElementById('memory-video-1');
-  const v2 = document.getElementById('memory-video-2');
+  const vLeft = document.getElementById('memory-video-left');
+  const vRight = document.getElementById('memory-video-right');
   const videoToggleBtn = document.getElementById('video-toggle-btn');
   const videoToggleLabel = document.getElementById('video-toggle-label');
   const videoIndicatorDot = document.getElementById('video-indicator-dot');
 
-  let activeVideo = v1;
-  let nextVideo = v2;
-  let isPausedByUser = false;
-  let isTransitioning = false;
+  if (vLeft && vRight) {
+    let isOffsetSynced = false;
 
-  function crossfadeToNext() {
-    if (isPausedByUser || isTransitioning || !activeVideo || !nextVideo) return;
-    isTransitioning = true;
+    const syncAndPlay = () => {
+      // Set right video offset by exactly 5.0 seconds
+      if (!isOffsetSynced || Math.abs(vRight.currentTime - vLeft.currentTime) < 1.0) {
+        try {
+          vRight.currentTime = 5.0;
+          isOffsetSynced = true;
+        } catch (e) {}
+      }
+      vLeft.play().catch(() => {});
+      vRight.play().catch(() => {});
+    };
 
-    // Reset and start next video
-    nextVideo.currentTime = 0;
-    const playPromise = nextVideo.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => {});
+    if (vRight.readyState >= 1) {
+      syncAndPlay();
+    } else {
+      vRight.addEventListener('loadedmetadata', syncAndPlay, { once: true });
     }
 
-    // Smooth opacity crossfade
-    nextVideo.classList.remove('opacity-0');
-    nextVideo.classList.add('opacity-100');
-    activeVideo.classList.remove('opacity-100');
-    activeVideo.classList.add('opacity-0');
+    // Safety trigger in case metadata was already ready
+    setTimeout(syncAndPlay, 200);
 
-    // After fade completes, pause previous video and swap references
-    setTimeout(() => {
-      if (activeVideo && !isPausedByUser) {
-        activeVideo.pause();
-      }
-      const temp = activeVideo;
-      activeVideo = nextVideo;
-      nextVideo = temp;
-      isTransitioning = false;
-    }, 1200);
-  }
-
-  function setupVideoListeners(video) {
-    if (!video) return;
-    video.addEventListener('timeupdate', () => {
-      if (!isTransitioning && !isPausedByUser && video === activeVideo && video.duration) {
-        // Trigger crossfade 1.2s before the current video finishes
-        if (video.duration - video.currentTime <= 1.2) {
-          crossfadeToNext();
-        }
+    // Guard offset when looping
+    vLeft.addEventListener('seeked', () => {
+      if (vLeft.currentTime < 1.0) {
+        try {
+          vRight.currentTime = 5.0;
+        } catch (e) {}
       }
     });
-
-    video.addEventListener('ended', () => {
-      if (!isTransitioning && !isPausedByUser && video === activeVideo) {
-        crossfadeToNext();
-      }
-    });
-  }
-
-  if (v1 && v2) {
-    setupVideoListeners(v1);
-    setupVideoListeners(v2);
-
-    v1.play().catch(() => {});
 
     if (videoToggleBtn) {
       videoToggleBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        if (isPausedByUser) {
-          isPausedByUser = false;
-          if (activeVideo) activeVideo.play().catch(() => {});
+        if (vLeft.paused || vRight.paused) {
+          vLeft.play().catch(() => {});
+          vRight.play().catch(() => {});
           if (videoToggleLabel) videoToggleLabel.textContent = 'Pause Motion';
           if (videoIndicatorDot) {
             videoIndicatorDot.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
           }
         } else {
-          isPausedByUser = true;
-          if (v1) v1.pause();
-          if (v2) v2.pause();
+          vLeft.pause();
+          vRight.pause();
           if (videoToggleLabel) videoToggleLabel.textContent = 'Play Motion';
           if (videoIndicatorDot) {
             videoIndicatorDot.className = 'w-2 h-2 rounded-full bg-amber-400';
@@ -567,8 +541,8 @@ function initAmbientMedia() {
         }
       });
     }
-  } else if (v1) {
-    v1.play().catch(() => {});
+  } else if (vLeft) {
+    vLeft.play().catch(() => {});
   }
 
   const audio = document.getElementById('soundtrack-audio');
