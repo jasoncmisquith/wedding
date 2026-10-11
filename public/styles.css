@@ -530,5 +530,30 @@ button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .
 }
 
 #moments-carousel-viewport {
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
   -webkit-overflow-scrolling: touch;
+  scroll-behavior: auto !important;
+  white-space: nowrap;
+}
+
+#moments-carousel-track {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  width: max-content !important;
+  min-width: max-content !important;
+}
+
+.carousel-set {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+}
+
+.moment-card {
+  flex-shrink: 0 !important;
 }

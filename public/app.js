@@ -793,11 +793,13 @@ function initMomentsCarousel() {
 
   requestAnimationFrame(autoScroll);
 
-  // Pause on desktop mouse hover
-  viewport.addEventListener('mouseenter', () => { isHovered = true; });
-  viewport.addEventListener('mouseleave', () => { 
-    isHovered = false; 
-    currentScroll = viewport.scrollLeft;
+  // Pause on desktop mouse hover over individual cards
+  track.querySelectorAll('.moment-card').forEach((card) => {
+    card.addEventListener('mouseenter', () => { isHovered = true; });
+    card.addEventListener('mouseleave', () => { 
+      isHovered = false; 
+      currentScroll = viewport.scrollLeft;
+    });
   });
 
   // Mouse Drag / Swipe
