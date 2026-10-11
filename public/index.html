@@ -38,24 +38,32 @@
   <meta http-equiv="Expires" content="0">
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="styles.css?v=5.4">
+  <link rel="stylesheet" href="styles.css?v=5.5">
 </head>
 <body class="bg-ivory text-charcoal antialiased selection:bg-maroon selection:text-white relative min-h-screen">
 
-  <!-- ======================================================== -->
-  <!-- AMBIENT BACKGROUND MEMORY VIDEO (CLEAR MEMORY)           -->
+    <!-- ======================================================== -->
+  <!-- AMBIENT BACKGROUND MEMORY VIDEO (CONTINUOUS CROSSFADE)   -->
   <!-- ======================================================== -->
   <div id="ambient-video-container" class="fixed inset-0 w-full h-full pointer-events-none overflow-hidden z-0" aria-hidden="true">
     <video 
-      id="memory-video" 
-      class="w-full h-full object-cover"
+      id="memory-video-1" 
+      class="ambient-memory-video absolute inset-0 w-full h-full object-cover opacity-100"
       autoplay 
       muted 
-      loop 
       playsinline 
       preload="auto"
     >
       <source src="assets/videos/memory-walk.mp4" type="video/mp4">
+    </video>
+    <video 
+      id="memory-video-2" 
+      class="ambient-memory-video absolute inset-0 w-full h-full object-cover opacity-0"
+      muted 
+      playsinline 
+      preload="auto"
+    >
+      <source src="assets/videos/memory-walk-2.mp4" type="video/mp4">
     </video>
     <!-- Raw Unclouded Video (zero darkening overlay) -->
     <div id="memory-overlay" class="hidden pointer-events-none"></div>
@@ -78,21 +86,8 @@
         <a href="#our-story" class="hover:text-maroon transition-colors">Moments of Us</a>
       </div>
 
-      <!-- Action Buttons -->
+            <!-- Action Buttons -->
       <div class="flex items-center space-x-2.5 sm:space-x-3">
-        <!-- Background Memory Video Switcher Button -->
-        <button 
-          id="video-switch-btn" 
-          type="button"
-          class="inline-flex items-center space-x-1.5 px-3 py-2 rounded-full bg-white/85 hover:bg-white text-charcoal border border-gold/40 shadow-sm backdrop-blur-md text-xs tracking-wider uppercase font-semibold transition-all hover:scale-105 active:scale-95"
-          title="Switch background memory video (Memory Walk 1 / 2)"
-        >
-          <svg class="w-3.5 h-3.5 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-          </svg>
-          <span id="video-switch-label">Video 1</span>
-        </button>
-
         <!-- Ambient Motion Toggle Button -->
         <button 
           id="video-toggle-btn" 
@@ -120,18 +115,12 @@
       </div>
     </div>
 
-    <!-- Mobile Dropdown Menu -->
+        <!-- Mobile Dropdown Menu -->
     <div id="mobile-menu" class="hidden md:hidden bg-ivory/95 backdrop-blur-md border-b border-gray-200 px-6 py-6 space-y-4 text-center shadow-lg transition-all duration-300">
       <a href="#celebration" class="mobile-nav-link block text-sm tracking-widest uppercase py-2 hover:text-maroon">Invitation</a>
       <a href="#events" class="mobile-nav-link block text-sm tracking-widest uppercase py-2 hover:text-maroon">Events &amp; Venues</a>
       <a href="#our-story" class="mobile-nav-link block text-sm tracking-widest uppercase py-2 hover:text-maroon">Moments of Us</a>
-      <div class="pt-2 border-t border-gold/30">
-        <button id="mobile-video-switch-btn" type="button" class="inline-flex items-center justify-center space-x-2 w-full py-2.5 px-4 rounded-full bg-white/85 border border-gold/40 text-xs uppercase tracking-wider font-semibold text-charcoal shadow-sm mb-3">
-          <svg class="w-3.5 h-3.5 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-          </svg>
-          <span>Memory Video: <strong id="mobile-video-switch-label" class="text-maroon">Memory Walk 1</strong></span>
-        </button>
+      <div class="pt-2">
         <a href="#events" class="mobile-nav-link inline-block btn-maroon px-6 py-3.5 rounded-full text-xs uppercase tracking-widest font-semibold w-full shadow-sm">
           RSVP &amp; Directions
         </a>
@@ -1595,6 +1584,6 @@
   </div>
 
   <!-- Client Application Script -->
-  <script src="app.js?v=5.4"></script>
+  <script src="app.js?v=5.5"></script>
 </body>
 </html>

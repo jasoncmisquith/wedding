@@ -482,85 +482,84 @@ function initMobileMenu() {
 // 5. AMBIENT BACKGROUND VIDEO & VINYL SOUNDTRACK (CLEAR MEMORY)
 // =============================================================
 function initAmbientMedia() {
-  const video = document.getElementById('memory-video');
+  const v1 = document.getElementById('memory-video-1');
+  const v2 = document.getElementById('memory-video-2');
   const videoToggleBtn = document.getElementById('video-toggle-btn');
   const videoToggleLabel = document.getElementById('video-toggle-label');
   const videoIndicatorDot = document.getElementById('video-indicator-dot');
-  const videoSwitchBtn = document.getElementById('video-switch-btn');
-  const videoSwitchLabel = document.getElementById('video-switch-label');
-  const mobileVideoSwitchBtn = document.getElementById('mobile-video-switch-btn');
-  const mobileVideoSwitchLabel = document.getElementById('mobile-video-switch-label');
 
-  const videoTracks = [
-    { id: 1, name: 'Video 1', fullName: 'Memory Walk 1', src: 'assets/videos/memory-walk.mp4' },
-    { id: 2, name: 'Video 2', fullName: 'Memory Walk 2', src: 'assets/videos/memory-walk-2.mp4' }
-  ];
+  let activeVideo = v1;
+  let nextVideo = v2;
+  let isPausedByUser = false;
+  let isTransitioning = false;
 
-  let currentVideoIndex = 0;
+  function crossfadeToNext() {
+    if (isPausedByUser || isTransitioning || !activeVideo || !nextVideo) return;
+    isTransitioning = true;
 
-  try {
-    const urlParams = new URLSearchParams(window.location.search);
-    const paramVideo = urlParams.get('video');
-    const storedVideo = localStorage.getItem('wedding_memory_video_idx');
-    if (paramVideo === '2' || storedVideo === '1') {
-      currentVideoIndex = 1;
+    // Reset and start next video
+    nextVideo.currentTime = 0;
+    const playPromise = nextVideo.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {});
     }
-  } catch (err) {}
 
-  function setVideoTrack(index, playImmediate = true) {
-    if (!video || index < 0 || index >= videoTracks.length) return;
-    currentVideoIndex = index;
-    const track = videoTracks[currentVideoIndex];
-    try {
-      localStorage.setItem('wedding_memory_video_idx', currentVideoIndex.toString());
-    } catch (e) {}
+    // Smooth opacity crossfade
+    nextVideo.classList.remove('opacity-0');
+    nextVideo.classList.add('opacity-100');
+    activeVideo.classList.remove('opacity-100');
+    activeVideo.classList.add('opacity-0');
 
-    if (videoSwitchLabel) videoSwitchLabel.textContent = track.name;
-    if (mobileVideoSwitchLabel) mobileVideoSwitchLabel.textContent = track.fullName;
-
-    // Crossfade effect
-    video.style.transition = 'opacity 0.35s ease';
-    video.style.opacity = '0';
-
+    // After fade completes, pause previous video and swap references
     setTimeout(() => {
-      video.src = track.src;
-      video.load();
-      if (playImmediate) {
-        const playPromise = video.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(() => {});
-        }
-        if (videoToggleLabel) videoToggleLabel.textContent = 'Pause Motion';
-        if (videoIndicatorDot) {
-          videoIndicatorDot.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
-        }
+      if (activeVideo && !isPausedByUser) {
+        activeVideo.pause();
       }
-      setTimeout(() => {
-        video.style.opacity = '1';
-      }, 50);
-    }, 250);
+      const temp = activeVideo;
+      activeVideo = nextVideo;
+      nextVideo = temp;
+      isTransitioning = false;
+    }, 1200);
   }
 
-  if (video) {
-    if (currentVideoIndex !== 0) {
-      setVideoTrack(currentVideoIndex, true);
-    } else {
-      video.play().catch(function() {});
-      if (videoSwitchLabel) videoSwitchLabel.textContent = videoTracks[0].name;
-      if (mobileVideoSwitchLabel) mobileVideoSwitchLabel.textContent = videoTracks[0].fullName;
-    }
+  function setupVideoListeners(video) {
+    if (!video) return;
+    video.addEventListener('timeupdate', () => {
+      if (!isTransitioning && !isPausedByUser && video === activeVideo && video.duration) {
+        // Trigger crossfade 1.2s before the current video finishes
+        if (video.duration - video.currentTime <= 1.2) {
+          crossfadeToNext();
+        }
+      }
+    });
+
+    video.addEventListener('ended', () => {
+      if (!isTransitioning && !isPausedByUser && video === activeVideo) {
+        crossfadeToNext();
+      }
+    });
+  }
+
+  if (v1 && v2) {
+    setupVideoListeners(v1);
+    setupVideoListeners(v2);
+
+    v1.play().catch(() => {});
 
     if (videoToggleBtn) {
-      videoToggleBtn.addEventListener('click', function(e) {
+      videoToggleBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        if (video.paused) {
-          video.play().catch(() => {});
+        if (isPausedByUser) {
+          isPausedByUser = false;
+          if (activeVideo) activeVideo.play().catch(() => {});
           if (videoToggleLabel) videoToggleLabel.textContent = 'Pause Motion';
           if (videoIndicatorDot) {
             videoIndicatorDot.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
           }
         } else {
-          video.pause();
+          isPausedByUser = true;
+          if (v1) v1.pause();
+          if (v2) v2.pause();
           if (videoToggleLabel) videoToggleLabel.textContent = 'Play Motion';
           if (videoIndicatorDot) {
             videoIndicatorDot.className = 'w-2 h-2 rounded-full bg-amber-400';
@@ -568,22 +567,8 @@ function initAmbientMedia() {
         }
       });
     }
-
-    if (videoSwitchBtn) {
-      videoSwitchBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        const nextIdx = (currentVideoIndex + 1) % videoTracks.length;
-        setVideoTrack(nextIdx, !video.paused);
-      });
-    }
-
-    if (mobileVideoSwitchBtn) {
-      mobileVideoSwitchBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        const nextIdx = (currentVideoIndex + 1) % videoTracks.length;
-        setVideoTrack(nextIdx, !video.paused);
-      });
-    }
+  } else if (v1) {
+    v1.play().catch(() => {});
   }
 
   const audio = document.getElementById('soundtrack-audio');
