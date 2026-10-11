@@ -612,3 +612,38 @@ button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .
   }
 }
 
+/* -------------------------------------------------------------
+ * Luxury Welcome "Open Invitation" Envelope Modal
+ * ------------------------------------------------------------- */
+#welcome-envelope-modal {
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
+  will-change: opacity, visibility;
+}
+
+#welcome-envelope-modal.is-dismissed {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+#welcome-envelope-modal.is-dismissed > div {
+  transform: scale(0.96) translateY(-14px);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wax-seal-btn {
+  background: linear-gradient(135deg, #6B1724 0%, #4D0F19 100%);
+  box-shadow: 0 4px 18px rgba(107, 23, 36, 0.35), 0 0 0 1px rgba(197, 168, 128, 0.45);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wax-seal-btn:hover {
+  background: linear-gradient(135deg, #7D1B2B 0%, #5A121E 100%);
+  box-shadow: 0 6px 24px rgba(107, 23, 36, 0.45), 0 0 0 1.5px rgba(197, 168, 128, 0.7);
+  transform: translateY(-1px) scale(1.015);
+}
+
+.wax-seal-btn:active {
+  transform: translateY(1px) scale(0.985);
+}
+

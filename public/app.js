@@ -654,6 +654,9 @@ function initAmbientMedia() {
   const audioToggleBtn = document.getElementById('audio-toggle-btn');
   const audioToggleLabel = document.getElementById('audio-toggle-label');
   const audioPromptBanner = document.getElementById('audio-prompt-banner');
+  const welcomeModal = document.getElementById('welcome-envelope-modal');
+  const openInvitationBtn = document.getElementById('open-invitation-btn');
+  const enterSilentlyBtn = document.getElementById('enter-silently-btn');
 
   if (!audio) return;
 
@@ -774,6 +777,43 @@ function initAmbientMedia() {
       playAudio();
     } else {
       pauseAudio();
+    }
+  }
+
+  function dismissWelcomeModal() {
+    if (!welcomeModal) return;
+    try {
+      sessionStorage.setItem('invitation_unsealed', 'true');
+    } catch (e) {}
+    welcomeModal.classList.add('is-dismissed');
+    setTimeout(() => {
+      welcomeModal.style.display = 'none';
+      welcomeModal.setAttribute('aria-hidden', 'true');
+    }, 600);
+  }
+
+  if (welcomeModal) {
+    try {
+      if (sessionStorage.getItem('invitation_unsealed') === 'true') {
+        welcomeModal.style.display = 'none';
+        welcomeModal.classList.add('is-dismissed');
+        welcomeModal.setAttribute('aria-hidden', 'true');
+      }
+    } catch (e) {}
+
+    if (openInvitationBtn) {
+      openInvitationBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        dismissWelcomeModal();
+        playAudio();
+      });
+    }
+
+    if (enterSilentlyBtn) {
+      enterSilentlyBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        dismissWelcomeModal();
+      });
     }
   }
 
