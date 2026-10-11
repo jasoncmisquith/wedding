@@ -38,7 +38,7 @@
   <meta http-equiv="Expires" content="0">
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="styles.css?v=5.7">
+  <link rel="stylesheet" href="styles.css?v=5.8">
 </head>
 <body class="bg-ivory text-charcoal antialiased selection:bg-maroon selection:text-white relative min-h-screen">
 
@@ -46,27 +46,14 @@
   <!-- AMBIENT BACKGROUND MEMORY VIDEOS (DUAL-SCENE CROSSFADE)  -->
   <!-- ======================================================== -->
   <div id="ambient-video-container" class="fixed inset-0 w-full h-full pointer-events-none overflow-hidden z-0" aria-hidden="true">
-    <!-- SCENE 1: MEMORY WALK 1 (BEACH WALK) -->
-    <div id="scene-video-1" class="ambient-scene absolute inset-0 w-full h-full overflow-hidden opacity-100">
-      <video 
-        id="memory-video-1" 
-        class="ambient-beach-video absolute inset-0 w-full h-full object-cover"
-        autoplay 
-        muted 
-        playsinline 
-        preload="auto"
-      >
-        <source src="assets/videos/memory-walk.mp4" type="video/mp4">
-      </video>
-    </div>
-
-    <!-- SCENE 2: MEMORY WALK 2 (CAFE MOMENT WITH DESKTOP AMBIENT WINGS) -->
-    <div id="scene-video-2" class="ambient-scene absolute inset-0 w-full h-full overflow-hidden opacity-0">
+    <!-- SCENE 2: MEMORY WALK 2 (CAFE MOMENT WITH DESKTOP AMBIENT WINGS) - STARTS FIRST -->
+    <div id="scene-video-2" class="ambient-scene absolute inset-0 w-full h-full overflow-hidden opacity-100">
       <!-- Desktop Ambient Stretched Wings (fills widescreen with soft glowing motion) -->
       <div class="hidden md:block absolute inset-0 w-full h-full overflow-hidden">
         <video 
           id="memory-video-2-wings" 
           class="ambient-wings-video absolute inset-0 w-full h-full object-cover"
+          autoplay 
           muted 
           playsinline 
           preload="auto"
@@ -81,6 +68,7 @@
           <video 
             id="memory-video-2-main" 
             class="ambient-vertical-video"
+            autoplay 
             muted 
             playsinline 
             preload="auto"
@@ -89,6 +77,19 @@
           </video>
         </div>
       </div>
+    </div>
+
+    <!-- SCENE 1: MEMORY WALK 1 (BEACH WALK) -->
+    <div id="scene-video-1" class="ambient-scene absolute inset-0 w-full h-full overflow-hidden opacity-0">
+      <video 
+        id="memory-video-1" 
+        class="ambient-beach-video absolute inset-0 w-full h-full object-cover"
+        muted 
+        playsinline 
+        preload="auto"
+      >
+        <source src="assets/videos/memory-walk.mp4" type="video/mp4">
+      </video>
     </div>
 
     <!-- Raw Unclouded Video Overlay Container -->
@@ -1496,6 +1497,6 @@
   </div>
 
   <!-- Client Application Script -->
-  <script src="app.js?v=5.7"></script>
+  <script src="app.js?v=5.8"></script>
 </body>
 </html>

@@ -491,7 +491,7 @@ function initAmbientMedia() {
   const videoToggleLabel = document.getElementById('video-toggle-label');
   const videoIndicatorDot = document.getElementById('video-indicator-dot');
 
-  let activeScene = 1; // 1 = Beach (v1), 2 = Cafe (v2Main + v2Wings)
+  let activeScene = 2; // 1 = Beach (v1), 2 = Cafe (v2Main + v2Wings)
   let isTransitioning = false;
   let isPausedByUser = false;
 
@@ -609,8 +609,8 @@ function initAmbientMedia() {
     });
   }
 
-  // Start with Scene 1 playing
-  playScene1();
+  // Start with Scene 2 (Cafe with wings) playing
+  playScene2();
 
   // Handle window resize dynamically
   window.addEventListener('resize', () => {
