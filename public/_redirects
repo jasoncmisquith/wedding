@@ -1,4 +1,11 @@
 # Cloudflare Pages / Netlify Redirect Rules
+/ /c 302
+/c.html /c 301
+/church /c 301
+/church.html /c 301
+/catholic /c 301
+/catholic.html /c 301
+/christian /c 301
 /hindu /h 301
 /hindu-wedding /h 301
 /h.html /h 301
