@@ -38,7 +38,7 @@
   <meta http-equiv="Expires" content="0">
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="styles.css?v=4.9">
+  <link rel="stylesheet" href="styles.css?v=5.0">
 </head>
 <body class="bg-ivory text-charcoal antialiased selection:bg-maroon selection:text-white relative min-h-screen">
 
@@ -825,8 +825,7 @@
         id="moments-carousel-viewport" 
         class="overflow-x-auto scrollbar-none py-4 px-6 cursor-grab active:cursor-grabbing select-none"
       >
-        <div id="moments-carousel-track" class="flex items-center gap-6 sm:gap-8 w-max">
-          
+        
           <!-- Sequence Set 1 -->
           <div class="carousel-set flex items-center gap-6 sm:gap-8 flex-shrink-0">
             <!-- Card 1: Dinner Date -->
@@ -846,8 +845,25 @@
               </div>
             </div>
 
-            <!-- Card 2: Golden Blossoms Mirror -->
+            <!-- Card 2: Held in Love -->
             <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="1">
+              <img 
+                src="assets/images/story/lifted-in-love.jpg" 
+                alt="Held in Love" 
+                class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none" 
+                style="object-position: center 25%;"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 sm:p-5 pointer-events-none">
+                <span class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[11px] tracking-wider uppercase text-charcoal font-semibold shadow-sm">
+                  <svg class="w-3.5 h-3.5 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                  <span>View Moment</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Card 3: Golden Blossoms Mirror -->
+            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="2">
               <img 
                 src="assets/images/story/golden-mirror.jpg" 
                 alt="Golden Floral Reflection" 
@@ -863,8 +879,42 @@
               </div>
             </div>
 
-            <!-- Card 3: Everyday Warmth -->
-            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="2">
+            <!-- Card 4: Hilltop Breeze -->
+            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="3">
+              <img 
+                src="assets/images/story/hilltop-breeze.jpg" 
+                alt="Breeze Over the Hills" 
+                class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none" 
+                style="object-position: center 30%;"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 sm:p-5 pointer-events-none">
+                <span class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[11px] tracking-wider uppercase text-charcoal font-semibold shadow-sm">
+                  <svg class="w-3.5 h-3.5 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                  <span>View Moment</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Card 5: Two Halves, One Heart -->
+            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-black flex-shrink-0 cursor-pointer" data-moment-index="4">
+              <img 
+                src="assets/images/story/two-halves-one-heart.jpg" 
+                alt="Two Halves, One Heart (Drawn by each of us)" 
+                class="w-full h-full object-contain p-4 transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none" 
+                style="object-position: center center;"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 sm:p-5 pointer-events-none">
+                <span class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[11px] tracking-wider uppercase text-charcoal font-semibold shadow-sm">
+                  <svg class="w-3.5 h-3.5 text-maroon" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                  <span>Two Halves, One Heart</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Card 6: Everyday Warmth -->
+            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="5">
               <img 
                 src="assets/images/story/02-everyday-love.jpg" 
                 alt="Everyday Warmth" 
@@ -880,8 +930,42 @@
               </div>
             </div>
 
-            <!-- Card 4: Festive Celebration -->
-            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="3">
+            <!-- Card 7: Everyday Smiles -->
+            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="6">
+              <img 
+                src="assets/images/story/magenta-glow.jpg" 
+                alt="Everyday Smiles" 
+                class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none" 
+                style="object-position: center 25%;"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 sm:p-5 pointer-events-none">
+                <span class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[11px] tracking-wider uppercase text-charcoal font-semibold shadow-sm">
+                  <svg class="w-3.5 h-3.5 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                  <span>View Moment</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Card 8: Sunlit Glance -->
+            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="7">
+              <img 
+                src="assets/images/story/sunlit-glance.jpg" 
+                alt="A Sunlit Glance" 
+                class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none" 
+                style="object-position: center 35%;"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 sm:p-5 pointer-events-none">
+                <span class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[11px] tracking-wider uppercase text-charcoal font-semibold shadow-sm">
+                  <svg class="w-3.5 h-3.5 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                  <span>View Moment</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Card 9: Festive Celebration -->
+            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="8">
               <img 
                 src="assets/images/story/festive-smiles.jpg" 
                 alt="Festive Joy &amp; Smiles" 
@@ -917,8 +1001,25 @@
               </div>
             </div>
 
-            <!-- Card 2: Golden Blossoms Mirror -->
+            <!-- Card 2: Held in Love -->
             <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="1">
+              <img 
+                src="assets/images/story/lifted-in-love.jpg" 
+                alt="Held in Love" 
+                class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none" 
+                style="object-position: center 25%;"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 sm:p-5 pointer-events-none">
+                <span class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[11px] tracking-wider uppercase text-charcoal font-semibold shadow-sm">
+                  <svg class="w-3.5 h-3.5 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                  <span>View Moment</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Card 3: Golden Blossoms Mirror -->
+            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="2">
               <img 
                 src="assets/images/story/golden-mirror.jpg" 
                 alt="Golden Floral Reflection" 
@@ -934,8 +1035,42 @@
               </div>
             </div>
 
-            <!-- Card 3: Everyday Warmth -->
-            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="2">
+            <!-- Card 4: Hilltop Breeze -->
+            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="3">
+              <img 
+                src="assets/images/story/hilltop-breeze.jpg" 
+                alt="Breeze Over the Hills" 
+                class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none" 
+                style="object-position: center 30%;"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 sm:p-5 pointer-events-none">
+                <span class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[11px] tracking-wider uppercase text-charcoal font-semibold shadow-sm">
+                  <svg class="w-3.5 h-3.5 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                  <span>View Moment</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Card 5: Two Halves, One Heart -->
+            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-black flex-shrink-0 cursor-pointer" data-moment-index="4">
+              <img 
+                src="assets/images/story/two-halves-one-heart.jpg" 
+                alt="Two Halves, One Heart (Drawn by each of us)" 
+                class="w-full h-full object-contain p-4 transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none" 
+                style="object-position: center center;"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 sm:p-5 pointer-events-none">
+                <span class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[11px] tracking-wider uppercase text-charcoal font-semibold shadow-sm">
+                  <svg class="w-3.5 h-3.5 text-maroon" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                  <span>Two Halves, One Heart</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Card 6: Everyday Warmth -->
+            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="5">
               <img 
                 src="assets/images/story/02-everyday-love.jpg" 
                 alt="Everyday Warmth" 
@@ -951,8 +1086,42 @@
               </div>
             </div>
 
-            <!-- Card 4: Festive Celebration -->
-            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="3">
+            <!-- Card 7: Everyday Smiles -->
+            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="6">
+              <img 
+                src="assets/images/story/magenta-glow.jpg" 
+                alt="Everyday Smiles" 
+                class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none" 
+                style="object-position: center 25%;"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 sm:p-5 pointer-events-none">
+                <span class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[11px] tracking-wider uppercase text-charcoal font-semibold shadow-sm">
+                  <svg class="w-3.5 h-3.5 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                  <span>View Moment</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Card 8: Sunlit Glance -->
+            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="7">
+              <img 
+                src="assets/images/story/sunlit-glance.jpg" 
+                alt="A Sunlit Glance" 
+                class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none" 
+                style="object-position: center 35%;"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 sm:p-5 pointer-events-none">
+                <span class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[11px] tracking-wider uppercase text-charcoal font-semibold shadow-sm">
+                  <svg class="w-3.5 h-3.5 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                  <span>View Moment</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Card 9: Festive Celebration -->
+            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="8">
               <img 
                 src="assets/images/story/festive-smiles.jpg" 
                 alt="Festive Joy &amp; Smiles" 
@@ -988,8 +1157,25 @@
               </div>
             </div>
 
-            <!-- Card 2: Golden Blossoms Mirror -->
+            <!-- Card 2: Held in Love -->
             <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="1">
+              <img 
+                src="assets/images/story/lifted-in-love.jpg" 
+                alt="Held in Love" 
+                class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none" 
+                style="object-position: center 25%;"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 sm:p-5 pointer-events-none">
+                <span class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[11px] tracking-wider uppercase text-charcoal font-semibold shadow-sm">
+                  <svg class="w-3.5 h-3.5 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                  <span>View Moment</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Card 3: Golden Blossoms Mirror -->
+            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="2">
               <img 
                 src="assets/images/story/golden-mirror.jpg" 
                 alt="Golden Floral Reflection" 
@@ -1005,8 +1191,42 @@
               </div>
             </div>
 
-            <!-- Card 3: Everyday Warmth -->
-            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="2">
+            <!-- Card 4: Hilltop Breeze -->
+            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="3">
+              <img 
+                src="assets/images/story/hilltop-breeze.jpg" 
+                alt="Breeze Over the Hills" 
+                class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none" 
+                style="object-position: center 30%;"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 sm:p-5 pointer-events-none">
+                <span class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[11px] tracking-wider uppercase text-charcoal font-semibold shadow-sm">
+                  <svg class="w-3.5 h-3.5 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                  <span>View Moment</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Card 5: Two Halves, One Heart -->
+            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-black flex-shrink-0 cursor-pointer" data-moment-index="4">
+              <img 
+                src="assets/images/story/two-halves-one-heart.jpg" 
+                alt="Two Halves, One Heart (Drawn by each of us)" 
+                class="w-full h-full object-contain p-4 transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none" 
+                style="object-position: center center;"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 sm:p-5 pointer-events-none">
+                <span class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[11px] tracking-wider uppercase text-charcoal font-semibold shadow-sm">
+                  <svg class="w-3.5 h-3.5 text-maroon" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                  <span>Two Halves, One Heart</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Card 6: Everyday Warmth -->
+            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="5">
               <img 
                 src="assets/images/story/02-everyday-love.jpg" 
                 alt="Everyday Warmth" 
@@ -1022,8 +1242,42 @@
               </div>
             </div>
 
-            <!-- Card 4: Festive Celebration -->
-            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="3">
+            <!-- Card 7: Everyday Smiles -->
+            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="6">
+              <img 
+                src="assets/images/story/magenta-glow.jpg" 
+                alt="Everyday Smiles" 
+                class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none" 
+                style="object-position: center 25%;"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 sm:p-5 pointer-events-none">
+                <span class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[11px] tracking-wider uppercase text-charcoal font-semibold shadow-sm">
+                  <svg class="w-3.5 h-3.5 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                  <span>View Moment</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Card 8: Sunlit Glance -->
+            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="7">
+              <img 
+                src="assets/images/story/sunlit-glance.jpg" 
+                alt="A Sunlit Glance" 
+                class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none" 
+                style="object-position: center 35%;"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 sm:p-5 pointer-events-none">
+                <span class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[11px] tracking-wider uppercase text-charcoal font-semibold shadow-sm">
+                  <svg class="w-3.5 h-3.5 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                  <span>View Moment</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Card 9: Festive Celebration -->
+            <div class="moment-card relative w-[260px] sm:w-[300px] md:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gold/40 group bg-charcoal flex-shrink-0 cursor-pointer" data-moment-index="8">
               <img 
                 src="assets/images/story/festive-smiles.jpg" 
                 alt="Festive Joy &amp; Smiles" 
@@ -1039,12 +1293,7 @@
               </div>
             </div>
           </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- Subtle Drag / Swipe Hint -->
+         / Swipe Hint -->
     <div class="text-center mt-6 sm:mt-8">
       <span class="inline-flex items-center space-x-2 text-[11px] uppercase tracking-widest text-gray-500 font-medium">
         <span>&larr; Drag or swipe to explore &bull; Tap photo to expand &rarr;</span>
@@ -1116,7 +1365,7 @@
     <!-- Top Bar Controls -->
     <div class="absolute top-0 left-0 right-0 p-4 sm:p-6 flex items-center justify-between z-10 pointer-events-auto">
       <div id="lightbox-counter" class="text-xs uppercase tracking-[0.25em] text-gold font-semibold px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-gold/30">
-        1 of 7
+        1 of 9
       </div>
       <button 
         id="lightbox-close-btn" 
@@ -1155,17 +1404,19 @@
     </button>
 
     <!-- Center Stage Container -->
-    <div id="lightbox-stage" class="w-full h-full flex items-center justify-center p-4 sm:p-12">
+        <!-- Center Stage Container -->
+    <div id="lightbox-stage" class="w-full h-full flex flex-col items-center justify-center p-4 sm:p-12">
       <img 
         id="lightbox-img" 
         src="" 
         alt="Roopa &amp; Jason Moment" 
-        class="max-w-[92vw] max-h-[85vh] object-contain rounded-2xl shadow-2xl transition-all duration-300 border border-gold/40"
+        class="max-w-[92vw] max-h-[78vh] sm:max-h-[82vh] object-contain rounded-2xl shadow-2xl transition-all duration-300 border border-gold/40"
       />
+      <p id="lightbox-caption" class="mt-4 px-4 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-gold/30 text-xs sm:text-sm font-serif text-ivory tracking-wider text-center max-w-[90vw] transition-all duration-300"></p>
     </div>
   </div>
 
   <!-- Client Application Script -->
-  <script src="app.js?v=4.9"></script>
+  <script src="app.js?v=5.0"></script>
 </body>
 </html>

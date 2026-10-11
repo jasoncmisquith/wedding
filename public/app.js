@@ -901,6 +901,7 @@ function initMomentsLightbox() {
   const lightbox = document.getElementById('moments-lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
   const lightboxCounter = document.getElementById('lightbox-counter');
+  const lightboxCaption = document.getElementById('lightbox-caption');
   const closeBtn = document.getElementById('lightbox-close-btn');
   const prevBtn = document.getElementById('lightbox-prev-btn');
   const nextBtn = document.getElementById('lightbox-next-btn');
@@ -933,12 +934,21 @@ function initMomentsLightbox() {
 
     lightboxImg.style.opacity = '0';
     lightboxImg.style.transform = 'scale(0.97)';
+    if (lightboxCaption) {
+      lightboxCaption.style.opacity = '0';
+      lightboxCaption.style.transform = 'translateY(4px)';
+    }
 
     setTimeout(() => {
       lightboxImg.src = uniqueMoments[currentIndex].src;
       lightboxImg.alt = uniqueMoments[currentIndex].alt;
       if (lightboxCounter) {
         lightboxCounter.textContent = `${currentIndex + 1} of ${uniqueMoments.length}`;
+      }
+      if (lightboxCaption) {
+        lightboxCaption.textContent = uniqueMoments[currentIndex].alt;
+        lightboxCaption.style.opacity = '1';
+        lightboxCaption.style.transform = 'translateY(0)';
       }
       lightboxImg.style.opacity = '1';
       lightboxImg.style.transform = 'scale(1)';
@@ -962,6 +972,9 @@ function initMomentsLightbox() {
     isOpen = false;
     lightbox.classList.add('opacity-0');
     lightbox.classList.remove('opacity-100');
+    if (lightboxCaption) {
+      lightboxCaption.style.opacity = '0';
+    }
     document.body.style.overflow = '';
     setTimeout(() => {
       if (!isOpen) {
@@ -970,6 +983,10 @@ function initMomentsLightbox() {
         lightbox.style.visibility = 'hidden';
       }
     }, 300);
+  }
+
+  if (lightboxCaption) {
+    lightboxCaption.addEventListener('click', (e) => e.stopPropagation());
   }
 
   cards.forEach(card => {
