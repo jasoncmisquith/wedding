@@ -782,9 +782,6 @@ function initAmbientMedia() {
 
   function dismissWelcomeModal() {
     if (!welcomeModal) return;
-    try {
-      sessionStorage.setItem('invitation_unsealed', 'true');
-    } catch (e) {}
     welcomeModal.classList.add('is-dismissed');
     setTimeout(() => {
       welcomeModal.style.display = 'none';
@@ -793,14 +790,6 @@ function initAmbientMedia() {
   }
 
   if (welcomeModal) {
-    try {
-      if (sessionStorage.getItem('invitation_unsealed') === 'true') {
-        welcomeModal.style.display = 'none';
-        welcomeModal.classList.add('is-dismissed');
-        welcomeModal.setAttribute('aria-hidden', 'true');
-      }
-    } catch (e) {}
-
     if (openInvitationBtn) {
       openInvitationBtn.addEventListener('click', function(e) {
         e.preventDefault();
