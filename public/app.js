@@ -915,20 +915,23 @@ function initMomentsCarousel() {
   const sets = track.querySelectorAll('.carousel-set');
   if (sets.length < 2) return;
 
-  let singleSetWidth = sets[0].offsetWidth;
-  function updateDimensions() {
-    if (sets[0] && sets[0].offsetWidth > 0) {
-      singleSetWidth = sets[0].offsetWidth;
+  function getSetPeriod() {
+    if (sets.length >= 2) {
+      const p = sets[1].offsetLeft - sets[0].offsetLeft;
+      if (p > 0) return p;
     }
+    return sets[0] ? sets[0].offsetWidth + 32 : 0;
   }
-  window.addEventListener('resize', updateDimensions);
-  window.addEventListener('load', updateDimensions);
 
-  // Recalculate dimensions once images finish loading in Safari
-  track.querySelectorAll('img').forEach((img) => {
-    if (img.complete) updateDimensions();
-    else img.addEventListener('load', updateDimensions);
-  });
+  function getCardStep() {
+    const cards = track.querySelectorAll('.moment-card');
+    if (cards.length >= 2) {
+      const s = cards[1].offsetLeft - cards[0].offsetLeft;
+      if (s > 0) return s;
+    }
+    const card = track.querySelector('.moment-card');
+    return card ? card.offsetWidth + 32 : 372;
+  }
 
   let isHovered = false;
   let isDragging = false;
@@ -939,30 +942,46 @@ function initMomentsCarousel() {
   const speed = 0.55; // Gentle, luxury auto-glide (pixels per frame)
   let currentScroll = 0;
 
-  // Set initial scroll offset to middle set once layout is calculated
-  setTimeout(() => {
-    updateDimensions();
-    if (singleSetWidth > 0 && viewport.scrollLeft === 0) {
-      currentScroll = singleSetWidth;
-      viewport.scrollLeft = singleSetWidth;
-    } else {
+  function normalizeScroll() {
+    const period = getSetPeriod();
+    if (period <= 0) return;
+    if (viewport.scrollLeft < period) {
+      viewport.scrollLeft += period;
+      currentScroll = viewport.scrollLeft;
+    } else if (viewport.scrollLeft >= period * 2) {
+      viewport.scrollLeft -= period;
       currentScroll = viewport.scrollLeft;
     }
-  }, 100);
+  }
+
+  function initPosition() {
+    const period = getSetPeriod();
+    if (period > 0 && viewport.scrollLeft === 0) {
+      viewport.scrollLeft = period;
+      currentScroll = period;
+    }
+  }
+
+  setTimeout(initPosition, 100);
+  window.addEventListener('load', initPosition);
+  window.addEventListener('resize', normalizeScroll);
+
+  track.querySelectorAll('img').forEach((img) => {
+    if (img.complete) initPosition();
+    else img.addEventListener('load', initPosition);
+  });
 
   function autoScroll() {
     if (!isHovered && !isDragging) {
-      // In Safari/WebKit, element.scrollLeft truncates floats to integers.
-      // We must accumulate fractions in a JS float and pass rounded integers to DOM.
       currentScroll += speed;
+      const period = getSetPeriod();
 
-      // Wrap forward seamlessly when reaching the end of the second set
-      if (singleSetWidth > 0 && currentScroll >= singleSetWidth * 2) {
-        currentScroll -= singleSetWidth;
-      }
-      // Wrap backward seamlessly if scrolled past beginning
-      if (singleSetWidth > 0 && currentScroll <= 0) {
-        currentScroll += singleSetWidth;
+      if (period > 0) {
+        if (currentScroll >= period * 2) {
+          currentScroll -= period;
+        } else if (currentScroll <= 0) {
+          currentScroll += period;
+        }
       }
 
       viewport.scrollLeft = Math.round(currentScroll);
@@ -998,9 +1017,10 @@ function initMomentsCarousel() {
     dragDistance = Math.abs(walk);
     currentScroll = scrollStart - walk;
 
-    if (singleSetWidth > 0) {
-      if (currentScroll >= singleSetWidth * 2) currentScroll -= singleSetWidth;
-      if (currentScroll <= 0) currentScroll += singleSetWidth;
+    const period = getSetPeriod();
+    if (period > 0) {
+      if (currentScroll >= period * 2) currentScroll -= period;
+      if (currentScroll <= 0) currentScroll += period;
     }
     viewport.scrollLeft = Math.round(currentScroll);
   });
@@ -1024,6 +1044,7 @@ function initMomentsCarousel() {
     clearTimeout(resumeTimer);
     resumeTimer = setTimeout(() => {
       isDragging = false;
+      normalizeScroll();
       currentScroll = viewport.scrollLeft;
     }, 1200);
   }, { passive: true });
@@ -1033,45 +1054,44 @@ function initMomentsCarousel() {
     if (isDragging) {
       currentScroll = viewport.scrollLeft;
     }
-    if (singleSetWidth > 0) {
-      if (viewport.scrollLeft >= singleSetWidth * 2) {
-        viewport.scrollLeft -= singleSetWidth;
-        currentScroll = viewport.scrollLeft;
-      } else if (viewport.scrollLeft <= 0) {
-        viewport.scrollLeft += singleSetWidth;
-        currentScroll = viewport.scrollLeft;
+    if (!isHovered) {
+      const period = getSetPeriod();
+      if (period > 0) {
+        if (viewport.scrollLeft >= period * 2) {
+          viewport.scrollLeft -= period;
+          currentScroll = viewport.scrollLeft;
+        } else if (viewport.scrollLeft <= 0) {
+          viewport.scrollLeft += period;
+          currentScroll = viewport.scrollLeft;
+        }
       }
     }
   }, { passive: true });
 
   // Manual Nudge Navigation Buttons
-  const getCardStep = () => {
-    const card = track.querySelector('.moment-card');
-    return card ? card.offsetWidth + 28 : 340;
-  };
+  function nudge(direction) {
+    isHovered = true;
+    clearTimeout(resumeTimer);
+
+    // Keep position safely in middle set before nudging
+    normalizeScroll();
+
+    const step = getCardStep();
+    viewport.scrollBy({ left: direction * step, behavior: 'smooth' });
+
+    resumeTimer = setTimeout(() => {
+      normalizeScroll();
+      currentScroll = viewport.scrollLeft;
+      isHovered = false;
+    }, 700);
+  }
 
   if (prevBtn) {
-    prevBtn.addEventListener('click', () => {
-      isHovered = true;
-      viewport.scrollBy({ left: -getCardStep(), behavior: 'smooth' });
-      clearTimeout(resumeTimer);
-      resumeTimer = setTimeout(() => { 
-        currentScroll = viewport.scrollLeft;
-        isHovered = false; 
-      }, 2000);
-    });
+    prevBtn.addEventListener('click', () => nudge(-1));
   }
 
   if (nextBtn) {
-    nextBtn.addEventListener('click', () => {
-      isHovered = true;
-      viewport.scrollBy({ left: getCardStep(), behavior: 'smooth' });
-      clearTimeout(resumeTimer);
-      resumeTimer = setTimeout(() => { 
-        currentScroll = viewport.scrollLeft;
-        isHovered = false; 
-      }, 2000);
-    });
+    nextBtn.addEventListener('click', () => nudge(1));
   }
 }
 
@@ -1107,33 +1127,43 @@ function initMomentsLightbox() {
 
   let currentIndex = 0;
   let isOpen = false;
+  let transitionTimer = null;
 
   function showMoment(index) {
     if (index < 0) index = uniqueMoments.length - 1;
     if (index >= uniqueMoments.length) index = 0;
     currentIndex = index;
 
-    lightboxImg.style.opacity = '0';
-    lightboxImg.style.transform = 'scale(0.97)';
-    if (lightboxCaption) {
-      lightboxCaption.style.opacity = '0';
-      lightboxCaption.style.transform = 'translateY(4px)';
+    if (transitionTimer) {
+      clearTimeout(transitionTimer);
+      transitionTimer = null;
     }
 
-    setTimeout(() => {
+    if (lightboxCounter) {
+      lightboxCounter.textContent = `${currentIndex + 1} of ${uniqueMoments.length}`;
+    }
+    if (lightboxCaption) {
+      lightboxCaption.textContent = uniqueMoments[currentIndex].alt;
+      lightboxCaption.style.opacity = '1';
+      lightboxCaption.style.transform = 'translateY(0)';
+    }
+
+    lightboxImg.style.opacity = '0';
+    lightboxImg.style.transform = 'scale(0.98)';
+
+    transitionTimer = setTimeout(() => {
       lightboxImg.src = uniqueMoments[currentIndex].src;
       lightboxImg.alt = uniqueMoments[currentIndex].alt;
-      if (lightboxCounter) {
-        lightboxCounter.textContent = `${currentIndex + 1} of ${uniqueMoments.length}`;
-      }
-      if (lightboxCaption) {
-        lightboxCaption.textContent = uniqueMoments[currentIndex].alt;
-        lightboxCaption.style.opacity = '1';
-        lightboxCaption.style.transform = 'translateY(0)';
-      }
       lightboxImg.style.opacity = '1';
       lightboxImg.style.transform = 'scale(1)';
-    }, 120);
+      transitionTimer = null;
+    }, 80);
+
+    // Preload adjacent images for instantaneous next/prev clicks
+    const nextIdx = (currentIndex + 1) % uniqueMoments.length;
+    const prevIdx = (currentIndex - 1 + uniqueMoments.length) % uniqueMoments.length;
+    const imgNext = new Image(); imgNext.src = uniqueMoments[nextIdx].src;
+    const imgPrev = new Image(); imgPrev.src = uniqueMoments[prevIdx].src;
   }
 
   function openLightbox(index) {
