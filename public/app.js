@@ -3,6 +3,16 @@
 // -------------------------------------------------------------
 
 function initApp() {
+  // Persist visited invitation route for returning root visitors
+  try {
+    const currentPath = window.location.pathname.toLowerCase();
+    if (currentPath.includes('/h')) {
+      localStorage.setItem('wedding_invitation_route', '/h');
+    } else if (currentPath.includes('/c')) {
+      localStorage.setItem('wedding_invitation_route', '/c');
+    }
+  } catch (e) {}
+
   initStorySlideshow();
   initStickyStoryGallery();
   initMobileStoryCarousel();
