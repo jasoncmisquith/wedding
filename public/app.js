@@ -622,6 +622,13 @@ function initAmbientMedia() {
   // Start with Scene 2 (Cafe with wings) playing
   playScene2();
 
+  // Defer preloading Scene 1 (Beach walk - 4.4MB) until after critical render
+  setTimeout(() => {
+    if (v1 && v1.preload !== 'auto') {
+      v1.preload = 'auto';
+    }
+  }, 4000);
+
   // Handle window resize dynamically
   window.addEventListener('resize', () => {
     if (activeScene === 2 && !isPausedByUser) {

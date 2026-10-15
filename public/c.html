@@ -56,13 +56,17 @@
     }
   </script>
 
-  <!-- Cache Control Meta Tags to Prevent Stale Browser Caching -->
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate icon" href="/favicon.ico">
 
-  <!-- Custom Styles -->
-  <link rel="stylesheet" href="styles.css?v=6.0">
+  <!-- Google Fonts: Preconnected & Non-blocking with swap display -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap">
+
+  <!-- Custom Styles (Cache-busted) -->
+  <link rel="stylesheet" href="styles.css?v=6.4">
 </head>
 <body class="bg-ivory text-charcoal antialiased selection:bg-maroon selection:text-white relative min-h-screen">
 
@@ -134,7 +138,7 @@
           autoplay 
           muted 
           playsinline 
-          preload="auto"
+          preload="metadata"
         >
           <source src="assets/videos/memory-walk-2.mp4" type="video/mp4">
         </video>
@@ -164,7 +168,7 @@
         class="ambient-beach-video absolute inset-0 w-full h-full object-cover"
         muted 
         playsinline 
-        preload="auto"
+        preload="none"
       >
         <source src="assets/videos/memory-walk.mp4" type="video/mp4">
       </video>
@@ -446,6 +450,7 @@
                 alt="Derebail Church Main Hall — Roce Ceremony Venue" 
                 class="w-full h-full object-cover object-center"
                 loading="lazy"
+                decoding="async"
               />
               <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent lg:hidden"></div>
               <div class="absolute bottom-3 left-4 right-4 text-white lg:hidden">
@@ -581,6 +586,7 @@
                 alt="Most Holy Redeemer Church, Derebail — Wedding Ceremony Venue" 
                 class="w-full h-full object-cover object-center"
                 loading="lazy"
+                decoding="async"
               />
               <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent lg:hidden"></div>
               <div class="absolute bottom-3 left-4 right-4 text-white lg:hidden">
@@ -716,6 +722,7 @@
                 alt="EDGEWATER Riverfront Venue — Wedding Reception" 
                 class="w-full h-full object-cover object-center"
                 loading="lazy"
+                decoding="async"
               />
               <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent lg:hidden"></div>
               <div class="absolute bottom-3 left-4 right-4 text-white lg:hidden">
@@ -1619,7 +1626,7 @@
   </button>
 
   <!-- Hidden HTML5 Audio Element -->
-  <audio id="soundtrack-audio" preload="auto">
+  <audio id="soundtrack-audio" preload="none">
     <source src="assets/audio/her-jvke.mp3" type="audio/mpeg">
   </audio>
 
@@ -1689,6 +1696,6 @@
   </div>
 
   <!-- Client Application Script -->
-  <script src="app.js?v=6.3"></script>
+  <script src="app.js?v=6.4"></script>
 </body>
 </html>
