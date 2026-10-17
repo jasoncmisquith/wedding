@@ -27,6 +27,13 @@ kanban-plugin: basic
 
 ## ✅ Done
 
+- [x] **Bulletproof Welcome Modal & Wax Seal Button Resilience (Cross-Browser / Dark Mode / Adblocker)**:
+  - Fixed unstyled/collapsed modal button caused by adblockers (Samsung Internet / AdGuard / Crystal) blocking external CDN scripts (`cdn.tailwindcss.com`): injected self-contained, standalone CSS rules into `styles.css` (`#welcome-envelope-modal .welcome-card`, `.welcome-inner-border`, `.wax-seal-btn`) with inline style fallbacks in HTML
+  - Added `<meta name="color-scheme" content="light">` and `<meta name="supported-color-schemes" content="light">` to prevent Android and Samsung Internet forced dark-mode rendering engines from inverting ivory cards into charcoal
+  - Guarded inline Tailwind configuration (`if (typeof tailwind !== 'undefined')`) to prevent uncaught `ReferenceError: tailwind is not defined` from killing subsequent JavaScript execution when CDNs are blocked
+  - Refactored `public/app.js` with isolated `initWelcomeModal()` running as the absolute first step in `DOMContentLoaded`, wrapped in fault-isolation boundaries so downstream module failures can never prevent the modal from opening, dismissing, or triggering audio/video
+  - Bumped asset cache busters to `styles.css?v=6.6` and `app.js?v=6.6` across `c.html` and `h.html`
+
 - [x] **Ambient Background Video Reliability Fixes**:
   - Relocated MP4 `moov` metadata atoms from the tail (byte 5MB) to the beginning (byte 32) using FastStart progressive web streaming so browsers start playback immediately on packet 0 without waiting for entire 5MB downloads
   - Added `webkit-playsinline` and enforced `muted = true` / `defaultMuted = true` in JS to pass strict mobile WebKit and in-app browser autoplay policies

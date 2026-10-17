@@ -30,29 +30,35 @@
   <meta name="twitter:description" content="Celebrate the wedding of Roopa S Nayar &amp; Jason Conred Misquith. Tap to experience our story, music, and ceremony details.">
   <meta name="twitter:image" content="https://ivefoundher.fyi/assets/images/og-preview.jpg">
   
+  <!-- Dark Mode Protection: Force light scheme across Samsung Internet, Chrome Android & iOS -->
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            maroon: {
-              DEFAULT: '#6B1724',
-              hover: '#520F1A',
-              light: '#F8EEF1',
-              dark: '#3E0B14'
+    if (typeof tailwind !== 'undefined') {
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              maroon: {
+                DEFAULT: '#6B1724',
+                hover: '#520F1A',
+                light: '#F8EEF1',
+                dark: '#3E0B14'
+              },
+              ivory: '#FAF9F6',
+              charcoal: '#141414',
+              gold: '#C5A880'
             },
-            ivory: '#FAF9F6',
-            charcoal: '#141414',
-            gold: '#C5A880'
-          },
-          fontFamily: {
-            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif']
+            fontFamily: {
+              serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+              sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif']
+            }
           }
         }
-      }
+      };
     }
   </script>
 
@@ -66,7 +72,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap">
 
   <!-- Custom Styles (Cache-busted) -->
-  <link rel="stylesheet" href="styles.css?v=6.5">
+  <link rel="stylesheet" href="styles.css?v=6.6">
 </head>
 <body class="bg-ivory text-charcoal antialiased selection:bg-maroon selection:text-white relative min-h-screen">
 
@@ -74,32 +80,32 @@
   <!-- LUXURY WELCOME "OPEN INVITATION" ENVELOPE MODAL          -->
   <!-- ======================================================== -->
   <div id="welcome-envelope-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-md" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
-    <div class="relative w-full max-w-md bg-[#FAF9F6] border border-gold/40 rounded-3xl p-6 sm:p-8 text-center shadow-2xl overflow-hidden transition-all duration-500">
+    <div class="welcome-card relative w-full max-w-md bg-[#FAF9F6] border border-gold/40 rounded-3xl p-6 sm:p-8 text-center shadow-2xl overflow-hidden transition-all duration-500" style="background-color: #FAF9F6 !important; color: #141414 !important;">
       <!-- Subtle Decorative Inner Border -->
-      <div class="border border-gold/30 rounded-2xl p-5 sm:p-6 relative flex flex-col items-center">
+      <div class="welcome-inner-border border border-gold/30 rounded-2xl p-5 sm:p-6 relative flex flex-col items-center">
         <!-- Monogram Seal Emblem -->
-        <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-maroon/5 border border-gold/50 flex items-center justify-center mb-4 shadow-inner">
-          <span class="font-serif text-maroon text-xl sm:text-2xl font-light tracking-widest">R &amp; J</span>
+        <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-maroon/5 border border-gold/50 flex items-center justify-center mb-4 shadow-inner" style="border: 1px solid rgba(197, 168, 128, 0.5);">
+          <span class="font-serif text-maroon text-xl sm:text-2xl font-light tracking-widest" style="color: #6B1724;">R &amp; J</span>
         </div>
 
         <!-- Super Title -->
-        <p class="text-[10px] sm:text-xs font-serif tracking-[0.25em] text-gold uppercase mb-2">
+        <p class="text-[10px] sm:text-xs font-serif tracking-[0.25em] text-gold uppercase mb-2" style="color: #C5A880;">
           An Invitation to Celebrate the Sacred Union of
         </p>
 
         <!-- Names -->
-        <h2 id="welcome-title" class="font-serif text-3xl sm:text-4xl text-maroon font-normal tracking-wide my-1">
+        <h2 id="welcome-title" class="font-serif text-3xl sm:text-4xl text-maroon font-normal tracking-wide my-1" style="color: #6B1724;">
           Roopa &amp; Jason
         </h2>
 
         <!-- Event Summary -->
-        <p class="text-xs sm:text-sm font-serif text-charcoal/70 tracking-widest uppercase mt-1 mb-5">
+        <p class="text-xs sm:text-sm font-serif text-charcoal/70 tracking-widest uppercase mt-1 mb-5" style="color: rgba(20,20,20,0.7);">
           November 26 &amp; 28, 2026 • Udupi &amp; Mangaluru
         </p>
 
         <!-- Delicate Gold Divider -->
-        <div class="w-16 h-px bg-gold/40 mb-6 flex items-center justify-center">
-          <span class="w-1.5 h-1.5 rounded-full bg-gold/60"></span>
+        <div class="w-16 h-px bg-gold/40 mb-6 flex items-center justify-center" style="background-color: rgba(197, 168, 128, 0.4);">
+          <span class="w-1.5 h-1.5 rounded-full bg-gold/60" style="background-color: #C5A880;"></span>
         </div>
 
         <!-- Primary Action Button: Open with Music -->
@@ -107,6 +113,7 @@
           id="open-invitation-btn" 
           type="button" 
           class="wax-seal-btn w-full text-white font-serif text-sm sm:text-base tracking-wider py-3.5 px-6 rounded-full flex items-center justify-center gap-2 cursor-pointer"
+          style="background-color: #6B1724 !important; color: #FAF9F6 !important; border: 1px solid rgba(197, 168, 128, 0.6) !important; display: flex !important; align-items: center !important; justify-content: center !important; width: 100% !important; padding: 0.875rem 1.5rem !important; border-radius: 9999px !important;"
         >
           <span>Open Invitation • With Music</span>
           <span class="text-base">🎵</span>
@@ -117,6 +124,7 @@
           id="enter-silently-btn" 
           type="button" 
           class="mt-4 text-xs font-serif text-charcoal/50 hover:text-charcoal tracking-widest uppercase underline underline-offset-4 cursor-pointer transition-colors"
+          style="color: rgba(20, 20, 20, 0.55) !important;"
         >
           Enter in silence
         </button>
@@ -1588,6 +1596,6 @@
   </div>
 
   <!-- Client Application Script -->
-  <script src="app.js?v=6.5"></script>
+  <script src="app.js?v=6.6"></script>
 </body>
 </html>

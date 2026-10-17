@@ -13,16 +13,79 @@ function initApp() {
     }
   } catch (e) {}
 
-  initStorySlideshow();
-  initStickyStoryGallery();
-  initMobileStoryCarousel();
-  initMomentsCarousel();
-  initMomentsLightbox();
-  initCountdown();
-  initCalendarDownloads();
-  initMobileMenu();
-  initAmbientMedia();
+  // 1. Initialize Welcome Modal FIRST (fault-isolated so modal ALWAYS works)
+  try { initWelcomeModal(); } catch (e) { console.error('initWelcomeModal error:', e); }
+
+  // 2. Initialize Ambient Media & Music
+  try { initAmbientMedia(); } catch (e) { console.error('initAmbientMedia error:', e); }
+
+  // 3. Initialize remaining modules safely with per-module try-catch
+  const modules = [
+    initCountdown,
+    initMomentsCarousel,
+    initMomentsLightbox,
+    initCalendarDownloads,
+    initMobileMenu,
+    initStorySlideshow,
+    initStickyStoryGallery,
+    initMobileStoryCarousel
+  ];
+
+  modules.forEach(fn => {
+    try {
+      if (typeof fn === 'function') fn();
+    } catch (err) {
+      console.warn('Module init skipped:', fn.name, err);
+    }
+  });
 }
+
+// =============================================================
+// 0. LUXURY WELCOME ENVELOPE MODAL (FAULT-ISOLATED FIRST)
+// =============================================================
+function initWelcomeModal() {
+  const welcomeModal = document.getElementById('welcome-envelope-modal');
+  const openInvitationBtn = document.getElementById('open-invitation-btn');
+  const enterSilentlyBtn = document.getElementById('enter-silently-btn');
+
+  if (!welcomeModal) return;
+
+  function dismiss() {
+    welcomeModal.classList.add('is-dismissed');
+    welcomeModal.style.opacity = '0';
+    welcomeModal.style.pointerEvents = 'none';
+    setTimeout(() => {
+      welcomeModal.style.display = 'none';
+      welcomeModal.setAttribute('aria-hidden', 'true');
+    }, 600);
+  }
+
+  if (openInvitationBtn) {
+    openInvitationBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      dismiss();
+      if (typeof window.__playWeddingSoundtrack === 'function') {
+        window.__playWeddingSoundtrack();
+      }
+      if (typeof window.__playAmbientVideo === 'function') {
+        window.__playAmbientVideo();
+      }
+    });
+  }
+
+  if (enterSilentlyBtn) {
+    enterSilentlyBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      dismiss();
+      if (typeof window.__playAmbientVideo === 'function') {
+        window.__playAmbientVideo();
+      }
+    });
+  }
+}
+
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initApp);
@@ -875,39 +938,13 @@ function initAmbientMedia() {
     }
   }
 
-  function dismissWelcomeModal() {
-    if (!welcomeModal) return;
-    welcomeModal.classList.add('is-dismissed');
-    setTimeout(() => {
-      welcomeModal.style.display = 'none';
-      welcomeModal.setAttribute('aria-hidden', 'true');
-    }, 600);
-  }
-
-  if (welcomeModal) {
-    if (openInvitationBtn) {
-      openInvitationBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        dismissWelcomeModal();
-        playAudio();
-        if (!isPausedByUser) {
-          if (activeScene === 1) playScene1();
-          else playScene2();
-        }
-      });
+  window.__playWeddingSoundtrack = playAudio;
+  window.__playAmbientVideo = function() {
+    if (!isPausedByUser) {
+      if (activeScene === 1) playScene1();
+      else playScene2();
     }
-
-    if (enterSilentlyBtn) {
-      enterSilentlyBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        dismissWelcomeModal();
-        if (!isPausedByUser) {
-          if (activeScene === 1) playScene1();
-          else playScene2();
-        }
-      });
-    }
-  }
+  };
 
   if (audioToggleBtn) {
     audioToggleBtn.addEventListener('click', function(e) {
@@ -972,23 +1009,15 @@ function initAmbientMedia() {
     });
   }
 
-  // Attempt immediate autoplay on load, and auto-minimize after 3.5 seconds
-  playAudio();
+  // Attempt initial audio setup, schedule auto-minimize
   scheduleMinimize(3500);
 
-  // Tab Visibility Change
+  // Tab Visibility Change: pause background audio when tab is backgrounded
   document.addEventListener('visibilitychange', function() {
     if (document.visibilityState === 'hidden') {
       if (audio && !audio.paused) {
         audio.pause();
         updateAudioUI(false);
-      }
-      if (video && !video.paused) {
-        video.pause();
-      }
-    } else {
-      if (video && video.paused) {
-        video.play().catch(() => {});
       }
     }
   });

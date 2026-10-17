@@ -614,11 +614,102 @@ button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .
 }
 
 /* -------------------------------------------------------------
- * Luxury Welcome "Open Invitation" Envelope Modal
+ * Luxury Welcome "Open Invitation" Envelope Modal & Wax Seal Button
+ * (Self-contained, zero external CDN dependency, force-dark resistant)
  * ------------------------------------------------------------- */
 #welcome-envelope-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.65) !important;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
   will-change: opacity, visibility;
+}
+
+#welcome-envelope-modal .welcome-card {
+  position: relative;
+  width: 100%;
+  max-width: 28rem;
+  background-color: #FAF9F6 !important;
+  color: #141414 !important;
+  border: 1px solid rgba(197, 168, 128, 0.5) !important;
+  border-radius: 1.5rem !important;
+  padding: 1.75rem !important;
+  text-align: center !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+#welcome-envelope-modal .welcome-inner-border {
+  border: 1px solid rgba(197, 168, 128, 0.35) !important;
+  border-radius: 1.25rem !important;
+  padding: 1.5rem 1.25rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  box-sizing: border-box;
+}
+
+.wax-seal-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  width: 100% !important;
+  padding: 0.875rem 1.5rem !important;
+  border-radius: 9999px !important;
+  background-color: #6B1724 !important;
+  background: linear-gradient(135deg, #7D1B2B 0%, #4D0F19 100%) !important;
+  color: #FAF9F6 !important;
+  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  font-size: 1.05rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.05em !important;
+  border: 1px solid rgba(197, 168, 128, 0.6) !important;
+  box-shadow: 0 4px 18px rgba(107, 23, 36, 0.45), 0 0 0 1px rgba(197, 168, 128, 0.45) !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  box-sizing: border-box !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.wax-seal-btn:hover {
+  background: linear-gradient(135deg, #8E1F31 0%, #5C121E 100%) !important;
+  box-shadow: 0 6px 24px rgba(107, 23, 36, 0.55), 0 0 0 1.5px rgba(197, 168, 128, 0.7) !important;
+  transform: translateY(-1px) scale(1.015);
+}
+
+.wax-seal-btn:active {
+  transform: translateY(1px) scale(0.985);
+}
+
+#enter-silently-btn {
+  display: inline-block !important;
+  margin-top: 1rem !important;
+  background: transparent !important;
+  border: none !important;
+  color: rgba(20, 20, 20, 0.55) !important;
+  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.15em !important;
+  text-transform: uppercase !important;
+  text-decoration: underline !important;
+  text-underline-offset: 4px !important;
+  cursor: pointer !important;
+  transition: color 0.2s ease;
+}
+
+#enter-silently-btn:hover {
+  color: #141414 !important;
 }
 
 #welcome-envelope-modal.is-dismissed {
@@ -630,21 +721,5 @@ button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .
 #welcome-envelope-modal.is-dismissed > div {
   transform: scale(0.96) translateY(-14px);
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.wax-seal-btn {
-  background: linear-gradient(135deg, #6B1724 0%, #4D0F19 100%);
-  box-shadow: 0 4px 18px rgba(107, 23, 36, 0.35), 0 0 0 1px rgba(197, 168, 128, 0.45);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.wax-seal-btn:hover {
-  background: linear-gradient(135deg, #7D1B2B 0%, #5A121E 100%);
-  box-shadow: 0 6px 24px rgba(107, 23, 36, 0.45), 0 0 0 1.5px rgba(197, 168, 128, 0.7);
-  transform: translateY(-1px) scale(1.015);
-}
-
-.wax-seal-btn:active {
-  transform: translateY(1px) scale(0.985);
 }
 
