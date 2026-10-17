@@ -66,7 +66,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap">
 
   <!-- Custom Styles (Cache-busted) -->
-  <link rel="stylesheet" href="styles.css?v=6.4">
+  <link rel="stylesheet" href="styles.css?v=6.5">
 </head>
 <body class="bg-ivory text-charcoal antialiased selection:bg-maroon selection:text-white relative min-h-screen">
 
@@ -138,7 +138,8 @@
           autoplay 
           muted 
           playsinline 
-          preload="metadata"
+          webkit-playsinline
+          preload="auto"
         >
           <source src="assets/videos/memory-walk-2.mp4" type="video/mp4">
         </video>
@@ -153,6 +154,7 @@
             autoplay 
             muted 
             playsinline 
+            webkit-playsinline
             preload="auto"
           >
             <source src="assets/videos/memory-walk-2.mp4" type="video/mp4">
@@ -168,6 +170,7 @@
         class="ambient-beach-video absolute inset-0 w-full h-full object-cover"
         muted 
         playsinline 
+        webkit-playsinline
         preload="none"
       >
         <source src="assets/videos/memory-walk.mp4" type="video/mp4">
@@ -1585,6 +1588,6 @@
   </div>
 
   <!-- Client Application Script -->
-  <script src="app.js?v=6.4"></script>
+  <script src="app.js?v=6.5"></script>
 </body>
 </html>

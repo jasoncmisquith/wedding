@@ -27,6 +27,13 @@ kanban-plugin: basic
 
 ## ✅ Done
 
+- [x] **Ambient Background Video Reliability Fixes**:
+  - Relocated MP4 `moov` metadata atoms from the tail (byte 5MB) to the beginning (byte 32) using FastStart progressive web streaming so browsers start playback immediately on packet 0 without waiting for entire 5MB downloads
+  - Added `webkit-playsinline` and enforced `muted = true` / `defaultMuted = true` in JS to pass strict mobile WebKit and in-app browser autoplay policies
+  - Implemented gesture-unlocked playback recovery for Low Power Mode and strict mobile policies on first user interaction (screen touch, scroll, or "Open Invitation" tap)
+  - Added `visibilitychange` auto-resume so videos continue playing after phone screen unlock or switching tabs
+  - Added `canplay` listeners and guarded `currentTime` synchronization to prevent Safari `InvalidStateError` stalls
+
 - [x] **LCP & Page Load Optimization (Fast & Seamless Experience)**:
   - Deferred ~12MB of non-critical media by switching `preload="none"` on `memory-video-1` (with 4s staggered buffer in JS) and `preload="none"` on `soundtrack-audio`
   - Set `preload="metadata"` on desktop ambient wings video

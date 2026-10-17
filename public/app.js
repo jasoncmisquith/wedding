@@ -504,14 +504,60 @@ function initAmbientMedia() {
   let activeScene = 2; // 1 = Beach (v1), 2 = Cafe (v2Main + v2Wings)
   let isTransitioning = false;
   let isPausedByUser = false;
+  let videoGestureArmed = false;
+
+  // Ensure all ambient videos have explicit inline & muted properties for mobile WebKit & Blink
+  [v1, v2Main, v2Wings].forEach(v => {
+    if (v) {
+      v.muted = true;
+      v.defaultMuted = true;
+      v.playsInline = true;
+      v.setAttribute('playsinline', '');
+      v.setAttribute('webkit-playsinline', '');
+    }
+  });
 
   function isDesktop() {
     return window.innerWidth >= 768;
   }
 
+  function armVideoGestureRecovery() {
+    if (videoGestureArmed || isPausedByUser) return;
+    videoGestureArmed = true;
+
+    const onUserGesture = function() {
+      disarmVideoGestureRecovery();
+      if (!isPausedByUser) {
+        if (activeScene === 1) {
+          playScene1();
+        } else {
+          playScene2();
+        }
+      }
+    };
+
+    function disarmVideoGestureRecovery() {
+      ['click', 'touchstart', 'pointerdown', 'scroll'].forEach(evt => {
+        window.removeEventListener(evt, onUserGesture, { capture: true, passive: true });
+      });
+      videoGestureArmed = false;
+    }
+
+    ['click', 'touchstart', 'pointerdown', 'scroll'].forEach(evt => {
+      window.addEventListener(evt, onUserGesture, { capture: true, passive: true, once: true });
+    });
+  }
+
   function playScene1() {
     if (!v1) return;
-    v1.play().catch(() => {});
+    v1.muted = true;
+    v1.defaultMuted = true;
+    const playPromise = v1.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(err => {
+        armVideoGestureRecovery();
+      });
+    }
   }
 
   function pauseScene1() {
@@ -520,10 +566,21 @@ function initAmbientMedia() {
   }
 
   function playScene2() {
-    if (v2Main) v2Main.play().catch(() => {});
+    if (v2Main) {
+      v2Main.muted = true;
+      v2Main.defaultMuted = true;
+      const playPromise = v2Main.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(err => {
+          armVideoGestureRecovery();
+        });
+      }
+    }
     if (v2Wings && isDesktop()) {
+      v2Wings.muted = true;
+      v2Wings.defaultMuted = true;
       v2Wings.play().catch(() => {});
-      if (v2Main && Math.abs(v2Wings.currentTime - v2Main.currentTime) > 0.3) {
+      if (v2Main && v2Wings.readyState >= 2 && Math.abs(v2Wings.currentTime - v2Main.currentTime) > 0.3) {
         try { v2Wings.currentTime = v2Main.currentTime; } catch (e) {}
       }
     }
@@ -595,12 +652,17 @@ function initAmbientMedia() {
         crossfadeToScene(2);
       }
     });
+    v1.addEventListener('canplay', () => {
+      if (!isPausedByUser && activeScene === 1 && v1.paused) {
+        playScene1();
+      }
+    });
   }
 
   // Setup timeupdate trigger for Scene 2 (Cafe)
   if (v2Main) {
     v2Main.addEventListener('timeupdate', () => {
-      if (v2Wings && isDesktop() && !v2Wings.paused) {
+      if (v2Wings && isDesktop() && !v2Wings.paused && v2Wings.readyState >= 2) {
         if (Math.abs(v2Wings.currentTime - v2Main.currentTime) > 0.3) {
           try { v2Wings.currentTime = v2Main.currentTime; } catch (e) {}
         }
@@ -617,7 +679,23 @@ function initAmbientMedia() {
         crossfadeToScene(1);
       }
     });
+    v2Main.addEventListener('canplay', () => {
+      if (!isPausedByUser && activeScene === 2 && v2Main.paused) {
+        playScene2();
+      }
+    });
   }
+
+  // Auto-resume background video when tab/screen wakes up (e.g. mobile unlock or tab switch)
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && !isPausedByUser) {
+      if (activeScene === 1) {
+        playScene1();
+      } else {
+        playScene2();
+      }
+    }
+  });
 
   // Start with Scene 2 (Cafe with wings) playing
   playScene2();
@@ -812,6 +890,10 @@ function initAmbientMedia() {
         e.preventDefault();
         dismissWelcomeModal();
         playAudio();
+        if (!isPausedByUser) {
+          if (activeScene === 1) playScene1();
+          else playScene2();
+        }
       });
     }
 
@@ -819,6 +901,10 @@ function initAmbientMedia() {
       enterSilentlyBtn.addEventListener('click', function(e) {
         e.preventDefault();
         dismissWelcomeModal();
+        if (!isPausedByUser) {
+          if (activeScene === 1) playScene1();
+          else playScene2();
+        }
       });
     }
   }

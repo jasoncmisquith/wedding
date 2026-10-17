@@ -564,6 +564,7 @@ button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .
 .ambient-scene {
   will-change: opacity;
   transition: opacity 1.2s ease-in-out;
+  background-color: #141414;
 }
 
 /* Scene 1: Beach Walk (Landscape) */
