@@ -72,7 +72,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap">
 
   <!-- Custom Styles (Cache-busted) -->
-  <link rel="stylesheet" href="styles.css?v=6.6">
+  <link rel="stylesheet" href="styles.css?v=6.7">
 </head>
 <body class="bg-ivory text-charcoal antialiased selection:bg-maroon selection:text-white relative min-h-screen">
 
@@ -132,22 +132,104 @@
     </div>
   </div>
 
+  <!-- Hidden HTML5 Audio Element (Placed early so it can be triggered on initial gesture) -->
+  <audio id="soundtrack-audio" preload="none">
+    <source src="assets/audio/her-jvke.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Immediate User-Gesture Bootstrapping Script (0ms Tap Latency) -->
+  <script>
+    (function() {
+      var modal = document.getElementById('welcome-envelope-modal');
+      var openBtn = document.getElementById('open-invitation-btn');
+      var silentBtn = document.getElementById('enter-silently-btn');
+
+      function dismissEarly(withMusic) {
+        if (!modal || modal.classList.contains('is-dismissed')) return;
+        modal.classList.add('is-dismissed');
+        modal.style.opacity = '0';
+        modal.style.pointerEvents = 'none';
+        setTimeout(function() {
+          modal.style.display = 'none';
+          modal.setAttribute('aria-hidden', 'true');
+        }, 600);
+
+        window.__invitationOpened = true;
+
+        if (withMusic) {
+          if (typeof window.__playWeddingSoundtrack === 'function') {
+            window.__playWeddingSoundtrack();
+          } else {
+            var audio = document.getElementById('soundtrack-audio');
+            if (audio) {
+              try {
+                audio.volume = 0.55;
+                var p = audio.play();
+                if (p && p.catch) p.catch(function() {});
+              } catch (e) {}
+            }
+          }
+        }
+
+        if (typeof window.__playAmbientVideo === 'function') {
+          window.__playAmbientVideo();
+        } else {
+          var v2 = document.getElementById('memory-video-2-main');
+          if (v2) {
+            try {
+              v2.muted = true;
+              v2.defaultMuted = true;
+              var vp = v2.play();
+              if (vp && vp.catch) vp.catch(function() {});
+            } catch (e) {}
+          }
+        }
+      }
+
+      if (openBtn) {
+        openBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dismissEarly(true);
+        });
+        openBtn.addEventListener('touchend', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dismissEarly(true);
+        }, { passive: false });
+      }
+
+      if (silentBtn) {
+        silentBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dismissEarly(false);
+        });
+        silentBtn.addEventListener('touchend', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dismissEarly(false);
+        }, { passive: false });
+      }
+    })();
+  </script>
+
   <!-- ======================================================== -->
   <!-- AMBIENT BACKGROUND MEMORY VIDEOS (DUAL-SCENE CROSSFADE)  -->
   <!-- ======================================================== -->
   <div id="ambient-video-container" class="fixed inset-0 w-full h-full pointer-events-none overflow-hidden z-0" aria-hidden="true">
     <!-- SCENE 2: MEMORY WALK 2 (CAFE MOMENT WITH DESKTOP AMBIENT WINGS) - STARTS FIRST -->
     <div id="scene-video-2" class="ambient-scene absolute inset-0 w-full h-full overflow-hidden opacity-100">
-      <!-- Desktop Ambient Stretched Wings (fills widescreen with soft glowing motion) -->
+      <!-- Desktop Ambient Stretched Wings (fills widescreen with soft glowing motion, skipped on mobile) -->
       <div class="hidden md:block absolute inset-0 w-full h-full overflow-hidden">
         <video 
           id="memory-video-2-wings" 
           class="ambient-wings-video absolute inset-0 w-full h-full object-cover"
-          autoplay 
           muted 
           playsinline 
           webkit-playsinline
-          preload="auto"
+          preload="none"
+          poster="assets/videos/memory-walk-2-poster.jpg"
         >
           <source src="assets/videos/memory-walk-2.mp4" type="video/mp4">
         </video>
@@ -164,6 +246,7 @@
             playsinline 
             webkit-playsinline
             preload="auto"
+            poster="assets/videos/memory-walk-2-poster.jpg"
           >
             <source src="assets/videos/memory-walk-2.mp4" type="video/mp4">
           </video>
@@ -180,6 +263,7 @@
         playsinline 
         webkit-playsinline
         preload="none"
+        poster="assets/videos/memory-walk-poster.jpg"
       >
         <source src="assets/videos/memory-walk.mp4" type="video/mp4">
       </video>
@@ -1636,11 +1720,6 @@
     </div>
   </button>
 
-  <!-- Hidden HTML5 Audio Element -->
-  <audio id="soundtrack-audio" preload="none">
-    <source src="assets/audio/her-jvke.mp3" type="audio/mpeg">
-  </audio>
-
   <!-- ======================================================== -->
   <!-- LIGHTBOX MODAL FOR MOMENTS OF US                         -->
   <!-- ======================================================== -->
@@ -1707,6 +1786,6 @@
   </div>
 
   <!-- Client Application Script -->
-  <script src="app.js?v=6.6"></script>
+  <script src="app.js?v=6.7"></script>
 </body>
 </html>

@@ -60,29 +60,44 @@ function initWelcomeModal() {
     }, 600);
   }
 
-  if (openInvitationBtn) {
-    openInvitationBtn.addEventListener('click', function(e) {
+  function handleOpenWithMusic(e) {
+    if (e) {
       e.preventDefault();
       e.stopPropagation();
-      dismiss();
-      if (typeof window.__playWeddingSoundtrack === 'function') {
-        window.__playWeddingSoundtrack();
-      }
-      if (typeof window.__playAmbientVideo === 'function') {
-        window.__playAmbientVideo();
-      }
-    });
+    }
+    dismiss();
+    if (typeof window.__playWeddingSoundtrack === 'function') {
+      window.__playWeddingSoundtrack();
+    }
+    if (typeof window.__playAmbientVideo === 'function') {
+      window.__playAmbientVideo();
+    }
+  }
+
+  function handleEnterSilently(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    dismiss();
+    if (typeof window.__playAmbientVideo === 'function') {
+      window.__playAmbientVideo();
+    }
+  }
+
+  if (openInvitationBtn) {
+    openInvitationBtn.addEventListener('click', handleOpenWithMusic);
+    openInvitationBtn.addEventListener('touchend', handleOpenWithMusic, { passive: false });
   }
 
   if (enterSilentlyBtn) {
-    enterSilentlyBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      dismiss();
-      if (typeof window.__playAmbientVideo === 'function') {
-        window.__playAmbientVideo();
-      }
-    });
+    enterSilentlyBtn.addEventListener('click', handleEnterSilently);
+    enterSilentlyBtn.addEventListener('touchend', handleEnterSilently, { passive: false });
+  }
+
+  // If dismissed earlier by early bootstrapping script
+  if (window.__invitationOpened) {
+    dismiss();
   }
 }
 
@@ -640,6 +655,9 @@ function initAmbientMedia() {
       }
     }
     if (v2Wings && isDesktop()) {
+      if (v2Wings.preload !== 'auto') {
+        v2Wings.preload = 'auto';
+      }
       v2Wings.muted = true;
       v2Wings.defaultMuted = true;
       v2Wings.play().catch(() => {});

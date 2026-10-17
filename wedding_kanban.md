@@ -27,6 +27,12 @@ kanban-plugin: basic
 
 ## ✅ Done
 
+- [x] **Zero-Latency Modal Tap & Mobile Video Instant Rendering (Posters & Wings Deferral)**:
+  - Eliminated delayed modal button interaction by moving `<audio id="soundtrack-audio">` to the top of the body and attaching an immediate synchronous inline gesture handler (0ms tap response via `click` and `touchend`) so guests never experience a dead button while bottom scripts download
+  - Generated crisp lightweight video poster images (`memory-walk-2-poster.jpg` - 53KB and `memory-walk-poster.jpg` - 101KB) on all `<video>` tags so the visual background is instantly present at 0ms with zero black screen / void during initial video buffering
+  - Set `preload="none"` on widescreen desktop ambient wings video (`memory-video-2-wings`) and deferred loading until desktop viewport check in JS, preventing mobile devices from redundantly downloading 5MB of video in parallel and saturating cellular bandwidth
+  - Bumped asset cache busters to `styles.css?v=6.7` and `app.js?v=6.7` across `c.html` and `h.html`
+
 - [x] **Bulletproof Welcome Modal & Wax Seal Button Resilience (Cross-Browser / Dark Mode / Adblocker)**:
   - Fixed unstyled/collapsed modal button caused by adblockers (Samsung Internet / AdGuard / Crystal) blocking external CDN scripts (`cdn.tailwindcss.com`): injected self-contained, standalone CSS rules into `styles.css` (`#welcome-envelope-modal .welcome-card`, `.welcome-inner-border`, `.wax-seal-btn`) with inline style fallbacks in HTML
   - Added `<meta name="color-scheme" content="light">` and `<meta name="supported-color-schemes" content="light">` to prevent Android and Samsung Internet forced dark-mode rendering engines from inverting ivory cards into charcoal
