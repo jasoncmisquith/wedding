@@ -1,6 +1,6 @@
-# Direct 200 rewrites to eliminate trailing-slash 307 redirects
-/h/ /h 200
-/c/ /c 200
+# Canonical 301 redirects to eliminate trailing slashes
+/h/ /h 301
+/c/ /c 301
 
 # Cloudflare Pages / Netlify Redirect Rules
 /c.html /c 301

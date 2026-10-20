@@ -27,6 +27,11 @@ kanban-plugin: basic
 
 ## ✅ Done
 
+- [x] **Root-Relative Asset Paths & Trailing Slash 301 Canonicalization (`/h` vs `/h/`)**:
+  - Identified and fixed root cause of 404 cascading asset failures when visiting `/h/` or `/c/`: converted all 92 relative image, video, audio, CSS, and JS links (`="assets/...`, `styles.css`, `app.js`) to absolute root-relative paths (`="/assets/...`, `/styles.css`, `/app.js`)
+  - Changed Cloudflare `_redirects` for `/h/` and `/c/` from internal 200 rewrites to 301 canonical redirects, standardizing all visits to `/h` and `/c` while ensuring 100% asset resolution even if trailing slashes are accessed directly
+  - Bumped asset cache busters to `/styles.css?v=6.9` and `/app.js?v=6.9` across `c.html` and `h.html`
+
 - [x] **Cross-Browser Media & Cache Resilience (White Screen Eradication & Cloudflare _headers)**:
   - Eliminated white background flashes and adblocker styling breakages by adding standalone ivory, charcoal, and maroon CSS fallbacks to `public/styles.css` with explicit `html, body { background-color: #FAF9F6 !important; }`
   - Created `public/_headers` for Cloudflare Pages enforcing `Cache-Control: public, max-age=0, must-revalidate` on HTML routes to eliminate version desynchronization and stale disk caching in regular browsers
