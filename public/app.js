@@ -2,6 +2,21 @@
 // Wedding Website Client Logic: Scroll-Driven Story Slideshow
 // -------------------------------------------------------------
 
+// On-demand in-browser DevTools (?debug=1) for mobile inspection
+(function checkDebugMode() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('debug') === '1' || params.get('debug') === 'true' || localStorage.getItem('wedding_debug') === '1') {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/eruda';
+      script.onload = function() {
+        if (window.eruda) window.eruda.init();
+      };
+      document.head.appendChild(script);
+    }
+  } catch (e) {}
+})();
+
 function initApp() {
   // Persist visited invitation route for returning root visitors
   try {
@@ -108,6 +123,22 @@ if (document.readyState === 'loading') {
   // DOM is already parsed (Safari bfcache, fast load, or deferred script)
   initApp();
 }
+
+// Safari & mobile bfcache restoration: resume ambient media when navigating back
+window.addEventListener('pageshow', function(event) {
+  if (event.persisted) {
+    if (window.__invitationOpened) {
+      const modal = document.getElementById('welcome-envelope-modal');
+      if (modal) {
+        modal.style.display = 'none';
+        modal.classList.add('is-dismissed');
+      }
+      if (typeof window.__playAmbientVideo === 'function') {
+        window.__playAmbientVideo();
+      }
+    }
+  }
+});
 
 // =============================================================
 // 1. FULLSCREEN STORY SLIDESHOW (CLEAN AUTO-PLAY + ARROWS)

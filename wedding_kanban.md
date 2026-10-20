@@ -27,6 +27,14 @@ kanban-plugin: basic
 
 ## ✅ Done
 
+- [x] **Cross-Browser Media & Cache Resilience (White Screen Eradication & Cloudflare _headers)**:
+  - Eliminated white background flashes and adblocker styling breakages by adding standalone ivory, charcoal, and maroon CSS fallbacks to `public/styles.css` with explicit `html, body { background-color: #FAF9F6 !important; }`
+  - Created `public/_headers` for Cloudflare Pages enforcing `Cache-Control: public, max-age=0, must-revalidate` on HTML routes to eliminate version desynchronization and stale disk caching in regular browsers
+  - Fixed Safari iOS horizontal carousel image rendering by switching Sequence Set 1 from `loading="lazy"` to `loading="eager" decoding="async"`
+  - Added on-demand in-browser DevTools support (?debug=1 or localStorage wedding_debug=1) via Eruda for live mobile console and network inspection
+  - Added Safari bfcache restoration (`pageshow` event listener) to preserve media playback and modal state on history navigation
+  - Bumped asset cache busters to `styles.css?v=6.8` and `app.js?v=6.8`
+
 - [x] **Zero-Latency Modal Tap & Mobile Video Instant Rendering (Posters & Wings Deferral)**:
   - Eliminated delayed modal button interaction by moving `<audio id="soundtrack-audio">` to the top of the body and attaching an immediate synchronous inline gesture handler (0ms tap response via `click` and `touchend`) so guests never experience a dead button while bottom scripts download
   - Generated crisp lightweight video poster images (`memory-walk-2-poster.jpg` - 53KB and `memory-walk-poster.jpg` - 101KB) on all `<video>` tags so the visual background is instantly present at 0ms with zero black screen / void during initial video buffering
