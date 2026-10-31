@@ -488,6 +488,120 @@ button, a, input, select, textarea, .btn-maroon, .concept-tab-btn, .deck-card, .
 }
 
 /* -------------------------------------------------------------
+ * Floating Volume Guidance Toast
+ * ------------------------------------------------------------- */
+.volume-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 2rem;
+  transform: translateX(-50%) translateY(16px);
+  z-index: 60;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+              visibility 0.45s;
+  max-width: min(92vw, 420px);
+  width: max-content;
+}
+
+@media (max-width: 767px) {
+  .volume-toast {
+    bottom: max(4.5rem, calc(env(safe-area-inset-bottom, 1rem) + 3.75rem));
+  }
+}
+
+.volume-toast.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.volume-toast.is-hidden {
+  display: none !important;
+}
+
+.volume-toast-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 0.9rem 0.6rem 1.15rem;
+  background: rgba(255, 255, 255, 0.95);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(197, 168, 128, 0.6);
+  border-radius: 9999px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.volume-toast-inner:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.16);
+}
+
+.volume-toast-icon {
+  font-size: 1.15rem;
+  line-height: 1;
+  animation: speakerPulse 1.8s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes speakerPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.18); }
+}
+
+.volume-toast-text {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  color: #141414;
+  font-weight: 500;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .volume-toast-inner {
+    padding: 0.5rem 0.75rem 0.5rem 0.95rem;
+    gap: 0.5rem;
+  }
+  .volume-toast-text {
+    font-size: 0.85rem;
+  }
+}
+
+.volume-toast-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-left: 0.25rem;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  color: rgba(20, 20, 20, 0.45);
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.volume-toast-close:hover {
+  background: rgba(20, 20, 20, 0.08);
+  color: #141414;
+}
+
+/* -------------------------------------------------------------
  * Clear Memory Background Translucency (Zero Blur / No Smudge)
  * ------------------------------------------------------------- */
 .dream-backdrop {

@@ -31,6 +31,9 @@ function initApp() {
   // 1. Initialize Welcome Modal FIRST (fault-isolated so modal ALWAYS works)
   try { initWelcomeModal(); } catch (e) { console.error('initWelcomeModal error:', e); }
 
+  // 1b. Initialize Volume Guidance Toast
+  try { initVolumeToast(); } catch (e) { console.error('initVolumeToast error:', e); }
+
   // 2. Initialize Ambient Media & Music
   try { initAmbientMedia(); } catch (e) { console.error('initAmbientMedia error:', e); }
 
@@ -87,6 +90,9 @@ function initWelcomeModal() {
     if (typeof window.__playAmbientVideo === 'function') {
       window.__playAmbientVideo();
     }
+    if (typeof window.__showVolumeToast === 'function') {
+      window.__showVolumeToast();
+    }
   }
 
   function handleEnterSilently(e) {
@@ -114,6 +120,48 @@ function initWelcomeModal() {
   if (window.__invitationOpened) {
     dismiss();
   }
+}
+
+// =============================================================
+// 0b. FLOATING VOLUME GUIDANCE TOAST
+// =============================================================
+function initVolumeToast() {
+  const toast = document.getElementById('volume-toast');
+  const toastClose = document.getElementById('volume-toast-close');
+  if (!toast) return;
+
+  function show() {
+    toast.classList.remove('is-hidden');
+    setTimeout(() => {
+      toast.classList.add('is-visible');
+    }, 450);
+
+    if (window.__volumeToastTimer) clearTimeout(window.__volumeToastTimer);
+    window.__volumeToastTimer = setTimeout(() => {
+      dismiss();
+    }, 5000);
+  }
+
+  function dismiss() {
+    toast.classList.remove('is-visible');
+    setTimeout(() => {
+      toast.classList.add('is-hidden');
+    }, 450);
+  }
+
+  window.__showVolumeToast = show;
+  window.__dismissVolumeToast = dismiss;
+
+  if (toastClose) {
+    toastClose.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dismiss();
+    });
+  }
+
+  toast.addEventListener('click', () => {
+    dismiss();
+  });
 }
 
 
@@ -982,6 +1030,9 @@ function initAmbientMedia() {
   function toggleAudio() {
     if (audio.paused) {
       playAudio();
+      if (typeof window.__showVolumeToast === 'function') {
+        window.__showVolumeToast();
+      }
     } else {
       pauseAudio();
     }

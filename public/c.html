@@ -72,7 +72,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap">
 
   <!-- Custom Styles (Cache-busted) -->
-  <link rel="stylesheet" href="/styles.css?v=6.9">
+  <link rel="stylesheet" href="/styles.css?v=7.0">
 </head>
 <body class="bg-ivory text-charcoal antialiased selection:bg-maroon selection:text-white relative min-h-screen">
 
@@ -157,6 +157,9 @@
         window.__invitationOpened = true;
 
         if (withMusic) {
+          if (typeof window.__showVolumeToast === 'function') {
+            window.__showVolumeToast();
+          }
           if (typeof window.__playWeddingSoundtrack === 'function') {
             window.__playWeddingSoundtrack();
           } else {
@@ -210,6 +213,46 @@
           e.stopPropagation();
           dismissEarly(false);
         }, { passive: false });
+      }
+
+      function showVolumeToastEarly() {
+        var toast = document.getElementById('volume-toast');
+        if (!toast) return;
+        toast.classList.remove('is-hidden');
+        setTimeout(function() {
+          toast.classList.add('is-visible');
+        }, 500);
+
+        if (window.__volumeToastTimer) clearTimeout(window.__volumeToastTimer);
+        window.__volumeToastTimer = setTimeout(function() {
+          dismissVolumeToastEarly();
+        }, 5000);
+      }
+
+      function dismissVolumeToastEarly() {
+        var toast = document.getElementById('volume-toast');
+        if (!toast) return;
+        toast.classList.remove('is-visible');
+        setTimeout(function() {
+          toast.classList.add('is-hidden');
+        }, 450);
+      }
+
+      window.__showVolumeToast = showVolumeToastEarly;
+      window.__dismissVolumeToast = dismissVolumeToastEarly;
+
+      var toastClose = document.getElementById('volume-toast-close');
+      var toastEl = document.getElementById('volume-toast');
+      if (toastClose) {
+        toastClose.addEventListener('click', function(e) {
+          e.stopPropagation();
+          dismissVolumeToastEarly();
+        });
+      }
+      if (toastEl) {
+        toastEl.addEventListener('click', function() {
+          dismissVolumeToastEarly();
+        });
       }
     })();
   </script>
@@ -1697,6 +1740,17 @@
   </footer>
 
   <!-- ======================================================== -->
+  <!-- FLOATING VOLUME GUIDANCE TOAST                           -->
+  <!-- ======================================================== -->
+  <div id="volume-toast" class="volume-toast is-hidden" role="status" aria-live="polite">
+    <div class="volume-toast-inner" title="Tap to dismiss">
+      <span class="volume-toast-icon" aria-hidden="true">🔊</span>
+      <span class="volume-toast-text font-serif">Turn up your device volume for music</span>
+      <button id="volume-toast-close" type="button" class="volume-toast-close" aria-label="Dismiss volume tip">&times;</button>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
   <!-- FLOATING STICKY SOUNDTRACK BUTTON                        -->
   <!-- ======================================================== -->
   <button 
@@ -1786,6 +1840,6 @@
   </div>
 
   <!-- Client Application Script -->
-  <script src="/app.js?v=6.9"></script>
+  <script src="/app.js?v=7.0"></script>
 </body>
 </html>

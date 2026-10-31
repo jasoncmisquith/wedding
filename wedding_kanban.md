@@ -27,6 +27,13 @@ kanban-plugin: basic
 
 ## ✅ Done
 
+- [x] **Floating Volume Guidance Toast (`Option 1`)**:
+  - Implemented an elegant frosted-glass volume reminder pill (`#volume-toast`) that appears 500ms after tapping "Open Invitation • With Music"
+  - Guides guests with muted hardware or low media volume on iOS Safari and Android to increase their phone volume
+  - Features pulsing speaker icon `🔊`, Cormorant Garamond typography, gold-border luxury styling, and a clean dismiss button `&times;` (plus 5-second auto-dismiss and tap-to-dismiss)
+  - Placed with mobile safe-area clearance above bottom dock/audio pill and centered on desktop
+  - Added early bootstrapping fallback handler for zero latency and bumped cache busters to `/styles.css?v=7.0` and `/app.js?v=7.0`
+
 - [x] **Root-Relative Asset Paths & Trailing Slash 301 Canonicalization (`/h` vs `/h/`)**:
   - Identified and fixed root cause of 404 cascading asset failures when visiting `/h/` or `/c/`: converted all 92 relative image, video, audio, CSS, and JS links (`="assets/...`, `styles.css`, `app.js`) to absolute root-relative paths (`="/assets/...`, `/styles.css`, `/app.js`)
   - Changed Cloudflare `_redirects` for `/h/` and `/c/` from internal 200 rewrites to 301 canonical redirects, standardizing all visits to `/h` and `/c` while ensuring 100% asset resolution even if trailing slashes are accessed directly
